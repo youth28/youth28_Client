@@ -9,7 +9,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import com.example.myapplication.dialog.VoteDialog
 import kotlinx.android.synthetic.main.activity_my_page.*
+import kotlinx.android.synthetic.main.dialog_vote.*
 
 class MyPageActivity : AppCompatActivity() {
 
@@ -28,6 +30,18 @@ class MyPageActivity : AppCompatActivity() {
         recyclerViewTag.adapter = MyAdapter()
 
         createTAG()
+
+        imgProfile.setOnClickListener {
+            val dialog = VoteDialog()
+
+            dialog.title = "오늘 뭐하지?"
+            dialog.date = "2021-02-10"
+            dialog.writer = "작성자: 누구누구"
+            dialog.listener = {checkRB ->
+
+            }
+            dialog.show(supportFragmentManager, "dialog")
+        }
     }
 
     fun createTAG() {
