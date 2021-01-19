@@ -6,4 +6,9 @@
 
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="text_gray">#333333</color>
+
+
+    <color name="mainYellow">#FFB23E</color>
+    <color name="mainBrown">#642A02</color>
 </resources>
