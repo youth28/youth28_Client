@@ -1,14 +1,16 @@
-package com.example.myapplication;
+package com.example.myapplication.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class SignUpActivity extends AppCompatActivity {
+import com.example.myapplication.R;
+
+public class ModifyActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_modify);
     }
 }
