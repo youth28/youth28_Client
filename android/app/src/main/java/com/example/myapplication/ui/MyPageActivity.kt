@@ -31,6 +31,7 @@ class MyPageActivity : AppCompatActivity() {
 
         createTAG()
 
+        // 다이얼로그 보이기
         imgProfile.setOnClickListener {
             val dialog = VoteDialog()
 

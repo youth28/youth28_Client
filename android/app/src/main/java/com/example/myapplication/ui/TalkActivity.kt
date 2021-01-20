@@ -1,6 +1,9 @@
 package com.example.myapplication.ui
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.ChatModel
 import com.example.myapplication.R
 import com.google.android.material.transition.Hold
 import kotlinx.android.synthetic.main.activity_my_page.*
@@ -17,7 +21,11 @@ import kotlinx.android.synthetic.main.item_my_chat.view.*
 
 class TalkActivity : AppCompatActivity() {
 
-    val msgList = mutableListOf<String>()
+    val TAG = "TalkActivity"
+
+    val msgList = mutableListOf<ChatModel>()
+
+    internal lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,14 +54,14 @@ class TalkActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             if (holder is Holder) {
-                (holder as Holder).chatText?.text = msgList.get(position)
-                (holder as Holder).chatDate?.text = msgList.get(position)
+                (holder as Holder).chatText?.text = msgList.get(position).message
+                (holder as Holder).chatDate?.text = msgList.get(position).time
             }
             else if (holder is Holder2) {
-                (holder as Holder2).chatText?.text = msgList.get(position)
+                (holder as Holder2).chatText?.text = msgList.get(position).message
                 (holder as Holder2).chatYouImage?.setImageResource(R.drawable.logo)
-                (holder as Holder2).chatYouName?.text = msgList.get(position)
-                (holder as Holder2).chatDate?.text = msgList.get(position)
+                (holder as Holder2).chatYouName?.text = msgList.get(position).userId
+                (holder as Holder2).chatDate?.text = msgList.get(position).time
             }
         }
 
@@ -61,6 +69,18 @@ class TalkActivity : AppCompatActivity() {
             return msgList.size
         }
 
+        override fun getItemViewType(position: Int): Int {
+            preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+
+            Log.e(TAG, msgList.get(position).userId)
+
+            // 내 아이디와 msgList의 name이 같다면 내 뷰타입 아니면 상대 뷰타입
+            return if (msgList.get(position).userId == preferences.getString("userId", "")) {
+                1
+            } else {
+                2
+            }
+        }
     }
 
     // 내 채팅 뷰홀더
@@ -76,4 +96,6 @@ class TalkActivity : AppCompatActivity() {
         val chatText = itemView?.findViewById<TextView>(R.id.tvMessage)
         val chatDate = itemView?.findViewById<TextView>(R.id.tvDate)
     }
+
+
 }
