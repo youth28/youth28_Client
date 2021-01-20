@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.DTO.UserDTO
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -47,6 +48,7 @@ class LoginActivity: AppCompatActivity() {
                 tvErrPw.visibility = View.VISIBLE
 
                 // 로그인 통신 코드
+                val user = getData()
 
                 //성공할시
                 showToast("자동 로그인 등록")
@@ -71,7 +73,13 @@ class LoginActivity: AppCompatActivity() {
         // null이 아니면 자동로그인
         if (strId != null && strPW!= null){
             // 로그인 통신 코드
+            val user = getData()
         }
+    }
+
+    fun getData(): UserDTO {
+        val data = UserDTO(strId, strPW)
+        return data
     }
 
     fun showToast(str: String) {
