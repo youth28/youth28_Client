@@ -2,7 +2,7 @@ package com.example.myapplication.DTO
 
 import com.google.gson.annotations.SerializedName
 
-class UserDTO {
+public class UserDTO {
     @SerializedName("email")
     private var email = ""
     @SerializedName("pwd")
