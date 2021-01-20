@@ -23,13 +23,13 @@
                 android:id="@+id/btnMenu"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginLeft="8dp"
                 android:background="@android:color/transparent"
                 android:scaleType="fitXY"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_menu_24"
-                android:layout_marginLeft="8dp" />
+                app:srcCompat="@drawable/ic_baseline_menu_24" />
 
             <ImageButton
                 android:id="@+id/btnSearch"
@@ -42,6 +42,16 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_baseline_search_24"
                 android:layout_marginRight="8dp" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/btnMenu"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/logo2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
