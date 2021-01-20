@@ -59,6 +59,7 @@ class LoginActivity: AppCompatActivity() {
                 editor.putString("userPW", strPW)
                 editor.putString("userName", "response.body().getName")
                 editor.putString("userProfile", "image")
+                editor.apply()
 
                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                 startActivity(intent)
@@ -68,6 +69,11 @@ class LoginActivity: AppCompatActivity() {
                 tvErrPw.text = "아이디나 비밀번호가 일치하지 않습니다."
                 tvErrPw.visibility = View.VISIBLE
             }
+        }
+
+        tvSignup.setOnClickListener {
+            val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
+            startActivity(intent)
         }
 
         // null이 아니면 자동로그인
