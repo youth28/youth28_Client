@@ -31,18 +31,6 @@ class MyPageActivity : AppCompatActivity() {
 
         createTAG()
 
-        // 다이얼로그 보이기
-        imgProfile.setOnClickListener {
-            val dialog = VoteDialog()
-
-            dialog.title = "오늘 뭐하지?"
-            dialog.date = "2021-02-10"
-            dialog.writer = "작성자: 누구누구"
-            dialog.listener = {checkRB ->
-
-            }
-            dialog.show(supportFragmentManager, "dialog")
-        }
     }
 
     fun createTAG() {
