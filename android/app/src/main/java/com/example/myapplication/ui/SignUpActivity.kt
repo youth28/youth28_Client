@@ -1,25 +1,31 @@
 package com.example.myapplication.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.API.RetrofitHelper
 import com.example.myapplication.DTO.UserDTO
 import com.example.myapplication.R
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.activity_sign_up.editEmail
 import kotlinx.android.synthetic.main.activity_sign_up.editPW
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.regex.Pattern
 
 class SignUpActivity: AppCompatActivity() {
+
+    val TAG = "SignUpActivity"
 
     var strId = ""
     var strPW =""
     var strRePW = ""
     var strName = ""
 
-    val isAbleId = false
+    var isAbleId = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,10 +90,20 @@ class SignUpActivity: AppCompatActivity() {
 
                     // 회원가입 하기
                     val user = getData()
+                    val call = RetrofitHelper.getApiService().register(user)
+                    call.enqueue(object : Callback<UserDTO> {
+                        override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
+                            if(response.isSuccessful) {
+                                showToast("회원가입 성공")
+                                finish()
+                            }
+                        }
 
-                    // 성공하면
-                    finish()
-                    showToast("회원가입 성공")
+                        override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+                            Log.e(TAG+" Err", "통신안됨: ${t.message}")
+                        }
+
+                    })
                 }
 
             }
@@ -111,6 +127,29 @@ class SignUpActivity: AppCompatActivity() {
 
                 // 중복 확인 200-> 사용가능한 ID, 204-> 중복되는 아이디
                 val user = UserDTO(strId)
+                val call = RetrofitHelper.getApiService().check_emial(user)
+                call.enqueue(object : Callback<UserDTO> {
+                    override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
+                        Log.e(TAG, "성공")
+                        val result = response.code()
+                        when(result){
+                            200 -> {
+                                tvErrIdS.visibility = View.GONE
+                                showToast("${strId}는 사용가능한 아이디 입니다.")
+                                isAbleId = true
+                            }
+                            204 -> {
+                                tvErrIdS.text = "중복되는 아이디 입니다."
+                                tvErrIdS.visibility = View.VISIBLE
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+                        Log.e(TAG+" Err", "통신안됨: ${t.message}")
+                    }
+
+                })
             }
         }
 

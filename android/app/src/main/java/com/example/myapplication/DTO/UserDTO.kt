@@ -2,14 +2,14 @@ package com.example.myapplication.DTO
 
 import com.google.gson.annotations.SerializedName
 
-public class UserDTO {
+class UserDTO {
     @SerializedName("email")
     private var email = ""
     @SerializedName("pwd")
     private var pwd = ""
     @SerializedName("name")
     private var name = ""
-    @SerializedName("user_img")
+    @SerializedName("profile")
     private var img = ""
 
     // 회원가입
