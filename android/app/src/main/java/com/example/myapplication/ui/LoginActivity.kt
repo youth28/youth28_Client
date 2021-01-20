@@ -4,14 +4,22 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.API.RetrofitHelper
+import com.example.myapplication.DTO.ResponseLogin
 import com.example.myapplication.DTO.UserDTO
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.activity_login.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginActivity: AppCompatActivity() {
+
+    val TAG = "LoginActivity"
 
     var strId = ""
     var strPW = ""
@@ -49,25 +57,42 @@ class LoginActivity: AppCompatActivity() {
 
                 // 로그인 통신 코드
                 val user = getData()
+                val call = RetrofitHelper.getApiService().login(user)
+                call.enqueue(object : Callback<ResponseLogin> {
+                    override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
+                        if (response.isSuccessful) {
+                            val result = response.code()
+                            when (result) {
+                                200 -> {
+                                    //성공할시
+                                    showToast("자동 로그인 등록")
 
-                //성공할시
-                showToast("자동 로그인 등록")
+                                    preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
+                                    val editor = preferences.edit()
+                                    editor.putString("userId", strId)
+                                    editor.putString("userPW", strPW)
+                                    editor.putString("userName", "response.body().getName")
+                                    editor.putString("userProfile", "image")
+                                    editor.apply()
 
-                preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
-                val editor = preferences.edit()
-                editor.putString("userId", strId)
-                editor.putString("userPW", strPW)
-                editor.putString("userName", "response.body().getName")
-                editor.putString("userProfile", "image")
-                editor.apply()
+                                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                                204 -> {
+                                    tvErrPw.text = "아이디나 비밀번호가 일치하지 않습니다."
+                                    tvErrPw.visibility = View.VISIBLE
+                                }
+                            }
+                        }
+                    }
 
-                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                startActivity(intent)
-                finish()
+                    override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
+                        Log.e(TAG+" Err", "통신안됨: ${t.message}")
+                    }
 
-                // 아이디나 비번이 일치하지 않는다면 code -> 204
-                tvErrPw.text = "아이디나 비밀번호가 일치하지 않습니다."
-                tvErrPw.visibility = View.VISIBLE
+                })
+
             }
         }
 
