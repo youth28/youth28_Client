@@ -47,8 +47,8 @@
                 android:layout_marginTop="45dp"
                 android:layout_marginRight="37dp"
                 android:background="@drawable/edit_text_shape"
-                android:padding="15dp"
                 android:fontFamily="@font/appleneom"
+                android:padding="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView2" />
@@ -92,19 +92,19 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/appleneom"
                 android:textSize="21dp"
-                app:layout_constraintBottom_toTopOf="@+id/editEmail2"
+                app:layout_constraintBottom_toTopOf="@+id/editPW"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
-                android:id="@+id/editEmail2"
+                android:id="@+id/editPW"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:layout_marginLeft="37dp"
                 android:layout_marginTop="57dp"
                 android:layout_marginRight="37dp"
                 android:background="@drawable/edit_text_shape"
-                android:padding="15dp"
                 android:fontFamily="@font/appleneom"
+                android:padding="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.506"
                 app:layout_constraintStart_toStartOf="parent"
@@ -121,23 +121,23 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/appleneom"
                 android:textSize="21dp"
-                app:layout_constraintBottom_toTopOf="@+id/editEmail3"
+                app:layout_constraintBottom_toTopOf="@+id/editRePW"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
-                android:id="@+id/editEmail3"
+                android:id="@+id/editRePW"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:layout_marginLeft="37dp"
                 android:layout_marginTop="57dp"
                 android:layout_marginRight="37dp"
                 android:background="@drawable/edit_text_shape"
-                android:padding="15dp"
                 android:fontFamily="@font/appleneom"
+                android:padding="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.657"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editEmail2" />
+                app:layout_constraintTop_toBottomOf="@+id/editPW" />
 
             <TableLayout
                 android:id="@+id/tableLayout"
@@ -155,20 +155,22 @@
                 <TableRow>
 
                     <CheckBox
+                        android:id="@+id/fStudy"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="70dp"
                         android:layout_marginBottom="7dp"
+                        android:fontFamily="@font/appleneom"
                         android:text="스터디"
-                        android:fontFamily="@font/appleneom"
                         android:textColor="@color/black"
                         android:textSize="19dp" />
 
                     <CheckBox
+                        android:id="@+id/fWork"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/appleneom"
                         android:text="업무"
-                        android:fontFamily="@font/appleneom"
                         android:textColor="@color/black"
                         android:textSize="19dp" />
                 </TableRow>
@@ -176,19 +178,21 @@
                 <TableRow>
 
                     <CheckBox
+                        android:id="@+id/fGame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="7dp"
+                        android:fontFamily="@font/appleneom"
                         android:text="게임"
-                        android:fontFamily="@font/appleneom"
                         android:textColor="@color/black"
                         android:textSize="19dp" />
 
                     <CheckBox
+                        android:id="@+id/fMusic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/appleneom"
                         android:text="음악"
-                        android:fontFamily="@font/appleneom"
                         android:textColor="@color/black"
                         android:textSize="19dp" />
                 </TableRow>
@@ -196,19 +200,21 @@
                 <TableRow>
 
                     <CheckBox
+                        android:id="@+id/fArt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="7dp"
+                        android:fontFamily="@font/appleneom"
                         android:text="미술"
-                        android:fontFamily="@font/appleneom"
                         android:textColor="@color/black"
                         android:textSize="19dp" />
 
                     <CheckBox
+                        android:id="@+id/fExercise"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="운동(헬스)"
                         android:fontFamily="@font/appleneom"
+                        android:text="운동(헬스)"
                         android:textColor="@color/black"
                         android:textSize="19dp" />
                 </TableRow>
@@ -216,27 +222,29 @@
                 <TableRow>
 
                     <CheckBox
+                        android:id="@+id/fEtc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="7dp"
-                        android:text="기타"
                         android:fontFamily="@font/appleneom"
+                        android:text="기타"
                         android:textColor="@color/black"
                         android:textSize="19dp" />
                 </TableRow>
             </TableLayout>
 
             <Button
+                android:id="@+id/btnSignup"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="33dp"
                 android:layout_marginTop="14dp"
                 android:layout_marginRight="33dp"
                 android:background="@drawable/btn_shape"
+                android:fontFamily="@font/appleneom"
                 android:text="SIGN UP"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:fontFamily="@font/appleneom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
@@ -253,7 +261,70 @@
                 android:textColor="@color/black"
                 android:textSize="21dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editEmail3" />
+                app:layout_constraintTop_toBottomOf="@+id/editRePW" />
+
+            <Button
+                android:id="@+id/btnCheckEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:text="중복확인"
+                android:background="@drawable/edit_text_shape"
+                android:fontFamily="@font/appleneom"
+                app:layout_constraintEnd_toEndOf="@+id/editName"
+                app:layout_constraintTop_toBottomOf="@+id/editName" />
+
+            <TextView
+                android:id="@+id/tvErrNameS"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="이름을 입력해주세요."
+                android:fontFamily="@font/appleneol"
+                android:textSize="12sp"
+                android:textColor="@color/red"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/btnCheckEmail"
+                app:layout_constraintStart_toStartOf="@+id/editName"
+                app:layout_constraintTop_toBottomOf="@+id/editName" />
+
+            <TextView
+                android:id="@+id/tvErrIdS"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="이메일을 입력해주세요."
+                android:fontFamily="@font/appleneol"
+                android:textSize="12sp"
+                android:textColor="@color/red"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/editEmail"
+                app:layout_constraintStart_toStartOf="@+id/editEmail"
+                app:layout_constraintTop_toBottomOf="@+id/editEmail" />
+
+            <TextView
+                android:id="@+id/tvErrPwS"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="비빌번호를 입력해주세요."
+                android:fontFamily="@font/appleneol"
+                android:textSize="12sp"
+                android:textColor="@color/red"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/editPW"
+                app:layout_constraintStart_toStartOf="@+id/editPW"
+                app:layout_constraintTop_toBottomOf="@+id/editPW" />
+
+            <TextView
+                android:id="@+id/tvErrRePwS"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="비밀번호를 재확인 해주세요."
+                android:fontFamily="@font/appleneol"
+                android:textSize="12sp"
+                android:textColor="@color/red"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/editRePW"
+                app:layout_constraintStart_toStartOf="@+id/editRePW"
+                app:layout_constraintTop_toBottomOf="@+id/editRePW" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
