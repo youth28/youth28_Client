@@ -15,8 +15,8 @@
         <activity android:name=".ui.ModifyActivity" />
         <activity android:name=".ui.SignUpActivity" />
         <activity android:name=".ui.MenuActivity" />
-        <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.SplashActivity" />
+        <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.TalkActivity">
             <intent-filter>
