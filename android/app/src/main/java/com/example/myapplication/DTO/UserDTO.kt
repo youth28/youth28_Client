@@ -10,7 +10,7 @@ class UserDTO {
     @SerializedName("name")
     private var name = ""
     @SerializedName("profile")
-    private var img = ""
+    private var profile = ""
 
     // 회원가입
     constructor(email: String, pwd: String, name: String) {
@@ -31,7 +31,7 @@ class UserDTO {
     }
 
     override fun toString(): String {
-        return "UserDTO(email='$email', pwd='$pwd', name='$name', img='$img')"
+        return "UserDTO(email='$email', pwd='$pwd', name='$name', profile='$profile')"
     }
 
 }

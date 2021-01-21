@@ -34,6 +34,47 @@ class LoginActivity: AppCompatActivity() {
         strId = preferences.getString("userId", null).toString()
         strPW = preferences.getString("userId", null).toString()
 
+        // strId, strPw 값이 null이 아니라면 자동 로그인 하기
+        /*if (strId !=null || strPW !=null){
+            val user = getData()
+            val call = RetrofitHelper.getApiService().login(user)
+            Log.e(TAG, user.toString())
+            call.enqueue(object : Callback<ResponseLogin> {
+                override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
+                    if (response.isSuccessful) {
+                        val result = response.code()
+                        when (result) {
+                            200 -> {
+                                //성공할시
+                                showToast("자동 로그인 등록")
+
+                                preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
+                                val editor = preferences.edit()
+                                editor.putString("userId", strId)
+                                editor.putString("userPW", strPW)
+                                editor.putString("userName", "response.body().getName")
+                                editor.putString("userProfile", "image")
+                                editor.apply()
+
+                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }
+                            204 -> {
+                                tvErrPw.text = "아이디나 비밀번호가 일치하지 않습니다."
+                                tvErrPw.visibility = View.VISIBLE
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
+                    Log.e(TAG+" Err", "통신안됨: ${t.message}")
+                }
+
+            })
+        }*/
+
         btnLogin.setOnClickListener {
             strId = editEmail.text.toString()
             strPW = editPW.text.toString()
@@ -58,6 +99,7 @@ class LoginActivity: AppCompatActivity() {
                 // 로그인 통신 코드
                 val user = getData()
                 val call = RetrofitHelper.getApiService().login(user)
+                Log.e(TAG, user.toString())
                 call.enqueue(object : Callback<ResponseLogin> {
                     override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                         if (response.isSuccessful) {
