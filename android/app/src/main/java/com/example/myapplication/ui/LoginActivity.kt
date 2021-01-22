@@ -32,11 +32,12 @@ class LoginActivity: AppCompatActivity() {
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
         strId = preferences.getString("userId", null).toString()
-        strPW = preferences.getString("userId", null).toString()
+        strPW = preferences.getString("userPW", null).toString()
 
         // strId, strPw 값이 null이 아니라면 자동 로그인 하기
-        /*if (strId !=null || strPW !=null){
+        if (strId !=null || strPW !=null){
             val user = getData()
+            Log.e(TAG, "$strId  $strPW")
             val call = RetrofitHelper.getApiService().login(user)
             Log.e(TAG, user.toString())
             call.enqueue(object : Callback<ResponseLogin> {
@@ -49,12 +50,6 @@ class LoginActivity: AppCompatActivity() {
                                 showToast("자동 로그인 등록")
 
                                 preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
-                                val editor = preferences.edit()
-                                editor.putString("userId", strId)
-                                editor.putString("userPW", strPW)
-                                editor.putString("userName", "response.body().getName")
-                                editor.putString("userProfile", "image")
-                                editor.apply()
 
                                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                                 startActivity(intent)
@@ -73,7 +68,7 @@ class LoginActivity: AppCompatActivity() {
                 }
 
             })
-        }*/
+        }
 
         btnLogin.setOnClickListener {
             strId = editEmail.text.toString()
@@ -94,7 +89,7 @@ class LoginActivity: AppCompatActivity() {
                 }
             } else {
                 tvErrId.visibility = View.GONE
-                tvErrPw.visibility = View.VISIBLE
+                tvErrPw.visibility = View.GONE
 
                 // 로그인 통신 코드
                 val user = getData()
@@ -113,9 +108,13 @@ class LoginActivity: AppCompatActivity() {
                                     val editor = preferences.edit()
                                     editor.putString("userId", strId)
                                     editor.putString("userPW", strPW)
-                                    editor.putString("userName", "response.body().getName")
+                                    editor.putString("userNum", response.body()!!.user_id)
+                                    Log.e(TAG+" userNum", response.body()!!.user_id)
+                                    editor.putString("userName", response.body()!!.name)
                                     editor.putString("userProfile", "image")
                                     editor.apply()
+
+                                    Log.e(TAG+" Response", response.body().toString())
 
                                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                                     startActivity(intent)
@@ -124,6 +123,7 @@ class LoginActivity: AppCompatActivity() {
                                 204 -> {
                                     tvErrPw.text = "아이디나 비밀번호가 일치하지 않습니다."
                                     tvErrPw.visibility = View.VISIBLE
+                                    Log.e(TAG, "204")
                                 }
                             }
                         }

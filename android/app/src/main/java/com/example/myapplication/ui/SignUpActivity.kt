@@ -90,6 +90,7 @@ class SignUpActivity: AppCompatActivity() {
 
                     // 회원가입 하기
                     val user = getData()
+                    Log.e(TAG, user.toString())
                     val call = RetrofitHelper.getApiService().register(user)
                     call.enqueue(object : Callback<UserDTO> {
                         override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
@@ -127,26 +128,29 @@ class SignUpActivity: AppCompatActivity() {
 
                 // 중복 확인 200-> 사용가능한 ID, 204-> 중복되는 아이디
                 val user = UserDTO(strId)
+                Log.e(TAG, user.toString())
                 val call = RetrofitHelper.getApiService().check_emial(user)
                 call.enqueue(object : Callback<UserDTO> {
                     override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
-                        Log.e(TAG, "성공")
+                        Log.e(TAG, "성공 $user")
                         val result = response.code()
                         when(result){
                             200 -> {
                                 tvErrIdS.visibility = View.GONE
                                 showToast("${strId}는 사용가능한 아이디 입니다.")
                                 isAbleId = true
+                                Log.e(TAG, "200 중복아님")
                             }
                             204 -> {
                                 tvErrIdS.text = "중복되는 아이디 입니다."
                                 tvErrIdS.visibility = View.VISIBLE
+                                Log.e(TAG, "204 중복됨")
                             }
                         }
                     }
 
                     override fun onFailure(call: Call<UserDTO>, t: Throwable) {
-                        Log.e(TAG+" Err", "통신안됨: ${t.message}")
+                        Log.e(TAG+" Err", "통신안됨: $t")
                     }
 
                 })
