@@ -20,18 +20,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageView
+                android:id="@+id/imgProfile"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="44dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/logo" />
+
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="37dp"
-                android:layout_marginLeft="37dp"
-                android:layout_marginTop="18dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                android:layout_marginTop="35dp"
                 android:text="Name"
                 android:textColor="#000000"
                 android:textSize="21dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/imgProfile" />
 
             <EditText
                 android:id="@+id/editName"
@@ -98,32 +108,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editEmail" />
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="37dp"
-                android:layout_marginLeft="37dp"
-                android:layout_marginBottom="1dp"
-                android:text="Re-Passwd"
-                android:textColor="#000000"
-                android:textSize="21dp"
-                app:layout_constraintBottom_toTopOf="@+id/editRePW"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <EditText
-                android:id="@+id/editRePW"
-                android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:layout_marginLeft="37dp"
-                android:layout_marginTop="57dp"
-                android:layout_marginRight="37dp"
-                android:background="@drawable/edit_text_shape"
-                android:padding="15dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.657"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editPW" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -136,7 +120,7 @@
                 android:textColor="#000000"
                 android:textSize="21dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editRePW" />
+                app:layout_constraintTop_toBottomOf="@+id/editPW" />
 
             <TableLayout
                 android:id="@+id/tableLayout"
@@ -220,10 +204,11 @@
 
 
             <Button
+                android:id="@+id/btnSave"
                 android:layout_width="match_parent"
                 android:layout_height="69dp"
                 android:layout_marginLeft="33dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="27dp"
                 android:layout_marginRight="33dp"
                 android:background="@drawable/btn_shape"
                 android:text="save"
@@ -231,38 +216,9 @@
                 android:textSize="35dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnProfile" />
-
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="37dp"
-                android:layout_marginRight="37dp"
-                android:background="@drawable/edit_text_shape"
-                android:text="중복확인"
-                android:textColor="#000000"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editEmail" />
-
-            <Button
-                android:id="@+id/btnProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="37dp"
-                android:layout_marginRight="37dp"
-                android:background="@drawable/edit_text_shape"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="프로필 사진 변경"
-                android:textColor="#000000"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
