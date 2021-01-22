@@ -1,5 +1,6 @@
 package com.example.myapplication.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -30,6 +31,11 @@ class MyPageActivity : AppCompatActivity() {
         recyclerViewTag.adapter = MyAdapter()
 
         createTAG()
+
+        btnModify.setOnClickListener {
+            val intent = Intent(this@MyPageActivity, ModifyActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 
