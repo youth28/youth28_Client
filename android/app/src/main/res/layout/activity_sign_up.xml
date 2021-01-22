@@ -49,6 +49,7 @@
                 android:background="@drawable/edit_text_shape"
                 android:fontFamily="@font/appleneom"
                 android:padding="15dp"
+                android:text="안수빈"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView2" />
@@ -77,6 +78,7 @@
                 android:background="@drawable/edit_text_shape"
                 android:fontFamily="@font/appleneom"
                 android:padding="15dp"
+                android:text="dkstnqls0925@naver.com"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editName" />
@@ -105,6 +107,7 @@
                 android:background="@drawable/edit_text_shape"
                 android:fontFamily="@font/appleneom"
                 android:padding="15dp"
+                android:text="ASdf1234!!!!"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.506"
                 app:layout_constraintStart_toStartOf="parent"
@@ -134,6 +137,7 @@
                 android:background="@drawable/edit_text_shape"
                 android:fontFamily="@font/appleneom"
                 android:padding="15dp"
+                android:text="ASdf1234!!!!"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.657"
                 app:layout_constraintStart_toStartOf="parent"
@@ -268,11 +272,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginTop="5dp"
-                android:text="중복확인"
                 android:background="@drawable/edit_text_shape"
                 android:fontFamily="@font/appleneom"
+                android:text="중복확인"
                 app:layout_constraintEnd_toEndOf="@+id/editName"
-                app:layout_constraintTop_toBottomOf="@+id/editName" />
+                app:layout_constraintTop_toBottomOf="@+id/editEmail" />
 
             <TextView
                 android:id="@+id/tvErrNameS"
