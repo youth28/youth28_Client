@@ -39,7 +39,9 @@ class ModifyActivity: AppCompatActivity() {
             strName = editName.text.toString()
             strPW = editPW.text.toString()
             strEmail = editEmail.toString()
+            imgProfile = preferences.getString("userProfile", "").toString()
             user_id = preferences.getString("userNum", "0")!!.toInt()
+
 
             if (strName == "") {
                 showToast("이름을 입력해주세요")
@@ -49,19 +51,22 @@ class ModifyActivity: AppCompatActivity() {
                 showToast("현재 비밀번호를 입력해주세요")
             } else if (strEmail != "" && strPW != "") {
                 if (preferences.getString("userId", "") != strEmail) {
-                    showToast("일치하지 않는 비밀번호 입니다.")
+                    showToast("일치하지 않는 아이디 입니다.")
                 }
                 if (preferences.getString("userPW", "") != strPW) {
                     showToast("일지하지 않는 비밀번호 입니다.")
                 }
 
-                if (preferences.getString("userId", "") != strEmail && preferences.getString("userPW", "") != strPW) {
+                if (preferences.getString("userId", "") == strEmail && preferences.getString("userPW", "") == strPW) {
                     val user = getData()
                     val call = RetrofitHelper.getApiService().modify(user)
                     call.enqueue(object : Callback<UserModify>{
                         override fun onResponse(call: Call<UserModify>, response: Response<UserModify>) {
                             if (response.isSuccessful) {
                                 if (response.code() == 200) {
+                                    val editor = preferences.edit()
+                                    editor.putString("userName", strName)
+                                    editor.putString("userProfile", imgProfile)
                                     showToast("수정되었습니다.")
                                     finish()
                                 }
