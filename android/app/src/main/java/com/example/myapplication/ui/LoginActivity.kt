@@ -47,7 +47,7 @@ class LoginActivity: AppCompatActivity() {
                         when (result) {
                             200 -> {
                                 //성공할시
-                                showToast("자동 로그인 등록")
+                                showToast("자동 로그인 했습니다.")
 
                                 preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
 
