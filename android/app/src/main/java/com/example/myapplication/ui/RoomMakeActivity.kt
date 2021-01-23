@@ -25,9 +25,20 @@ class RoomMakeActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room_make)
 
-        btnCreate.setOnClickListener {
-            title = ""
-            maxPro = 0
+        btnSub.setOnClickListener {
+            peRson.text = "${Integer.parseInt(peRson.text.toString()) - 1}"
+            Log.e(TAG+ "sub", peRson.text.toString())
+        }
+
+        btnPlu.setOnClickListener {
+            peRson.text = "${Integer.parseInt(peRson.text.toString()) + 1}"
+            Log.e(TAG+ "plu", peRson.text.toString())
+        }
+
+        btnMakeRoom.setOnClickListener {
+            title = editRname.text.toString()
+            maxPro = Integer.parseInt(peRson.text.toString())
+            Log.e(TAG+ "maxpro", "$maxPro")
 
             if (cbStudy.isChecked) field += "${cbStudy.text},"
             if (cbWork.isChecked) field += "${cbWork.text},"
