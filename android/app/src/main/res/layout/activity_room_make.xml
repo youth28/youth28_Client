@@ -6,4 +6,101 @@
     android:layout_height="match_parent"
     tools:context=".ui.RoomMakeActivity">
 
+    <Button
+        android:id="@+id/btnCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="37dp"
+        android:layout_marginLeft="37dp"
+        android:layout_marginEnd="37dp"
+        android:layout_marginRight="37dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnCreate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow>
+
+            <CheckBox
+                android:id="@+id/cbStudy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="70dp"
+                android:layout_marginBottom="7dp"
+                android:text="스터디"
+                android:textColor="#000000"
+                android:textSize="19dp" />
+
+            <CheckBox
+                android:id="@+id/cbWork"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="업무"
+                android:textColor="#000000"
+                android:textSize="19dp" />
+        </TableRow>
+
+        <TableRow>
+
+            <CheckBox
+                android:id="@+id/cbGame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="7dp"
+                android:text="게임"
+                android:textColor="#000000"
+                android:textSize="19dp" />
+
+            <CheckBox
+                android:id="@+id/cbMusic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="음악"
+                android:textColor="#000000"
+                android:textSize="19dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <CheckBox
+                android:id="@+id/cbArt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="7dp"
+                android:text="미술"
+                android:textColor="#000000"
+                android:textSize="19dp" />
+
+            <CheckBox
+                android:id="@+id/cbExercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="운동(헬스)"
+                android:textColor="#000000"
+                android:textSize="19dp" />
+        </TableRow>
+
+        <TableRow>
+
+            <CheckBox
+                android:id="@+id/cbEtc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="7dp"
+                android:text="기타"
+                android:textColor="#000000"
+                android:textSize="19dp" />
+        </TableRow>
+    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
