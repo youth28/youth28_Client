@@ -1,9 +1,6 @@
 package com.example.myapplication.API
 
-import com.example.myapplication.DTO.ResponseLogin
-import com.example.myapplication.DTO.RoomMakeDTO
-import com.example.myapplication.DTO.UserDTO
-import com.example.myapplication.DTO.UserModify
+import com.example.myapplication.DTO.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -24,7 +21,7 @@ interface UserAPI {
             @Body userDTO: UserDTO
     ): Call<UserDTO>
 
-    @POST("modify")
+    @POST("modify_user")
     fun modify(
             @Body userModify: UserModify
     ): Call<UserModify>
@@ -32,5 +29,15 @@ interface UserAPI {
     @POST("make_room")
     fun make_room(
             @Body roomMakeDTO: RoomMakeDTO
+    ): Call<RoomMakeDTO>
+
+    @POST("modify_room")
+    fun modify_room(
+            @Body roomModifyDTO: RoomModifyDTO
+    ): Call<RoomModifyDTO>
+
+    @POST("room_info")
+    fun room_info(
+            @Body romId: Int
     ): Call<RoomMakeDTO>
 }
