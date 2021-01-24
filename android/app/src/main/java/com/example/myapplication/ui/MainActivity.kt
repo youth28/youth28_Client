@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.myapplication.MyRoom
 import com.example.myapplication.R
+import com.example.myapplication.RoomModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_menu.*
 
@@ -29,6 +30,7 @@ class MainActivity: AppCompatActivity() {
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
 
+        // region 사이트 메뉴 바 ListView
         var myRoomList = arrayListOf<MyRoom>()
         for (i: Int in 1..5){
             myRoomList.add(MyRoom("이건 방이다 ${i}", i))
@@ -38,21 +40,9 @@ class MainActivity: AppCompatActivity() {
         listView.setOnItemClickListener { parent, view, position, id ->
             showToast("roomName: ${myRoomList[position].roomName}, roomId: ${myRoomList[position].roomId}")
         }
+        // endregion
 
-        btnMenu.setOnClickListener {
-            drawer_layout.openDrawer(GravityCompat.START)
-        }
-
-        btnSearch.setOnClickListener {
-            val intent = Intent(this@MainActivity, RoomFindActivity::class.java)
-            startActivity(intent)
-        }
-
-        fabRoomMake.setOnClickListener {
-            val intent = Intent(this@MainActivity, RoomMakeActivity::class.java)
-            startActivity(intent)
-        }
-
+        // region 사이드 메뉴바 요소
         layout_myPage.setOnClickListener {
             val intent = Intent(this@MainActivity, MyPageActivity::class.java)
             startActivity(intent)
@@ -66,6 +56,25 @@ class MainActivity: AppCompatActivity() {
             startActivity(intent)
             finish()
             Log.e("log", "logOut")
+        }
+        // endregion
+
+        val data = arrayListOf<Map<RoomModel, ArrayList<String>>>(
+
+        )
+
+        btnMenu.setOnClickListener {
+            drawer_layout.openDrawer(GravityCompat.START)
+        }
+
+        btnSearch.setOnClickListener {
+            val intent = Intent(this@MainActivity, RoomFindActivity::class.java)
+            startActivity(intent)
+        }
+
+        fabRoomMake.setOnClickListener {
+            val intent = Intent(this@MainActivity, RoomMakeActivity::class.java)
+            startActivity(intent)
         }
     }
 
