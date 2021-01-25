@@ -20,10 +20,10 @@
         <activity android:name=".ui.RoomMakeActivity" />
         <activity android:name=".ui.MyPageActivity" />
         <activity android:name=".ui.CalenderActivity" />
-        <activity android:name=".ui.SplashActivity" />
+        <activity android:name=".ui.SplashActivity" >
+        </activity>
         <activity android:name=".ui.SignUpActivity" />
         <activity android:name=".ui.LoginActivity">
-
         </activity>
         <activity android:name=".ui.MainActivity" >
             <intent-filter>

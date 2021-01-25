@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.myapplication.API.RetrofitHelper
+import com.example.myapplication.DTO.RoomId
 import com.example.myapplication.DTO.RoomMakeDTO
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.activity_room_info.*
@@ -47,7 +48,7 @@ class RoomInfoActivity : AppCompatActivity() {
     }
 
     fun settingUi () {
-        val room = 3
+        val room = 2
         val call = RetrofitHelper.getApiService().room_info(room)
         call.enqueue(object : Callback<RoomMakeDTO> {
             override fun onResponse(call: Call<RoomMakeDTO>, response: Response<RoomMakeDTO>) {

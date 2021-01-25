@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.API.RetrofitHelper
 import com.example.myapplication.ChatModel
+import com.example.myapplication.DTO.RoomId
 import com.example.myapplication.DTO.RoomMakeDTO
 import com.example.myapplication.R
 import com.example.myapplication.dialog.VoteDialog
@@ -63,10 +64,7 @@ class TalkActivity : AppCompatActivity() {
     }
 
     fun settingUi () {
-        val room = 3
-        field = "스터디,헬스,게임,안녕,하세요,이건,다양한,태그,에요,"
-        field = field.substring(0, field.length -1 )
-        Log.e(TAG+ "field", field)
+        val room = 2
 
         val arrayList = field.split(",")
 
@@ -79,6 +77,7 @@ class TalkActivity : AppCompatActivity() {
             override fun onResponse(call: Call<RoomMakeDTO>, response: Response<RoomMakeDTO>) {
                 if (response.isSuccessful) {
                     if (response.code() == 200) {
+                        Log.e(TAG, response.body().toString())
                         field = response.body()!!.field
                         title = response.body()!!.title
                         profile = response.body()!!.profile
@@ -87,7 +86,6 @@ class TalkActivity : AppCompatActivity() {
                         tvRoomName.text = title
 
                         // region checkBox 설정하기
-                        field = "스터디,헬스,게임,안녕,하세요,이건,다양한,태그,에요,"
                         field = field.substring(0, field.length -1 )
                         Log.e(TAG+ "field", field)
 

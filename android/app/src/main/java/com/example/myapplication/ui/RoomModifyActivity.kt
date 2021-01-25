@@ -28,10 +28,11 @@ class RoomModifyActivity : AppCompatActivity() {
 
         if (intent.hasExtra("roomTitle")) {
             Log.e(TAG, "intent 있음")
-            editRname.setText(intent.getStringExtra("roomTitle"))
-            peRson.text = intent.getStringExtra("roomMax")
             field = intent.getStringExtra("roomField").toString()
             room_id = intent.getIntExtra("roomId", 0)
+            maxPro = intent.getIntExtra("roomMax", 0)
+            editRname.setText(intent.getStringExtra("roomTitle"))
+            peRson.text = maxPro.toString()
 
             val arrayList = field.split(",")
             for (value in arrayList) {
@@ -63,6 +64,7 @@ class RoomModifyActivity : AppCompatActivity() {
             Log.e(TAG, "$maxPro")
 
             // region checkBox String으로
+            field = ""
             if (cbStudy.isChecked) field += "${cbStudy.text},"
             if (cbWork.isChecked) field += "${cbWork.text},"
             if (cbGame.isChecked) field += "${cbGame.text},"
@@ -75,6 +77,8 @@ class RoomModifyActivity : AppCompatActivity() {
             Log.e(TAG, "checkBox: $field 선택됨")
 
             val room = getData()
+            Log.e(TAG, "RoomModifyDTO(room_id=$room_id, title='$title', maxPeo=$maxPro, field='$field', profile='$profile')")
+            Log.e(TAG, room.toString())
             val call = RetrofitHelper.getApiService().modify_room(room)
             call.enqueue(object : Callback<RoomModifyDTO> {
                 override fun onResponse(call: Call<RoomModifyDTO>, response: Response<RoomModifyDTO>) {
