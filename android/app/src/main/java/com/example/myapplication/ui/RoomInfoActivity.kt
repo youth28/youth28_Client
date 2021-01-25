@@ -48,7 +48,7 @@ class RoomInfoActivity : AppCompatActivity() {
     }
 
     fun settingUi () {
-        val room = 2
+        val room = RoomId(2)
         val call = RetrofitHelper.getApiService().room_info(room)
         call.enqueue(object : Callback<RoomMakeDTO> {
             override fun onResponse(call: Call<RoomMakeDTO>, response: Response<RoomMakeDTO>) {

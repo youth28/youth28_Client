@@ -64,7 +64,7 @@ class TalkActivity : AppCompatActivity() {
     }
 
     fun settingUi () {
-        val room = 2
+        val room = RoomId(2)
 
         val arrayList = field.split(",")
 
