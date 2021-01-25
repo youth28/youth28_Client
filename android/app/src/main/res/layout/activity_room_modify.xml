@@ -9,14 +9,15 @@
     <Button
         android:id="@+id/btnModifyRoom"
         android:layout_width="match_parent"
-        android:layout_height="69dp"
+        android:layout_height="50dp"
         android:layout_marginLeft="33dp"
         android:layout_marginTop="50dp"
         android:layout_marginRight="33dp"
         android:background="@drawable/btn_shape"
         android:text="SAVE"
         android:textColor="#000000"
-        android:textSize="35dp"
+        android:textSize="18sp"
+        android:fontFamily="@font/appleneoeb"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/peRson" />
@@ -42,7 +43,8 @@
                 android:layout_marginBottom="7dp"
                 android:text="스터디"
                 android:textColor="#000000"
-                android:textSize="19dp" />
+                android:textSize="19dp"
+                android:fontFamily="@font/appleneom"/>
 
             <CheckBox
                 android:id="@+id/cbWork"
@@ -50,7 +52,8 @@
                 android:layout_height="wrap_content"
                 android:text="업무"
                 android:textColor="#000000"
-                android:textSize="19dp" />
+                android:textSize="19dp"
+                android:fontFamily="@font/appleneom"/>
         </TableRow>
 
         <TableRow>
@@ -62,7 +65,8 @@
                 android:layout_marginBottom="7dp"
                 android:text="게임"
                 android:textColor="#000000"
-                android:textSize="19dp" />
+                android:textSize="19dp"
+                android:fontFamily="@font/appleneom"/>
 
             <CheckBox
                 android:id="@+id/cbMusic"
@@ -70,7 +74,8 @@
                 android:layout_height="wrap_content"
                 android:text="음악"
                 android:textColor="#000000"
-                android:textSize="19dp" />
+                android:textSize="19dp"
+                android:fontFamily="@font/appleneom"/>
         </TableRow>
 
         <TableRow
@@ -84,7 +89,8 @@
                 android:layout_marginBottom="7dp"
                 android:text="미술"
                 android:textColor="#000000"
-                android:textSize="19dp" />
+                android:textSize="19dp"
+                android:fontFamily="@font/appleneom"/>
 
             <CheckBox
                 android:id="@+id/cbExercise"
@@ -92,7 +98,8 @@
                 android:layout_height="wrap_content"
                 android:text="운동(헬스)"
                 android:textColor="#000000"
-                android:textSize="19dp" />
+                android:textSize="19dp"
+                android:fontFamily="@font/appleneom"/>
         </TableRow>
 
         <TableRow>
@@ -104,7 +111,8 @@
                 android:layout_marginBottom="7dp"
                 android:text="기타"
                 android:textColor="#000000"
-                android:textSize="19dp" />
+                android:textSize="19dp"
+                android:fontFamily="@font/appleneom"/>
         </TableRow>
     </TableLayout>
 
@@ -116,6 +124,8 @@
         android:layout_marginTop="30dp"
         android:text="방 제목"
         android:textSize="20dp"
+        android:fontFamily="@font/appleneob"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginLeft="37dp" />
@@ -129,6 +139,7 @@
         android:layout_marginRight="37dp"
         android:background="@drawable/edit_text_shape"
         android:hint="방 제목을 입력하세요"
+        android:fontFamily="@font/appleneom"
         android:padding="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -143,8 +154,10 @@
         android:text="Field"
         android:textColor="#000000"
         android:textSize="21dp"
+        android:fontFamily="@font/appleneob"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView5"
+        android:layout_marginLeft="37dp" />
 
     <TextView
         android:id="@+id/textView10"
@@ -155,8 +168,10 @@
         android:text="인원설정"
         android:textColor="#000000"
         android:textSize="21dp"
+        android:fontFamily="@font/appleneob"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView6"
+        android:layout_marginLeft="37dp" />
 
     <Button
         android:id="@+id/btnPlu"
@@ -165,6 +180,7 @@
         android:layout_height="wrap_content"
         android:text="+"
         android:textSize="30dp"
+        android:fontFamily="@font/appleneoeb"
         app:layout_constraintStart_toEndOf="@+id/peRson"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -175,6 +191,7 @@
         android:layout_height="wrap_content"
         android:text="-"
         android:textSize="30dp"
+        android:fontFamily="@font/appleneoeb"
         app:layout_constraintEnd_toStartOf="@+id/peRson"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -185,8 +202,11 @@
         android:layout_marginTop="15dp"
         android:text="1"
         android:textSize="30dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:fontFamily="@font/appleneob"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <ImageView
