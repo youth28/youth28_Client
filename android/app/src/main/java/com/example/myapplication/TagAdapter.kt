@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class TagAdapter(val context: Context, val list: ArrayList<String>): RecyclerView.Adapter<TagAdapter.Holder>() {
+class TagAdapter(val context: Context, val list: List<String>): RecyclerView.Adapter<TagAdapter.Holder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagAdapter.Holder {
         val view = LayoutInflater.from(context).inflate(R.layout.row_tag, parent, false)
         return Holder(view)
@@ -15,7 +15,7 @@ class TagAdapter(val context: Context, val list: ArrayList<String>): RecyclerVie
 
     override fun onBindViewHolder(holder: TagAdapter.Holder, position: Int) {
         val tag = list[position]
-        holder.tagName.text = tag
+        holder.tagName.text = "#${tag}"
     }
 
     override fun getItemCount(): Int {

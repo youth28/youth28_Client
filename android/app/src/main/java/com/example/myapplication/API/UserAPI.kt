@@ -39,7 +39,7 @@ interface UserAPI {
 
     @POST("room_info")
     fun room_info(
-            @Body room_id: Int
+            @Body room_id: RoomId
     ): Call<RoomMakeDTO>
 
     @POST("room_search")
@@ -49,6 +49,11 @@ interface UserAPI {
 
     @POST("my_room")
     fun my_room(
-            @Body user_id: Int
+            @Body user_id: UserId
+    ): Call<MyRoomsDTO>
+
+    @POST("room_list")
+    fun room_list(
+            @Body user_id: UserId
     ): Call<MyRoomsDTO>
 }

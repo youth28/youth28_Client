@@ -15,14 +15,22 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.API.RetrofitHelper
+import com.example.myapplication.DTO.MyRoomsDTO
+import com.example.myapplication.DTO.UserId
 import com.example.myapplication.MyRoom
 import com.example.myapplication.R
 import com.example.myapplication.RoomAdapter
 import com.example.myapplication.RoomModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_menu.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity: AppCompatActivity() {
+
+    val TAG = "MainActivity"
 
     internal lateinit var preferences: SharedPreferences
     val list: ArrayList<RoomModel> = arrayListOf()
@@ -35,11 +43,34 @@ class MainActivity: AppCompatActivity() {
 
         // region 사이트 메뉴 바 ListView
         var myRoomList = arrayListOf<MyRoom>()
-        for (i: Int in 1..5){
-            myRoomList.add(MyRoom("이건 방이다 ${i}", i))
-        }
-        val myRoomAdapter = MyRoomListAdapter(this, myRoomList)
-        listView.adapter = myRoomAdapter
+        val user_id = UserId(preferences.getString("userNum", "0")!!.toInt())
+        val call = RetrofitHelper.getApiService().my_room(user_id = user_id)
+        call.enqueue(object : Callback<MyRoomsDTO> {
+            override fun onResponse(call: Call<MyRoomsDTO>, response: Response<MyRoomsDTO>) {
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    for (i: Int in 1..result!!.count) {
+                        myRoomList.add(MyRoom(result.room[i - 1].title, result.room[i - 1].room_id))
+                        val myRoomAdapter = MyRoomListAdapter(this@MainActivity, myRoomList)
+                        listView.adapter = myRoomAdapter
+                    }
+                } else {
+                    Log.e(TAG, "사이드 리스트: ${response.message()}")
+                }
+
+            }
+
+            override fun onFailure(call: Call<MyRoomsDTO>, t: Throwable) {
+                Log.e(TAG + "ERR", "통신 안됨: ${t.message}")
+            }
+
+        })
+//        for (i: Int in 1..5){
+//            myRoomList.add(MyRoom("이건 방이다 ${i}", i))
+//        }
+
+
+
         listView.setOnItemClickListener { parent, view, position, id ->
             showToast("roomName: ${myRoomList[position].roomName}, roomId: ${myRoomList[position].roomId}")
             val intent = Intent(this@MainActivity, TalkActivity::class.java)
@@ -66,10 +97,31 @@ class MainActivity: AppCompatActivity() {
         }
         // endregion
 
-        for (i: Int in 1..5) {
-            list.add(RoomModel(i,"title: $i", i+3, arrayListOf("안녕", "헬로","안녕", "헬로","안녕", "헬로","안녕", "헬로"),"img"))
-        }
-        listRecyclerView()
+        val call2 = RetrofitHelper.getApiService().room_list(user_id)
+        call2.enqueue(object : Callback<MyRoomsDTO>{
+            override fun onResponse(call: Call<MyRoomsDTO>, response: Response<MyRoomsDTO>) {
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    for (i: Int in 1..result!!.room.size) {
+                        val field = result.room[i-1].field.substring(0, result.room[i-1].field.length -1 )
+                        val fieldArray = field.split(",")
+                        list.add(RoomModel(result.room[i-1].room_id, result.room[i-1].title, result.room[i-1].maxPeo,
+                                            fieldArray, result.room[i-1].profile))
+                        Log.e(TAG, "RoomModel(room_id=$result.room[i-1].room_id, title='$result.room[i-1].title', maxPeo=$result.room[i-1].maxPeo," +
+                                " field='$fieldArray', profile='$result.room[i-1].profile')")
+
+                        listRecyclerView()
+                    }
+                } else {
+                    Log.e(TAG, "메인 리스트: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<MyRoomsDTO>, t: Throwable) {
+                Log.e(TAG, "통신 안됨: ${t.message}")
+            }
+
+        })
 
         btnMenu.setOnClickListener {
             drawer_layout.openDrawer(GravityCompat.START)
