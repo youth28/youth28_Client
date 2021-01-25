@@ -14,8 +14,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.MyRoom
 import com.example.myapplication.R
+import com.example.myapplication.RoomAdapter
 import com.example.myapplication.RoomModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_menu.*
@@ -23,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_menu.*
 class MainActivity: AppCompatActivity() {
 
     internal lateinit var preferences: SharedPreferences
+    val list: ArrayList<RoomModel> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,9 +62,10 @@ class MainActivity: AppCompatActivity() {
         }
         // endregion
 
-        val data = arrayListOf<Map<RoomModel, ArrayList<String>>>(
-
-        )
+        for (i: Int in 1..5) {
+            list.add(RoomModel(i,"title: $i", i+3, arrayListOf("안녕", "헬로","안녕", "헬로","안녕", "헬로","안녕", "헬로"),"img"))
+        }
+        listRecyclerView()
 
         btnMenu.setOnClickListener {
             drawer_layout.openDrawer(GravityCompat.START)
@@ -76,6 +80,14 @@ class MainActivity: AppCompatActivity() {
             val intent = Intent(this@MainActivity, RoomMakeActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    fun listRecyclerView() {
+        val mAdapter = RoomAdapter(applicationContext, list)
+        recyclerViewRoomList.adapter = mAdapter
+        val layoutManager = LinearLayoutManager(applicationContext)
+        recyclerViewRoomList.layoutManager = layoutManager
+        recyclerViewRoomList.setHasFixedSize(true)
     }
 
     override fun onBackPressed() {

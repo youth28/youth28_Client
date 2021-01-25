@@ -4,7 +4,7 @@ data class RoomModel(
         val room_id : Int,
         val title: String,
         val maxPeo: Int,
-        val field: String,
+        val field: ArrayList<String>,
         val profile: String
 ) {
     override fun toString(): String {

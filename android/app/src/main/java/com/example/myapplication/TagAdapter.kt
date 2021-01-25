@@ -1,28 +1,29 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class TagAdapter(val data: Collection<ArrayList<String>>): RecyclerView.Adapter<TagAdapter.TagViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagAdapter.TagViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.row_tag, null)
-        return TagViewHolder(v)
+class TagAdapter(val context: Context, val list: ArrayList<String>): RecyclerView.Adapter<TagAdapter.Holder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagAdapter.Holder {
+        val view = LayoutInflater.from(context).inflate(R.layout.row_tag, parent, false)
+        return Holder(view)
     }
 
-    override fun onBindViewHolder(holder: TagAdapter.TagViewHolder, position: Int) {
-        val tag = data.toTypedArray().get(position).get(position)
-        holder.tagTitle.text = tag
+    override fun onBindViewHolder(holder: TagAdapter.Holder, position: Int) {
+        val tag = list[position]
+        holder.tagName.text = tag
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        return list.size
     }
 
-    inner class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tagTitle = itemView.findViewById<TextView>(R.id.tvTagName)
+    inner class Holder(itemView:View) : RecyclerView.ViewHolder(itemView) {
+        val tagName = itemView.findViewById<TextView>(R.id.tvTagName)
     }
+
 }
