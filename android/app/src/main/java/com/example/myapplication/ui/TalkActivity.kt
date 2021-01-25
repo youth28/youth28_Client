@@ -1,6 +1,7 @@
 package com.example.myapplication.ui
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -10,17 +11,24 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.API.RetrofitHelper
 import com.example.myapplication.ChatModel
+import com.example.myapplication.DTO.RoomMakeDTO
 import com.example.myapplication.R
 import com.example.myapplication.dialog.VoteDialog
 import com.google.android.material.transition.Hold
 import kotlinx.android.synthetic.main.activity_my_page.*
+import kotlinx.android.synthetic.main.activity_room_info.*
 import kotlinx.android.synthetic.main.activity_talk.*
 import kotlinx.android.synthetic.main.item_my_chat.view.*
 import org.w3c.dom.Text
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class TalkActivity : AppCompatActivity() {
 
@@ -30,15 +38,82 @@ class TalkActivity : AppCompatActivity() {
 
     internal lateinit var preferences: SharedPreferences
 
+    var title = ""
+    var maxPro = 0
+    var field = ""
+    var profile = ""
+    var room_id = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_talk)
+
+        settingUi()
 
         // recyclerView setting
         val layouManager = LinearLayoutManager(this@TalkActivity)
         layouManager.orientation = LinearLayoutManager.HORIZONTAL
         recyclerViewChat.layoutManager = layouManager
         recyclerViewChat.adapter = ChatAdapter()
+
+        btnPlus.setOnClickListener {
+            val intent = Intent(this@TalkActivity, RoomInfoActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    fun settingUi () {
+        val room = 3
+        field = "스터디,헬스,게임,안녕,하세요,이건,다양한,태그,에요,"
+        field = field.substring(0, field.length -1 )
+        Log.e(TAG+ "field", field)
+
+        val arrayList = field.split(",")
+
+        val layouManager = LinearLayoutManager(this@TalkActivity)
+        layouManager.orientation = LinearLayoutManager.HORIZONTAL
+        recyclerViewTagR.layoutManager = layouManager
+        recyclerViewTagR.adapter = MyAdapter(arrayList)
+        val call = RetrofitHelper.getApiService().room_info(room)
+        call.enqueue(object : Callback<RoomMakeDTO> {
+            override fun onResponse(call: Call<RoomMakeDTO>, response: Response<RoomMakeDTO>) {
+                if (response.isSuccessful) {
+                    if (response.code() == 200) {
+                        field = response.body()!!.field
+                        title = response.body()!!.title
+                        profile = response.body()!!.profile
+                        maxPro = response.body()!!.maxPeo
+
+                        tvRoomName.text = title
+
+                        // region checkBox 설정하기
+                        field = "스터디,헬스,게임,안녕,하세요,이건,다양한,태그,에요,"
+                        field = field.substring(0, field.length -1 )
+                        Log.e(TAG+ "field", field)
+
+                        val arrayList = field.split(",")
+
+                        val layouManager = LinearLayoutManager(this@TalkActivity)
+                        layouManager.orientation = LinearLayoutManager.HORIZONTAL
+                        recyclerViewTagR.layoutManager = layouManager
+                        recyclerViewTagR.adapter = MyAdapter(arrayList)
+                        // endregion
+
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<RoomMakeDTO>, t: Throwable) {
+                Log.e(TAG+" Err", "통신안됨: ${t.message}")
+            }
+
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        settingUi()
     }
 
     inner class ChatAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -146,4 +221,29 @@ class TalkActivity : AppCompatActivity() {
         val voteAgreeUser = itemView?.findViewById<TextView>(R.id.tvAgreeUser)
     }
 
+    inner class MyAdapter(val tagList: List<String>) : RecyclerView.Adapter<MyViewHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+            return MyViewHolder(LayoutInflater.from(this@TalkActivity).inflate(R.layout.row_tag, parent, false))
+        }
+
+        override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+            val tag = tagList[position]
+            tag?.let {
+                holder.tvTagName.text = "#${tag}"
+            }
+        }
+
+        override fun getItemCount(): Int {
+            return tagList.size
+        }
+
+    }
+
+    inner class MyViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
+        val tvTagName = itemView.findViewById<TextView>(R.id.tvTagName)
+    }
+
+    fun showToast(str: String) {
+        Toast.makeText(applicationContext, str, Toast.LENGTH_SHORT).show()
+    }
 }

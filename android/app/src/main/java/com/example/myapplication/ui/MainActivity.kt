@@ -42,6 +42,10 @@ class MainActivity: AppCompatActivity() {
         listView.adapter = myRoomAdapter
         listView.setOnItemClickListener { parent, view, position, id ->
             showToast("roomName: ${myRoomList[position].roomName}, roomId: ${myRoomList[position].roomId}")
+            val intent = Intent(this@MainActivity, TalkActivity::class.java)
+            intent.putExtra("roomName", myRoomList[position].roomName)
+            intent.putExtra("roomId", myRoomList[position].roomId)
+            startActivity(intent)
         }
         // endregion
 

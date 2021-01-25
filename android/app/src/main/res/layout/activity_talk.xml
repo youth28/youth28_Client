@@ -6,6 +6,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/imgRoomProfile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+
+
+    <TextView
+        android:id="@+id/tvRoomName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:text="방 이름"
+        android:fontFamily="@font/appleneob"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/imgRoomProfile"
+        app:layout_constraintTop_toTopOf="@+id/imgRoomProfile" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewChat"
@@ -14,7 +38,7 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView9" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -29,7 +53,7 @@
 
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/btnPlus"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginLeft="8dp"
@@ -39,19 +63,20 @@
             app:srcCompat="@drawable/add" />
 
         <EditText
+            android:id="@+id/editMsg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:background="@drawable/round_shape"
-            android:hint="내용을 입력해 주세요."
             android:fontFamily="@font/appleneom"
+            android:hint="내용을 입력해 주세요."
             android:paddingLeft="12dp"
             android:textSize="20sp" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/btnSend"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="8dp"
@@ -62,5 +87,40 @@
 
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTagR"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgRoomProfile"
+        app:layout_constraintEnd_toStartOf="@+id/imgCalendar"
+        app:layout_constraintStart_toEndOf="@+id/imgRoomProfile"
+        app:layout_constraintTop_toBottomOf="@+id/tvRoomName" />
+
+    <ImageView
+        android:id="@+id/imgCalendar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_my_calendar" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgRoomProfile"
+        app:srcCompat="@drawable/line" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
