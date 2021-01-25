@@ -49,6 +49,11 @@ class TalkActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_talk)
 
+        if (intent.hasExtra("roomName")) {
+            title = intent.getStringExtra("roomName").toString()
+            room_id = intent.getIntExtra("roomId", 0)
+        }
+
         settingUi()
 
         // recyclerView setting
@@ -64,7 +69,7 @@ class TalkActivity : AppCompatActivity() {
     }
 
     fun settingUi () {
-        val room = RoomId(2)
+        val room = RoomId(room_id)
 
         val arrayList = field.split(",")
 

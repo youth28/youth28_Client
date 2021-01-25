@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.dialog.JoinDialog
 
 class RoomAdapter(val context: Context, val list: ArrayList<RoomModel>): RecyclerView.Adapter<RoomAdapter.Holder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomAdapter.Holder {
@@ -25,6 +27,12 @@ class RoomAdapter(val context: Context, val list: ArrayList<RoomModel>): Recycle
         layoutManager.orientation = LinearLayoutManager.HORIZONTAL
         holder.recyclerView.layoutManager = layoutManager
         holder.recyclerView.setHasFixedSize(true)
+
+        holder.itemView.setOnClickListener {
+            val dialog = JoinDialog.newInstance("${list[position].title}에 참여하시겠습니까?", list[position].room_id)
+            val manager = (context as AppCompatActivity).supportFragmentManager
+            dialog.show(manager, "dialog")
+        }
     }
 
     override fun getItemCount(): Int {
