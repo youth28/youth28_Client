@@ -1,9 +1,7 @@
 package com.example.myapplication.API
 
 import com.example.myapplication.DTO.*
-import com.example.myapplication.MyRoom
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -45,7 +43,7 @@ interface UserAPI {
 
     @POST("room_search")
     fun room_search(
-            @Body field: String
+            @Body field: FieldDTO
     ): Call<RoomsDTO>
 
     @POST("my_room")
@@ -62,4 +60,14 @@ interface UserAPI {
     fun room_join(
             @Body joinRoomDTO: JoinRoomDTO
     ): Call<JoinRoomDTO>
+
+    @POST("schedule_write")
+    fun schedule_write(
+            @Body scheduleWDTO: ScheduleWDTO
+    ): Call<ScheduleWDTO>
+
+    @POST("schedule_read")
+    fun schedule_read(
+            @Body user_id: UserId
+    ): Call<ScheduleRDTO>
 }
