@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.R
@@ -25,8 +24,8 @@ class VoteDialog : DialogFragment(){
     override fun onStart() {
         super.onStart()
         // 다이얼로그의 넓이와 높이 지정
-        val width = resources.getDimensionPixelSize(R.dimen.dialog_width)
-        val height = resources.getDimensionPixelSize(R.dimen.dialog_height)
+        val width = resources.getDimensionPixelSize(R.dimen.vote_dialog_width)
+        val height = resources.getDimensionPixelSize(R.dimen.vote_dialog_height)
         dialog?.window?.setLayout(width, height)
         //dialog?.window?.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
     }
