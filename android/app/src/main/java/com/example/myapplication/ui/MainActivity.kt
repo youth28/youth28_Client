@@ -105,10 +105,11 @@ class MainActivity: AppCompatActivity() {
                     for (i: Int in 1..result!!.room.size) {
                         val field = result.room[i-1].field.substring(0, result.room[i-1].field.length -1 )
                         val fieldArray = field.split(",")
-                        list.add(RoomModel(result.room[i-1].room_id, result.room[i-1].title, result.room[i-1].maxPeo,
-                                            fieldArray, result.room[i-1].profile))
-                        Log.e(TAG, "RoomModel(room_id=$result.room[i-1].room_id, title='$result.room[i-1].title', maxPeo=$result.room[i-1].maxPeo," +
-                                " field='$fieldArray', profile='$result.room[i-1].profile')")
+                        val info = result.room[i-1]
+                        list.add(RoomModel(info.room_id, info.title, info.maxPeo,
+                                            fieldArray, info.profile))
+                        Log.e(TAG, "RoomModel(room_id=${info.room_id}, title='${info.title}', maxPeo=${info.maxPeo}," +
+                                " field='$fieldArray', profile='${info.profile}')")
 
                         listRecyclerView()
                     }
