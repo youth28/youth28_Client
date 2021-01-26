@@ -82,11 +82,9 @@ class CalendarActivity: AppCompatActivity() {
 
         fabScheduleWrite.setOnClickListener {
             val dialog = ScheduleDialog()
-
             dialog.sYear = sYear
             dialog.sMonth = sMonth
             dialog.sDay = sDay
-            dialog.listener = {chekRB -> }
             dialog.show(supportFragmentManager, "dialog")
         }
     }

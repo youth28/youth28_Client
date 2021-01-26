@@ -1,8 +1,6 @@
 package com.example.myapplication.dialog
 
 import android.app.Activity
-import android.app.AlertDialog
-import android.app.Dialog
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -12,22 +10,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.API.RetrofitHelper
-import com.example.myapplication.DTO.JoinRoomDTO
 import com.example.myapplication.DTO.ScheduleWDTO
-import com.example.myapplication.DTO.UserId
 import com.example.myapplication.R
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.dialog_join.*
-import kotlinx.android.synthetic.main.dialog_join.btnYes
-import kotlinx.android.synthetic.main.dialog_join.tvScheduleDialog
-import kotlinx.android.synthetic.main.dialog_join.view.*
-import kotlinx.android.synthetic.main.dialog_join.view.btnNo
-import kotlinx.android.synthetic.main.dialog_join.view.btnYes
-import kotlinx.android.synthetic.main.dialog_join.view.tvScheduleDialog
 import kotlinx.android.synthetic.main.dialog_schedule.*
 import kotlinx.android.synthetic.main.dialog_schedule.view.*
-import kotlinx.android.synthetic.main.dialog_vote.*
-import kotlinx.android.synthetic.main.dialog_vote.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,7 +23,6 @@ class ScheduleDialog(): DialogFragment() {
     val TAG = "ScheduleD"
 
     internal lateinit var preferences: SharedPreferences
-    var listener: (String) -> Unit = {checkRB -> }
 
     var sYear = 0
     var sMonth = 0
@@ -46,8 +31,8 @@ class ScheduleDialog(): DialogFragment() {
     override fun onStart() {
         super.onStart()
         // 다이얼로그의 넓이와 높이 지정
-        val width = resources.getDimensionPixelSize(R.dimen.dialog_w)
-        val height = resources.getDimensionPixelSize(R.dimen.dialog_h)
+        val width = resources.getDimensionPixelSize(R.dimen.schedule_dialog_width)
+        val height = resources.getDimensionPixelSize(R.dimen.schedule_dialog_height)
         dialog?.window?.setLayout(width, height)
         //dialog?.window?.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
     }
@@ -88,7 +73,6 @@ class ScheduleDialog(): DialogFragment() {
                     }
 
                 })
-                listener.invoke("checkRB")
                 dismiss()
             }
         }
