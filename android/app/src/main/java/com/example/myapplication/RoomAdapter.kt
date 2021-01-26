@@ -29,7 +29,9 @@ class RoomAdapter(val context: Context, val list: ArrayList<RoomModel>): Recycle
         holder.recyclerView.setHasFixedSize(true)
 
         holder.itemView.setOnClickListener {
-            val dialog = JoinDialog.newInstance("${list[position].title}에 참여하시겠습니까?", list[position].room_id)
+            val dialog = JoinDialog()
+            dialog.room_id = list[position].room_id
+            dialog.mMainMsg = "${list[position].title}에 참가하시겠습니까?"
             val manager = (context as AppCompatActivity).supportFragmentManager
             dialog.show(manager, "dialog")
         }
