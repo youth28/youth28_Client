@@ -19,20 +19,21 @@
         <activity android:name=".ui.RoomFindActivity" />
         <activity android:name=".ui.RoomMakeActivity" />
         <activity android:name=".ui.MyPageActivity" />
-        <activity android:name=".ui.CalenderActivity" />
         <activity android:name=".ui.SplashActivity" >
         </activity>
         <activity android:name=".ui.SignUpActivity" />
         <activity android:name=".ui.LoginActivity">
         </activity>
-        <activity android:name=".ui.MainActivity" >
+        <activity android:name=".ui.TalkActivity" />
+        <activity android:name=".ui.CalendarActivity"  >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.TalkActivity" />
+        <activity android:name=".ui.MainActivity" >
+        </activity>
     </application>
 
 </manifest>
