@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.API.RetrofitHelper
 import com.example.myapplication.DTO.UserDTO
 import com.example.myapplication.R
+import kotlinx.android.synthetic.main.activity_room_make.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.activity_sign_up.editEmail
 import kotlinx.android.synthetic.main.activity_sign_up.editPW
@@ -24,8 +25,9 @@ class SignUpActivity: AppCompatActivity() {
     var strPW =""
     var strRePW = ""
     var strName = ""
+    var strField = ""
 
-    var isAbleId = false
+    var isAbleId = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,16 +79,26 @@ class SignUpActivity: AppCompatActivity() {
                 } else tvErrRePwS.visibility = View.GONE
 
                 // 비밀번호 형식 확인
-                if (!Pattern.matches("^(?=.*\\\\d)(?=.*[~`!@#\$%\\\\^&*()-])(?=.*[a-zA-Z]).{8,16}\$", strPW)) {
-                    tvErrPwS.text = "비밀번호 형식은 대소문자 구분, 숫자, 특수문자가 포함된 8~16글자 입니다."
+                if (!Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*#?&]).{6,16}.\$", strPW)) {
+                    tvErrPwS.text = "비밀번호 형식은 대소문자 구분, 숫자, 특수문자가 포함된 6~16글자 입니다."
                     tvErrPwS.visibility = View.VISIBLE
                 } else tvErrPwS.visibility = View.GONE
 
                 // 모두 통과하면
-                if(isAbleId && strPW == strRePW) {
+                if(isAbleId && strPW == strRePW && Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*#?&]).{6,16}.\$", strPW)) {
                     tvErrIdS.visibility = View.GONE
                     tvErrPwS.visibility = View.GONE
                     tvErrRePwS.visibility = View.GONE
+
+                    strField = ""
+
+                    if (fStudy.isChecked) strField += "${fStudy.text},"
+                    if (fWork.isChecked) strField += "${fWork.text},"
+                    if (fGame.isChecked) strField += "${fGame.text},"
+                    if (fMusic.isChecked) strField += "${fMusic.text},"
+                    if (fArt.isChecked) strField += "${fArt.text},"
+                    if (fExercise.isChecked) strField += "${fExercise.text},"
+                    if (fEtc.isChecked) strField += "${fEtc.text},"
 
                     // 회원가입 하기
                     val user = getData()
@@ -160,7 +172,7 @@ class SignUpActivity: AppCompatActivity() {
     }
 
     fun getData(): UserDTO {
-        val data = UserDTO(strId, strPW, strName)
+        val data = UserDTO(strId, strPW, strName, strField)
         return data
     }
 

@@ -11,12 +11,15 @@ class UserDTO {
     private var name = ""
     @SerializedName("profile")
     private var profile = ""
+    @SerializedName("field")
+    private var field = ""
 
     // 회원가입
-    constructor(email: String, pwd: String, name: String) {
+    constructor(email: String, pwd: String, name: String, field: String) {
         this.email = email
         this.pwd = pwd
         this.name = name
+        this.field = field
     }
 
     // 로그인
@@ -31,7 +34,7 @@ class UserDTO {
     }
 
     override fun toString(): String {
-        return "UserDTO(email='$email', pwd='$pwd', name='$name', profile='$profile')"
+        return "UserDTO(email='$email', pwd='$pwd', name='$name', profile='$profile', field='$field')"
     }
 
 }
