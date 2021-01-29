@@ -2,12 +2,14 @@ package com.example.myapplication.dialog
 
 import android.app.Activity
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.API.RetrofitHelper
 import com.example.myapplication.DTO.ScheduleWDTO
@@ -19,6 +21,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ScheduleDialog(): DialogFragment() {
+    // 다이얼로그에 버튼이 눌리면
+    var listener: (String, String) -> Unit = {date, content -> }
 
     val TAG = "ScheduleD"
 
@@ -27,6 +31,9 @@ class ScheduleDialog(): DialogFragment() {
     var sYear = 0
     var sMonth = 0
     var sDay = 0
+
+    var sHour = 0
+    var sMinute = 0
 
     override fun onStart() {
         super.onStart()
@@ -41,20 +48,25 @@ class ScheduleDialog(): DialogFragment() {
         return inflater.inflate(R.layout.dialog_schedule, container, false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         tvScheduleDialog.text = "${sYear}년 ${sMonth}월 ${sDay}일"
 
-        val content: String = view.editContent.text.toString()
-
         var date = "${sYear}-${sMonth}-${sDay}-"
+        var time = "${timePicker.hour}-${timePicker.minute}"
         timePicker.setOnTimeChangedListener { view, hourOfDay, minute ->
-            date+= "${hourOfDay}-${minute}"
+            time = "${hourOfDay}-${minute}"
+            sHour = hourOfDay
+            sMinute = minute
         }
 
         view.btnYes.setOnClickListener {
-            if (content == "") {
+            if (view.editContent.text.toString().length == 0) {
                 showToast("내용을 입력하세요")
             } else {
+                val content: String = view.editContent.text.toString()
+                date += time
+                listener.invoke("${sHour}:${sMinute}", content)
 
                 preferences = requireActivity().getSharedPreferences("user", Activity.MODE_PRIVATE)
                 val writer = ScheduleWDTO(content, date, preferences.getString("userNum", "0")!!.toInt())
@@ -63,6 +75,7 @@ class ScheduleDialog(): DialogFragment() {
                     override fun onResponse(call: Call<ScheduleWDTO>, response: Response<ScheduleWDTO>) {
                         if (response.isSuccessful) {
                             Log.e("성공", response.message())
+                            listener.invoke(time, content)
                         } else {
                             Log.e("실패", response.message())
                         }
