@@ -49,7 +49,10 @@ class JoinDialog: DialogFragment() {
             call.enqueue(object : Callback<JoinRoomDTO> {
                 override fun onResponse(call: Call<JoinRoomDTO>, response: Response<JoinRoomDTO>) {
                     if (response.isSuccessful) {
-                        Log.e("성공", response.message())
+                        when (response.code()) {
+                            200 -> Log.e(TAG, "${mMainMsg}에 참여하셨습니다.")
+                            204 -> Log.e(TAG, "이미 참여된 방입니다.")
+                        }
                     } else {
                         Log.e("실패", response.message())
                     }
