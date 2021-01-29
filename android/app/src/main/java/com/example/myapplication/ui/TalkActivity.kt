@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.API.RetrofitHelper
 import com.example.myapplication.ChatModel
 import com.example.myapplication.DTO.RoomId
+import com.example.myapplication.DTO.RoomInfoDTO
 import com.example.myapplication.DTO.RoomMakeDTO
 import com.example.myapplication.R
 import com.example.myapplication.dialog.VoteDialog
@@ -64,6 +65,7 @@ class TalkActivity : AppCompatActivity() {
 
         btnPlus.setOnClickListener {
             val intent = Intent(this@TalkActivity, RoomInfoActivity::class.java)
+            intent.putExtra("roomId", room_id)
             startActivity(intent)
         }
 
@@ -83,8 +85,8 @@ class TalkActivity : AppCompatActivity() {
         recyclerViewTagR.layoutManager = layouManager
         recyclerViewTagR.adapter = MyAdapter(arrayList)
         val call = RetrofitHelper.getApiService().room_info(room)
-        call.enqueue(object : Callback<RoomMakeDTO> {
-            override fun onResponse(call: Call<RoomMakeDTO>, response: Response<RoomMakeDTO>) {
+        call.enqueue(object : Callback<RoomInfoDTO> {
+            override fun onResponse(call: Call<RoomInfoDTO>, response: Response<RoomInfoDTO>) {
                 if (response.isSuccessful) {
                     if (response.code() == 200) {
                         Log.e(TAG, response.body().toString())
@@ -111,7 +113,7 @@ class TalkActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<RoomMakeDTO>, t: Throwable) {
+            override fun onFailure(call: Call<RoomInfoDTO>, t: Throwable) {
                 Log.e(TAG+" Err", "통신안됨: ${t.message}")
             }
 

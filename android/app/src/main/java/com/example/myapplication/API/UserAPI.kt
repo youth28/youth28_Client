@@ -39,7 +39,7 @@ interface UserAPI {
     @POST("room_info")
     fun room_info(
             @Body room_id: RoomId
-    ): Call<RoomMakeDTO>
+    ): Call<RoomInfoDTO>
 
     @POST("room_search")
     fun room_search(

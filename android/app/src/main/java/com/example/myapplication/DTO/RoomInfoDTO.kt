@@ -1,13 +1,13 @@
 package com.example.myapplication.DTO
 
-data class RoomMakeDTO(
+data class RoomInfoDTO (
         val title : String,
         val maxPeo : Int,
         val field : String,
         val profile : String,
-        val user_id: Int
-) {
+        val room_manager: Int
+        ) {
     override fun toString(): String {
-        return "RoomMakeDTO(title='$title', maxPeo=$maxPeo, field='$field', profile='$profile', user_id='$user_id')"
+        return "RoomInfoDTO(title='$title', maxPeo=$maxPeo, field='$field', profile='$profile', room_manager=$room_manager)"
     }
 }

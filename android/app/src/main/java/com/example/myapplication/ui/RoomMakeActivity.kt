@@ -1,5 +1,7 @@
 package com.example.myapplication.ui
 
+import android.app.Activity
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -16,6 +18,8 @@ class RoomMakeActivity: AppCompatActivity() {
 
     val TAG = "RoomMakeActivity"
 
+    internal lateinit var preferences: SharedPreferences
+
     var title = ""
     var maxPro = 0
     var field = ""
@@ -24,6 +28,8 @@ class RoomMakeActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room_make)
+
+        preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
 
         btnSub.setOnClickListener {
             peRson.text = "${Integer.parseInt(peRson.text.toString()) - 1}"
@@ -59,7 +65,7 @@ class RoomMakeActivity: AppCompatActivity() {
                             showToast("성공적으로 방을 만들었습니다. 사이드 메뉴에서 확인해주세요")
                             finish()
                         }
-                    }
+                    } else Log.e(TAG, "RoomMake: ${response.message()}")
                 }
 
                 override fun onFailure(call: Call<RoomMakeDTO>, t: Throwable) {
@@ -74,7 +80,7 @@ class RoomMakeActivity: AppCompatActivity() {
     }
 
     fun getData(): RoomMakeDTO {
-        val data = RoomMakeDTO(title, maxPro, field, profile)
+        val data = RoomMakeDTO(title, maxPro, field, profile, preferences.getString("userNum", "0")!!.toInt())
         return data
     }
 
