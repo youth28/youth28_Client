@@ -54,6 +54,9 @@ class ScheduleDialog(): DialogFragment() {
 
         var date = "${sYear}-${sMonth}-${sDay}-"
         var time = "${timePicker.hour}-${timePicker.minute}"
+        sHour = timePicker.hour
+        sMinute = timePicker.minute
+        
         timePicker.setOnTimeChangedListener { view, hourOfDay, minute ->
             time = "${hourOfDay}-${minute}"
             sHour = hourOfDay

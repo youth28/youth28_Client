@@ -56,7 +56,7 @@ class CalendarActivity: AppCompatActivity() {
         var date = sdf.parse(dateStr)
         var longDate = date.time
 
-        tvDate.text = DateFormat.format("dd", Date(System.currentTimeMillis()))
+        tvDate.text = DateFormat.format("dd.EE", Date(System.currentTimeMillis()))
         tvTopDate.text = DateFormat.format("yyyy년 MM월", Date(System.currentTimeMillis()))
         event = calendarView2.getEvents(Date(System.currentTimeMillis()))
 
@@ -110,7 +110,7 @@ class CalendarActivity: AppCompatActivity() {
             dialog.sDay = sDay.toInt()
 
             dialog.listener = {date, content ->
-                val ev = Event(Color.MAGENTA, sdf.parse("$sYear-$sMonth-$sDay").time, ScheduleModel(content, date))
+                val ev = Event(Color.LTGRAY, sdf.parse("$sYear-$sMonth-$sDay").time, ScheduleModel(content, date))
                 calendarView2.addEvent(ev)
                 Log.e("TAG", "등록했음: ${date}, ${content}")
             }
