@@ -34,6 +34,7 @@ class MainActivity: AppCompatActivity() {
 
     internal lateinit var preferences: SharedPreferences
     val list: ArrayList<RoomModel> = arrayListOf()
+    var myRoomList = arrayListOf<MyRoom>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +43,13 @@ class MainActivity: AppCompatActivity() {
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
 
         // region 사이트 메뉴 바 ListView
-        var myRoomList = arrayListOf<MyRoom>()
+
         val user_id = UserId(preferences.getString("userNum", "0")!!.toInt())
+
+        listRecyclerView()
+        myRoomListView()
+
+        Log.e("user_id", user_id.toString())
         val call = RetrofitHelper.getApiService().my_room(user_id = user_id)
         call.enqueue(object : Callback<MyRoomsDTO> {
             override fun onResponse(call: Call<MyRoomsDTO>, response: Response<MyRoomsDTO>) {
@@ -51,8 +57,7 @@ class MainActivity: AppCompatActivity() {
                     val result = response.body()
                     for (i: Int in 1..result!!.count) {
                         myRoomList.add(MyRoom(result.room[i - 1].title, result.room[i - 1].room_id))
-                        val myRoomAdapter = MyRoomListAdapter(this@MainActivity, myRoomList)
-                        listView.adapter = myRoomAdapter
+                        myRoomListView()
                     }
                 } else {
                     Log.e(TAG, "사이드 리스트: ${response.message()}")
@@ -126,6 +131,7 @@ class MainActivity: AppCompatActivity() {
 
         btnMenu.setOnClickListener {
             drawer_layout.openDrawer(GravityCompat.START)
+            myRoomListView()
         }
 
         btnSearch.setOnClickListener {
@@ -140,11 +146,17 @@ class MainActivity: AppCompatActivity() {
     }
 
     fun listRecyclerView() {
-        val mAdapter = RoomAdapter(applicationContext, list)
+        val mAdapter = RoomAdapter(this@MainActivity, list)
         recyclerViewRoomList.adapter = mAdapter
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerViewRoomList.layoutManager = layoutManager
         recyclerViewRoomList.setHasFixedSize(true)
+    }
+
+    fun myRoomListView() {
+        val myRoomAdapter = MyRoomListAdapter(this@MainActivity, myRoomList)
+        listView.adapter = myRoomAdapter
+        myRoomAdapter.notifyDataSetChanged()
     }
 
     override fun onBackPressed() {
