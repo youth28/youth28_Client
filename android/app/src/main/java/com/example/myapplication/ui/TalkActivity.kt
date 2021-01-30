@@ -64,7 +64,7 @@ class TalkActivity : AppCompatActivity() {
         recyclerViewChat.adapter = ChatAdapter()
 
         btnPlus.setOnClickListener {
-            val intent = Intent(this@TalkActivity, RoomInfoActivity::class.java)
+            val intent = Intent(this@TalkActivity, RoomMenuActivity::class.java)
             intent.putExtra("roomId", room_id)
             startActivity(intent)
         }
