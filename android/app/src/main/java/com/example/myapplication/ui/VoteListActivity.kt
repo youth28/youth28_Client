@@ -2,10 +2,12 @@ package com.example.myapplication.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.DTO.VoteDTO
@@ -50,6 +52,10 @@ class VoteListActivity : AppCompatActivity() {
                 holder.tvVoteTitle.text = vote.title
                 holder.tvVoteDate.text = vote.date
             }
+
+            holder.itemView.setOnClickListener {
+                Log.e(TAG, vote.title)
+            }
         }
 
         override fun getItemCount(): Int {
@@ -61,5 +67,9 @@ class VoteListActivity : AppCompatActivity() {
     inner class MyViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
         val tvVoteTitle = itemView.findViewById<TextView>(R.id.tvVoteTitle)
         val tvVoteDate = itemView.findViewById<TextView>(R.id.tvVoteDate)
+    }
+
+    fun showToast(str: String) {
+        Toast.makeText(applicationContext, str, Toast.LENGTH_SHORT).show()
     }
 }
