@@ -31,11 +31,13 @@ class LoginActivity: AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
-        strId = preferences.getString("userId", null).toString()
-        strPW = preferences.getString("userPW", null).toString()
+        strId = preferences.getString("userId", "null").toString()
+        strPW = preferences.getString("userPW", "null").toString()
+
+        Log.e(TAG, "$strId, $strPW")
 
         // strId, strPw 값이 null이 아니라면 자동 로그인 하기
-        if (strId !=null || strPW !=null){
+        if (strId !="null" && strPW !="null"){
             val user = getData()
             Log.e(TAG, "$strId  $strPW")
             val call = RetrofitHelper.getApiService().login(user)
