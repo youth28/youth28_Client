@@ -31,7 +31,7 @@ class RoomAdapter(val context: Context, val list: ArrayList<RoomModel>): Recycle
         holder.itemView.setOnClickListener {
             val dialog = JoinDialog()
             dialog.room_id = list[position].room_id
-            dialog.mMainMsg = "${list[position].title}에 참가하시겠습니까?"
+            dialog.mMainMsg = "${list[position].title}"
             val manager = (context as AppCompatActivity).supportFragmentManager
             dialog.show(manager, "dialog")
         }

@@ -41,7 +41,7 @@ class JoinDialog: DialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view.tvJoinDialog.text = mMainMsg
+        view.tvJoinDialog.text = "${mMainMsg}에 참여하시겠습니까?"
         view.btnYes.setOnClickListener {
             preferences = requireActivity().getSharedPreferences("user", Activity.MODE_PRIVATE)
             val join = JoinRoomDTO(preferences.getString("userNum", "0")!!.toInt(), room_id)
