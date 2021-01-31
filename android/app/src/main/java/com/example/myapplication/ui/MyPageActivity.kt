@@ -31,8 +31,7 @@ class MyPageActivity : AppCompatActivity() {
 
     val tagList = mutableListOf<String>()
 
-    var strName = ""
-    var strEmail = ""
+    var strField = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +49,7 @@ class MyPageActivity : AppCompatActivity() {
 
         btnModify.setOnClickListener {
             val intent = Intent(this@MyPageActivity, ModifyActivity::class.java)
+            intent.putExtra("field", strField)
             startActivity(intent)
         }
 
@@ -62,6 +62,7 @@ class MyPageActivity : AppCompatActivity() {
             override fun onResponse(call: Call<UserInfoDTO>, response: Response<UserInfoDTO>) {
                 if (response.isSuccessful) {
                     val field = response.body()!!.field
+                    strField = field
                     val arrField = field.split(",")
                     for (itme in arrField) {
                         tagList.add("#${itme}")

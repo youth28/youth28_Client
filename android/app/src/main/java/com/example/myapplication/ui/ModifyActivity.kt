@@ -10,6 +10,11 @@ import com.example.myapplication.API.RetrofitHelper
 import com.example.myapplication.DTO.UserModify
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.activity_modify.*
+import kotlinx.android.synthetic.main.activity_modify.editEmail
+import kotlinx.android.synthetic.main.activity_modify.editName
+import kotlinx.android.synthetic.main.activity_modify.editPW
+import kotlinx.android.synthetic.main.activity_room_modify.*
+import kotlinx.android.synthetic.main.activity_sign_up.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,6 +30,7 @@ class ModifyActivity: AppCompatActivity() {
     var strPW = ""
     var strEmail = ""
     var imgProfile = "ex"
+    var strField = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,14 +40,30 @@ class ModifyActivity: AppCompatActivity() {
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
         editName.setText(preferences.getString("userName", ""))
 
+        if (intent.hasExtra("field")) {
+            strField = intent.getStringExtra("field").toString()
+            val arrayList = strField.split(",")
+            for (value in arrayList) {
+                when (value) {
+                    "스터디" -> mStudy.isChecked = true
+                    "게임" -> mGame.isChecked = true
+                    "업무" -> mWork.isChecked = true
+                    "음악" -> mMusic.isChecked = true
+                    "미술" -> mArt.isChecked = true
+                    "운동(헬스)" -> mExercise.isChecked = true
+                    "기타" -> mEtc.isChecked = true
+                }
+            }
+        }
+
         btnSave.setOnClickListener {
 
             strName = editName.text.toString()
             strPW = editPW.text.toString()
-            strEmail = editEmail.toString()
+            strEmail = editEmail.text.toString()
             imgProfile = preferences.getString("userProfile", "").toString()
             user_id = preferences.getString("userNum", "0")!!.toInt()
-
+            strField = ""
 
             if (strName == "") {
                 showToast("이름을 입력해주세요")
@@ -58,6 +80,19 @@ class ModifyActivity: AppCompatActivity() {
                 }
 
                 if (preferences.getString("userId", "") == strEmail && preferences.getString("userPW", "") == strPW) {
+
+                    if (mStudy.isChecked) strField += "${mStudy.text},"
+                    if (mWork.isChecked) strField += "${mWork.text},"
+                    if (mGame.isChecked) strField += "${mGame.text},"
+                    if (mMusic.isChecked) strField += "${mMusic.text},"
+                    if (mArt.isChecked) strField += "${mArt.text},"
+                    if (mExercise.isChecked) strField += "${mExercise.text},"
+                    if (mEtc.isChecked) strField += "${mEtc.text},"
+
+                    if(strField.length >0) {
+                        strField = strField.substring(0, strField.length - 1)
+                    }
+                    
                     val user = getData()
                     val call = RetrofitHelper.getApiService().modify(user)
                     call.enqueue(object : Callback<UserModify>{
@@ -70,9 +105,8 @@ class ModifyActivity: AppCompatActivity() {
                                     showToast("수정되었습니다.")
                                     finish()
                                 }
-                            }
+                            } else Log.e(TAG, response.message())
                         }
-
                         override fun onFailure(call: Call<UserModify>, t: Throwable) {
                             Log.e(TAG, "통신안됨: ${t.message}")
                         }
@@ -85,7 +119,7 @@ class ModifyActivity: AppCompatActivity() {
     }
 
     fun getData(): UserModify {
-        val data = UserModify(user_id, strName, imgProfile)
+        val data = UserModify(user_id, strName, imgProfile, strField)
         return data
     }
 
