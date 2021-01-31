@@ -138,7 +138,11 @@ class CalendarActivity: AppCompatActivity() {
                         200 -> {
                             val result = response.body()!!.schedule
                             for (i: Int in 1..result.size) {
-                                val ev = Event(Color.MAGENTA, sdf.parse(result[i-1].date).time, ScheduleModel(result[i-1].content, result[i-1].date) )
+                                val content = result[i-1].content
+                                val rDate = result[i-1].date
+                                val arrDate = rDate.split("-")
+                                val date = "${arrDate[3]}:${arrDate[4]}"
+                                val ev = Event(Color.MAGENTA, sdf.parse(result[i - 1].date).time, ScheduleModel(content, date))
                                 calendarView2.addEvent(ev)
                             }
                             listRecyclerView()
@@ -147,11 +151,11 @@ class CalendarActivity: AppCompatActivity() {
                             Log.e(TAG, "저장된 스케줄이 없습니다.")
                         }
                     }
-                } else Log.e(TAG+"ERR" , "schedule_read, ERR: ${response.message()}")
+                } else Log.e(TAG + "ERR", "schedule_read, ERR: ${response.message()}")
             }
 
             override fun onFailure(call: Call<ScheduleRDTO>, t: Throwable) {
-                Log.e(TAG+"ERR", "통신안됨: ${t.message}")
+                Log.e(TAG + "ERR", "통신안됨: ${t.message}")
             }
 
         })
@@ -182,7 +186,6 @@ class CalendarActivity: AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        readSchedule()
         listRecyclerView()
     }
 
