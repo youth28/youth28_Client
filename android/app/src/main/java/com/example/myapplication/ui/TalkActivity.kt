@@ -19,15 +19,11 @@ import com.example.myapplication.API.RetrofitHelper
 import com.example.myapplication.ChatModel
 import com.example.myapplication.DTO.RoomId
 import com.example.myapplication.DTO.RoomInfoDTO
-import com.example.myapplication.DTO.RoomMakeDTO
 import com.example.myapplication.R
 import com.example.myapplication.dialog.VoteDialog
-import com.google.android.material.transition.Hold
-import kotlinx.android.synthetic.main.activity_my_page.*
-import kotlinx.android.synthetic.main.activity_room_info.*
 import kotlinx.android.synthetic.main.activity_talk.*
 import kotlinx.android.synthetic.main.item_my_chat.view.*
-import org.w3c.dom.Text
+import kotlinx.android.synthetic.main.item_your_vote.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -164,7 +160,7 @@ class TalkActivity : AppCompatActivity() {
                 (holder as Holder3).voteAgreeUser?.text = ""
                 (holder as Holder3).btnVote?.setOnClickListener {
                     // 다이얼로그 보이기
-                    imgProfile.setOnClickListener {
+                    btnVote.setOnClickListener {
                         val dialog = VoteDialog()
 
                         dialog.title = "오늘 뭐하지?"
