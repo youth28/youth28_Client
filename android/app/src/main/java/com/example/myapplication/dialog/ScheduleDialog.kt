@@ -69,7 +69,6 @@ class ScheduleDialog(): DialogFragment() {
             } else {
                 val content: String = view.editContent.text.toString()
                 date += time
-                listener.invoke("${sHour}:${sMinute}", content)
 
                 preferences = requireActivity().getSharedPreferences("user", Activity.MODE_PRIVATE)
                 val writer = ScheduleWDTO(content, date, preferences.getString("userNum", "0")!!.toInt())
@@ -78,7 +77,7 @@ class ScheduleDialog(): DialogFragment() {
                     override fun onResponse(call: Call<ScheduleWDTO>, response: Response<ScheduleWDTO>) {
                         if (response.isSuccessful) {
                             Log.e("성공", response.message())
-                            listener.invoke(time, content)
+                            listener.invoke("${sHour}:${sMinute}", content)
                         } else {
                             Log.e("실패", response.message())
                         }

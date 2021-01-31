@@ -43,7 +43,7 @@ interface UserAPI {
 
     @POST("room_search")
     fun room_search(
-            @Body field: FieldDTO
+            @Body field: RoomNameDTO
     ): Call<RoomsDTO>
 
     @POST("my_room")

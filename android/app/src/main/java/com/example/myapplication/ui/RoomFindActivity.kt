@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.API.RetrofitHelper
 import com.example.myapplication.DTO.FieldDTO
+import com.example.myapplication.DTO.RoomNameDTO
 import com.example.myapplication.DTO.RoomsDTO
 import com.example.myapplication.R
 import com.example.myapplication.RoomAdapter
@@ -31,6 +32,8 @@ class RoomFindActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room_find)
+
+        listRecyclerView()
 
         val searchList: ArrayList<String> = arrayListOf(
                 "스터디", "업무", "게임", "음악", "미술", "운동(헬스)", "기타"
@@ -54,12 +57,14 @@ class RoomFindActivity : AppCompatActivity() {
 
         btnSearch.setOnClickListener {
             key = autoTVRoomFind.text.toString()
+            Log.e(TAG, key)
 
             if (key == "") {
                 showToast("방 제목을 입력해주세요.")
             } else {
-                val field = FieldDTO(key)
-                val call = RetrofitHelper.getApiService().room_search(field)
+                val roomName = RoomNameDTO(key)
+                Log.e(TAG, roomName.toString())
+                val call = RetrofitHelper.getApiService().room_search(roomName)
                 call.enqueue(object : Callback<RoomsDTO> {
                     override fun onResponse(call: Call<RoomsDTO>, response: Response<RoomsDTO>) {
                         if(response.isSuccessful) {
@@ -96,10 +101,10 @@ class RoomFindActivity : AppCompatActivity() {
 
     fun listRecyclerView() {
         val mAdapter = RoomAdapter(applicationContext, list)
-        recyclerViewRoomList.adapter = mAdapter
+        recyclerViewRoomFind.adapter = mAdapter
         val layoutManager = LinearLayoutManager(applicationContext)
-        recyclerViewRoomList.layoutManager = layoutManager
-        recyclerViewRoomList.setHasFixedSize(true)
+        recyclerViewRoomFind.layoutManager = layoutManager
+        recyclerViewRoomFind.setHasFixedSize(true)
     }
 
     fun showToast(str: String) {
