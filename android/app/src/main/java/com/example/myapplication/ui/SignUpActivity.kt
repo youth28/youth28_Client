@@ -100,6 +100,10 @@ class SignUpActivity: AppCompatActivity() {
                     if (fExercise.isChecked) strField += "${fExercise.text},"
                     if (fEtc.isChecked) strField += "${fEtc.text},"
 
+                    if(strField.length >0) {
+                        strField = strField.substring(0, strField.length - 1)
+                    }
+
                     // 회원가입 하기
                     val user = getData()
                     Log.e(TAG, user.toString())
