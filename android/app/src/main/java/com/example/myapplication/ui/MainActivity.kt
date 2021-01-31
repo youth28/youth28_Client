@@ -34,6 +34,7 @@ class MainActivity: AppCompatActivity() {
 
     internal lateinit var preferences: SharedPreferences
     val list: ArrayList<RoomModel> = arrayListOf()
+
     var myRoomList = arrayListOf<MyRoom>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,26 +51,7 @@ class MainActivity: AppCompatActivity() {
         myRoomListView()
 
         Log.e("user_id", user_id.toString())
-        val call = RetrofitHelper.getApiService().my_room(user_id = user_id)
-        call.enqueue(object : Callback<MyRoomsDTO> {
-            override fun onResponse(call: Call<MyRoomsDTO>, response: Response<MyRoomsDTO>) {
-                if (response.isSuccessful) {
-                    val result = response.body()
-                    for (i: Int in 1..result!!.count) {
-                        myRoomList.add(MyRoom(result.room[i - 1].title, result.room[i - 1].room_id))
-                        myRoomListView()
-                    }
-                } else {
-                    Log.e(TAG, "사이드 리스트: ${response.message()}")
-                }
 
-            }
-
-            override fun onFailure(call: Call<MyRoomsDTO>, t: Throwable) {
-                Log.e(TAG + "ERR", "통신 안됨: ${t.message}")
-            }
-
-        })
 //        for (i: Int in 1..5){
 //            myRoomList.add(MyRoom("이건 방이다 ${i}", i))
 //        }
@@ -107,10 +89,16 @@ class MainActivity: AppCompatActivity() {
             override fun onResponse(call: Call<MyRoomsDTO>, response: Response<MyRoomsDTO>) {
                 if (response.isSuccessful) {
                     val result = response.body()
+//                    val array = arrayListOf<Int>()
+//                    for (i: Int in 1..result!!.room.size) {
+//
+//                    }
+
                     for (i: Int in 1..result!!.room.size) {
                         val field = result.room[i-1].field.substring(0, result.room[i-1].field.length -1 )
                         val fieldArray = field.split(",")
                         val info = result.room[i-1]
+
                         list.add(RoomModel(info.room_id, info.title, info.maxPeo,
                                             fieldArray, info.profile))
                         Log.e(TAG, "RoomModel(room_id=${info.room_id}, title='${info.title}', maxPeo=${info.maxPeo}," +
@@ -156,7 +144,30 @@ class MainActivity: AppCompatActivity() {
     fun myRoomListView() {
         val myRoomAdapter = MyRoomListAdapter(this@MainActivity, myRoomList)
         listView.adapter = myRoomAdapter
-        myRoomAdapter.notifyDataSetChanged()
+
+        val user_id = UserId(preferences.getString("userNum", "0")!!.toInt())
+        val call = RetrofitHelper.getApiService().my_room(user_id = user_id)
+        call.enqueue(object : Callback<MyRoomsDTO> {
+            override fun onResponse(call: Call<MyRoomsDTO>, response: Response<MyRoomsDTO>) {
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    for (i: Int in 1..result!!.count) {
+                        myRoomList.clear()
+                        myRoomList.add(MyRoom(result.room[i - 1].title, result.room[i - 1].room_id))
+                        myRoomAdapter.notifyDataSetChanged()
+                    }
+                } else {
+                    Log.e(TAG, "사이드 리스트: ${response.message()}")
+                }
+
+            }
+
+            override fun onFailure(call: Call<MyRoomsDTO>, t: Throwable) {
+                Log.e(TAG + "ERR", "통신 안됨: ${t.message}")
+            }
+
+        })
+        Log.e(TAG, "myRoomListView")
     }
 
     override fun onBackPressed() {
