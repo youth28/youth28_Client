@@ -27,8 +27,9 @@
         android:text="점심시간"
         android:textColor="@color/black"
         android:textSize="18sp"
+        android:gravity="right"
         android:fontFamily="@font/appleneom"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvDateM"
+        app:layout_constraintStart_toEndOf="@+id/tvDateS"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

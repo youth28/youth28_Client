@@ -26,7 +26,7 @@
             app:srcCompat="@drawable/abc_vector_test" />
 
         <TextView
-            android:id="@+id/tvTopDate"
+            android:id="@+id/tvTopDateR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -46,7 +46,7 @@
     </LinearLayout>
 
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
-        android:id="@+id/calendarView2"
+        android:id="@+id/calendarViewR"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="5dp"
@@ -82,7 +82,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline3">
 
         <TextView
-            android:id="@+id/tvDate"
+            android:id="@+id/tvDateR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -96,7 +96,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerSchedule"
+            android:id="@+id/recyclerScheduleR"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
@@ -108,10 +108,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDate" />
+            app:layout_constraintTop_toBottomOf="@+id/tvDateR" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabScheduleWrite"
+            android:id="@+id/fabScheduleWriteR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"

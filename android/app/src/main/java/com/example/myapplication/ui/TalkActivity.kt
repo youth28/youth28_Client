@@ -67,6 +67,7 @@ class TalkActivity : AppCompatActivity() {
 
         imgCalendar.setOnClickListener {
             val intent = Intent(this@TalkActivity, RoomScheduleActivity::class.java)
+            intent.putExtra("roomId", room_id)
             startActivity(intent)
         }
     }

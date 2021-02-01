@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.API.RetrofitHelper
+import com.example.myapplication.DTO.RoomId
+import com.example.myapplication.DTO.RoomScheduleRDTO
 import com.example.myapplication.DTO.ScheduleRDTO
 import com.example.myapplication.DTO.UserId
 import com.example.myapplication.R
@@ -22,8 +24,8 @@ import com.example.myapplication.ScheduleModel
 import com.example.myapplication.dialog.ScheduleDialog
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.github.sundeepk.compactcalendarview.domain.Event
-import kotlinx.android.synthetic.main.activity_calendar.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_room_schedule.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,7 +34,7 @@ import java.util.*
 
 class RoomScheduleActivity: AppCompatActivity() {
 
-    val TAG = "CaledarA"
+    val TAG = "RoomSchedule"
 
     internal lateinit var preferences: SharedPreferences
 
@@ -40,6 +42,8 @@ class RoomScheduleActivity: AppCompatActivity() {
     var sYear= ""
     var sMonth=""
     var sDay=""
+
+    var room_id = 0
 
     lateinit var event: List<Event>
 
@@ -49,37 +53,41 @@ class RoomScheduleActivity: AppCompatActivity() {
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
 
+        if (intent.hasExtra("roomName")) {
+            room_id = intent.getIntExtra("roomId", 0)
+        }
+
         // String 타입 날짜를 long 타입으로 바꾸기
         var dateStr = "2021-01-03"
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         var date = sdf.parse(dateStr)
         var longDate = date.time
 
-        tvDate.text = DateFormat.format("dd.EE", Date(System.currentTimeMillis()))
-        tvTopDate.text = DateFormat.format("yyyy년 MM월", Date(System.currentTimeMillis()))
-        event = calendarView2.getEvents(Date(System.currentTimeMillis()))
+        tvDateR.text = DateFormat.format("dd.EE", Date(System.currentTimeMillis()))
+        tvTopDateR.text = DateFormat.format("yyyy년 MM월", Date(System.currentTimeMillis()))
+        event = calendarViewR.getEvents(Date(System.currentTimeMillis()))
 
         sYear = SimpleDateFormat("yyyy").format(Date(System.currentTimeMillis()))
         sMonth = SimpleDateFormat("MM").format(Date(System.currentTimeMillis()))
         sDay= SimpleDateFormat("dd").format(Date(System.currentTimeMillis()))
 
         // 시작 요일 바꾸기
-        calendarView2.setFirstDayOfWeek(Calendar.SUNDAY)
+        calendarViewR.setFirstDayOfWeek(Calendar.SUNDAY)
 
         // 스케쥴 받아와서 점 찍기
         readSchedule()
 
         listRecyclerView()
 
-        calendarView2.setListener(object : CompactCalendarView.CompactCalendarViewListener {
+        calendarViewR.setListener(object : CompactCalendarView.CompactCalendarViewListener {
             override fun onDayClick(dateClicked: Date?) {
-                event = calendarView2.getEvents(dateClicked)
+                event = calendarViewR.getEvents(dateClicked)
 
                 sYear = SimpleDateFormat("yyyy").format(dateClicked)
                 sMonth = SimpleDateFormat("MM").format(dateClicked)
                 sDay= SimpleDateFormat("dd").format(dateClicked)
 
-                tvDate.text = "${sDay}.${DateFormat.format("EE", dateClicked)}"
+                tvDateR.text = "${sDay}.${DateFormat.format("EE", dateClicked)}"
 
                 if (event.size != 0) {
                     // dateClicked = 클릭된 날짜
@@ -97,12 +105,12 @@ class RoomScheduleActivity: AppCompatActivity() {
             }
 
             override fun onMonthScroll(firstDayOfNewMonth: Date?) {
-                tvTopDate.text = DateFormat.format("yyyy년 MM월", firstDayOfNewMonth)
+                tvTopDateR.text = DateFormat.format("yyyy년 MM월", firstDayOfNewMonth)
             }
 
         })
 
-        fabScheduleWrite.setOnClickListener {
+        fabScheduleWriteR.setOnClickListener {
             val dialog = ScheduleDialog()
             dialog.sYear = sYear.toInt()
             dialog.sMonth = sMonth.toInt()
@@ -110,7 +118,7 @@ class RoomScheduleActivity: AppCompatActivity() {
 
             dialog.listener = {date, content ->
                 val ev = Event(Color.LTGRAY, sdf.parse("$sYear-$sMonth-$sDay").time, ScheduleModel(content, date))
-                calendarView2.addEvent(ev)
+                calendarViewR.addEvent(ev)
                 Log.e("TAG", "등록했음: ${date}, ${content}")
             }
 
@@ -120,29 +128,30 @@ class RoomScheduleActivity: AppCompatActivity() {
 
     fun listRecyclerView() {
         val mAdapter = MyAdapter()
-        recyclerSchedule.adapter = mAdapter
+        recyclerScheduleR.adapter = mAdapter
         val layoutManager = LinearLayoutManager(applicationContext)
-        recyclerSchedule.layoutManager = layoutManager
-        recyclerSchedule.setHasFixedSize(true)
+        recyclerScheduleR.layoutManager = layoutManager
+        recyclerScheduleR.setHasFixedSize(true)
     }
 
     fun readSchedule () {
-        val userId = UserId(preferences.getString("userNum", "0")!!.toInt())
-        val call = RetrofitHelper.getApiService().schedule_read(userId)
+        val roomId = RoomId(room_id)
+        Log.e(TAG, roomId.toString())
+        val call = RetrofitHelper.getApiService().room_schedule_read(roomId)
         val sdf = SimpleDateFormat("yyyy-MM-dd")
-        call.enqueue(object : Callback<ScheduleRDTO> {
-            override fun onResponse(call: Call<ScheduleRDTO>, response: Response<ScheduleRDTO>) {
+        call.enqueue(object : Callback<RoomScheduleRDTO> {
+            override fun onResponse(call: Call<RoomScheduleRDTO>, response: Response<RoomScheduleRDTO>) {
                 if (response.isSuccessful) {
                     when (response.code()) {
                         200 -> {
-                            val result = response.body()!!.schedule
+                            val result = response.body()!!.room_schedule
                             for (i: Int in 1..result.size) {
                                 val content = result[i-1].content
                                 val rDate = result[i-1].date
                                 val arrDate = rDate.split("-")
                                 val date = "${arrDate[3]}:${arrDate[4]}"
                                 val ev = Event(Color.MAGENTA, sdf.parse(result[i - 1].date).time, ScheduleModel(content, date))
-                                calendarView2.addEvent(ev)
+                                calendarViewR.addEvent(ev)
                             }
                             listRecyclerView()
                         }
@@ -153,7 +162,7 @@ class RoomScheduleActivity: AppCompatActivity() {
                 } else Log.e(TAG + "ERR", "schedule_read, ERR: ${response.message()}")
             }
 
-            override fun onFailure(call: Call<ScheduleRDTO>, t: Throwable) {
+            override fun onFailure(call: Call<RoomScheduleRDTO>, t: Throwable) {
                 Log.e(TAG + "ERR", "통신안됨: ${t.message}")
             }
 
@@ -180,7 +189,7 @@ class RoomScheduleActivity: AppCompatActivity() {
 
     inner class MyViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
         val tvContent = itemView.findViewById<TextView>(R.id.tvContent)
-        val tvDate = itemView.findViewById<TextView>(R.id.tvDate)
+        val tvDate = itemView.findViewById<TextView>(R.id.tvDateS)
     }
 
     override fun onResume() {

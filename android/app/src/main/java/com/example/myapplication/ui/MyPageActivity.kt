@@ -24,9 +24,7 @@ import com.example.myapplication.ScheduleModel
 import com.example.myapplication.dialog.ScheduleDialog
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.github.sundeepk.compactcalendarview.domain.Event
-import kotlinx.android.synthetic.main.activity_calendar.*
 import kotlinx.android.synthetic.main.activity_my_page.*
-import kotlinx.android.synthetic.main.activity_my_page.tvTopDate
 import kotlinx.android.synthetic.main.dialog_vote.*
 import retrofit2.Call
 import retrofit2.Callback
