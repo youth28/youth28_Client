@@ -75,4 +75,9 @@ interface UserAPI {
     fun user_info(
             @Body user_id: UserId
     ): Call<UserInfoDTO>
+
+    @POST("room_schedule_read")
+    fun room_schedule_read(
+            @Body room_id: RoomId
+    ): Call<RoomScheduleRDTO>
 }
