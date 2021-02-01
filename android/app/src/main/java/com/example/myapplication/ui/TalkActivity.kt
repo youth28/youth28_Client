@@ -66,7 +66,7 @@ class TalkActivity : AppCompatActivity() {
         }
 
         imgCalendar.setOnClickListener {
-            val intent = Intent(this@TalkActivity, CalendarActivity::class.java)
+            val intent = Intent(this@TalkActivity, RoomScheduleActivity::class.java)
             startActivity(intent)
         }
     }

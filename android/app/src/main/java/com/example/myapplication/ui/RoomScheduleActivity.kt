@@ -30,7 +30,7 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CalendarActivity: AppCompatActivity() {
+class RoomScheduleActivity: AppCompatActivity() {
 
     val TAG = "CaledarA"
 
@@ -45,7 +45,7 @@ class CalendarActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_calendar)
+        setContentView(R.layout.activity_room_schedule)
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
 
@@ -162,7 +162,7 @@ class CalendarActivity: AppCompatActivity() {
 
     inner class MyAdapter : RecyclerView.Adapter<MyViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-            return MyViewHolder(LayoutInflater.from(this@CalendarActivity).inflate(R.layout.row_schedule, parent, false))
+            return MyViewHolder(LayoutInflater.from(this@RoomScheduleActivity).inflate(R.layout.row_schedule, parent, false))
         }
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
