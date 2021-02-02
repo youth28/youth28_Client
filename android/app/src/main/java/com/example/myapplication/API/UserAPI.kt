@@ -21,6 +21,11 @@ interface UserAPI {
             @Body userDTO: UserDTO
     ): Call<UserDTO>
 
+    @POST("user_info")
+    fun user_info(
+            @Body user_id: UserId
+    ): Call<UserInfoDTO>
+
     @POST("modify_user")
     fun modify(
             @Body userModify: UserModify
@@ -70,11 +75,6 @@ interface UserAPI {
     fun schedule_read(
             @Body user_id: UserId
     ): Call<ScheduleRDTO>
-
-    @POST("user_info")
-    fun user_info(
-            @Body user_id: UserId
-    ): Call<UserInfoDTO>
 
     @POST("room_schedule_read")
     fun room_schedule_read(

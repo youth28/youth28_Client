@@ -30,6 +30,21 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/logo" />
 
+            <Button
+                android:id="@+id/btnSaveProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:background="@drawable/btn_shape"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="프로필 사진 저장하기"
+                app:layout_constraintBottom_toBottomOf="@+id/imgProfile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imgProfile"
+                app:layout_constraintTop_toTopOf="@+id/imgProfile" />
+
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"

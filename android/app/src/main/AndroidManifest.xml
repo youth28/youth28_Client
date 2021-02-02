@@ -3,6 +3,10 @@
     package="com.example.myapplication">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA"   />
 
     <application
         android:allowBackup="true"
@@ -11,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true">
 
         <activity android:name=".ui.SplashActivity" />
 
@@ -23,20 +28,20 @@
         <activity android:name=".ui.RoomFindActivity" />
         <activity android:name=".ui.RoomMakeActivity" />
 
-        <activity android:name=".ui.MyPageActivity" >
+        <activity android:name=".ui.MyPageActivity" />
+        <activity android:name=".ui.ModifyActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.ModifyActivity" />
 
         <activity android:name=".ui.TalkActivity" />
         <activity android:name=".ui.RoomMenuActivity" />
         <activity android:name=".ui.RoomInfoActivity" />
         <activity android:name=".ui.RoomModifyActivity" />
-        <activity android:name=".ui.CalendarActivity" />
+        <activity android:name=".ui.RoomScheduleActivity" />
         <activity android:name=".ui.VoteListActivity" />
 
     </application>
