@@ -24,6 +24,7 @@ import com.example.myapplication.API.ApiService
 import com.example.myapplication.API.RetrofitHelper
 import com.example.myapplication.DTO.UserModify
 import com.example.myapplication.R
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_modify.*
 import kotlinx.android.synthetic.main.activity_modify.editEmail
@@ -69,6 +70,8 @@ class ModifyActivity: AppCompatActivity() {
         askPermissions()
         // 레트로핏 설정
         initRetrofitClient()
+
+        getImage()
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
         editName.setText(preferences.getString("userName", ""))
@@ -166,6 +169,10 @@ class ModifyActivity: AppCompatActivity() {
     fun getData(): UserModify {
         val data = UserModify(user_id, strName, simgProfile, strField)
         return data
+    }
+
+    fun getImage() {
+        Picasso.get().load("http://f0f3e680fa1c.ngrok.io/uploads/6c81c2afa1c134bb6eda791f87edaf3a.png").into(imgProfile)
     }
 
     // region 프로필 사진 서버에 저장하기
@@ -344,7 +351,7 @@ class ModifyActivity: AppCompatActivity() {
             fos.flush()
             fos.close()
             val reqFile: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
-            val body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile)
+            val body = MultipartBody.Part.createFormData("upload", file.name, reqFile)
             val name = RequestBody.create(MediaType.parse("text/plain"), "upload")
             val req: Call<ResponseBody> = apiService!!.postImage(body, name)
             req.enqueue(object : Callback<ResponseBody> {
