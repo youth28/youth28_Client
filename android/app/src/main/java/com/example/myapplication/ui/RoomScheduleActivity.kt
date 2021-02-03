@@ -15,10 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.API.RetrofitHelper
-import com.example.myapplication.DTO.RoomId
-import com.example.myapplication.DTO.RoomScheduleRDTO
-import com.example.myapplication.DTO.ScheduleRDTO
-import com.example.myapplication.DTO.UserId
+import com.example.myapplication.DTO.*
 import com.example.myapplication.R
 import com.example.myapplication.ScheduleModel
 import com.example.myapplication.dialog.ScheduleDialog
@@ -53,7 +50,7 @@ class RoomScheduleActivity: AppCompatActivity() {
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
 
-        if (intent.hasExtra("roomName")) {
+        if (intent.hasExtra("roomId")) {
             room_id = intent.getIntExtra("roomId", 0)
         }
 
@@ -150,7 +147,7 @@ class RoomScheduleActivity: AppCompatActivity() {
                                 val rDate = result[i-1].date
                                 val arrDate = rDate.split("-")
                                 val date = "${arrDate[3]}:${arrDate[4]}"
-                                val ev = Event(Color.MAGENTA, sdf.parse(result[i - 1].date).time, ScheduleModel(content, date))
+                                val ev = Event(Color.MAGENTA, sdf.parse(result[i - 1].date).time, ScheduleWDTO(content, date, 1))
                                 calendarViewR.addEvent(ev)
                             }
                             listRecyclerView()
@@ -171,12 +168,13 @@ class RoomScheduleActivity: AppCompatActivity() {
 
     inner class MyAdapter : RecyclerView.Adapter<MyViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-            return MyViewHolder(LayoutInflater.from(this@RoomScheduleActivity).inflate(R.layout.row_schedule, parent, false))
+            return MyViewHolder(LayoutInflater.from(this@RoomScheduleActivity).inflate(R.layout.row_room_schedule, parent, false))
         }
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-            val schedule: ScheduleModel = event[position].data as ScheduleModel
+            val schedule: ScheduleWDTO = event[position].data as ScheduleWDTO
             Log.e(TAG, "${schedule.content}, ${schedule.date}")
+            holder.tvUserId.text = schedule.user_id.toString()
             holder.tvContent.text = schedule.content
             holder.tvDate.text = schedule.date
         }
@@ -188,6 +186,7 @@ class RoomScheduleActivity: AppCompatActivity() {
     }
 
     inner class MyViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
+        val tvUserId = itemView.findViewById<TextView>(R.id.tvUserId)
         val tvContent = itemView.findViewById<TextView>(R.id.tvContent)
         val tvDate = itemView.findViewById<TextView>(R.id.tvDateS)
     }
