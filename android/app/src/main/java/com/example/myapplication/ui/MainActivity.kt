@@ -142,8 +142,6 @@ class MainActivity: AppCompatActivity() {
     }
 
     fun myRoomListView() {
-        val myRoomAdapter = MyRoomListAdapter(this@MainActivity, myRoomList)
-        listView.adapter = myRoomAdapter
 
         val user_id = UserId(preferences.getString("userNum", "0")!!.toInt())
         val call = RetrofitHelper.getApiService().my_room(user_id = user_id)
@@ -151,11 +149,14 @@ class MainActivity: AppCompatActivity() {
             override fun onResponse(call: Call<MyRoomsDTO>, response: Response<MyRoomsDTO>) {
                 if (response.isSuccessful) {
                     val result = response.body()
-                    for (i: Int in 1..result!!.count) {
-                        myRoomList.clear()
+                    myRoomList.clear()
+                    for (i: Int in 1..result!!.room.size) {
                         myRoomList.add(MyRoom(result.room[i - 1].title, result.room[i - 1].room_id))
-                        myRoomAdapter.notifyDataSetChanged()
+                        Log.e(TAG, myRoomList[i-1].toString())
                     }
+                    val myRoomAdapter = MyRoomListAdapter(this@MainActivity, myRoomList)
+                    listView.adapter = myRoomAdapter
+                    myRoomAdapter.notifyDataSetChanged()
                 } else {
                     Log.e(TAG, "사이드 리스트: ${response.message()}")
                 }
