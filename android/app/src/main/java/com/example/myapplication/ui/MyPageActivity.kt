@@ -106,12 +106,6 @@ class MyPageActivity : AppCompatActivity() {
 
         })
 
-        // recyclerView setting
-        val layouManager = LinearLayoutManager(this@MyPageActivity)
-        layouManager.orientation = LinearLayoutManager.HORIZONTAL
-        recyclerViewTag.layoutManager = layouManager
-        recyclerViewTag.adapter = MyAdapter()
-
         getUserInfo()
 
         btnModify.setOnClickListener {
@@ -149,6 +143,11 @@ class MyPageActivity : AppCompatActivity() {
                     for (itme in arrField) {
                         tagList.add("#${itme}")
                     }
+                    // recyclerView setting
+                    val layouManager = LinearLayoutManager(this@MyPageActivity)
+                    layouManager.orientation = LinearLayoutManager.HORIZONTAL
+                    recyclerViewTag.layoutManager = layouManager
+                    recyclerViewTag.adapter = MyAdapter()
 
                 } else Log.e(TAG+"Err", response.message())
             }
@@ -254,6 +253,7 @@ class MyPageActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         listRecyclerView()
+        getUserInfo()
     }
 
     fun showToast(str: String) {
