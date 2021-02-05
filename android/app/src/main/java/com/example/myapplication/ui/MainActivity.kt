@@ -55,6 +55,10 @@ class MainActivity: AppCompatActivity() {
         roomRcv()
         myRoomListView()
 
+        for(i: Int in 1..5) {
+            myRoomList.add(MyRoom("방이름 $i", i))
+        }
+
         myRoomRcv()
 
         Log.e("user_id", user_id.toString())

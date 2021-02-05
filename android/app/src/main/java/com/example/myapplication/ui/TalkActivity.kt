@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.API.RetrofitHelper
@@ -20,6 +21,8 @@ import com.example.myapplication.ChatModel
 import com.example.myapplication.DTO.RoomId
 import com.example.myapplication.DTO.RoomInfoDTO
 import com.example.myapplication.R
+import com.example.myapplication.adapter.TagAdapter
+import com.example.myapplication.databinding.ActivityTalkBinding
 import com.example.myapplication.dialog.VoteDialog
 import kotlinx.android.synthetic.main.activity_talk.*
 import kotlinx.android.synthetic.main.item_my_chat.view.*
@@ -36,6 +39,10 @@ class TalkActivity : AppCompatActivity() {
 
     internal lateinit var preferences: SharedPreferences
 
+    private lateinit var binding: ActivityTalkBinding
+
+    val mAdapter = TagAdapter(this@TalkActivity)
+
     var title = ""
     var maxPro = 0
     var field = ""
@@ -45,6 +52,8 @@ class TalkActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_talk)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_talk)
+        binding.talk = this@TalkActivity
 
         if (intent.hasExtra("roomName")) {
             title = intent.getStringExtra("roomName").toString()
@@ -56,31 +65,18 @@ class TalkActivity : AppCompatActivity() {
         // recyclerView setting
         val layouManager = LinearLayoutManager(this@TalkActivity)
         layouManager.orientation = LinearLayoutManager.HORIZONTAL
-        recyclerViewChat.layoutManager = layouManager
-        recyclerViewChat.adapter = ChatAdapter()
-
-        btnPlus.setOnClickListener {
-            val intent = Intent(this@TalkActivity, RoomMenuActivity::class.java)
-            intent.putExtra("roomId", room_id)
-            startActivity(intent)
-        }
-
-        imgCalendar.setOnClickListener {
-            val intent = Intent(this@TalkActivity, RoomScheduleActivity::class.java)
-            intent.putExtra("roomId", room_id)
-            startActivity(intent)
-        }
+        rcvChat.layoutManager = layouManager
+        rcvChat.adapter = ChatAdapter()
     }
 
     fun settingUi () {
         val room = RoomId(room_id)
 
-        val arrayList = field.split(",")
-
         val layouManager = LinearLayoutManager(this@TalkActivity)
         layouManager.orientation = LinearLayoutManager.HORIZONTAL
-        recyclerViewTagR.layoutManager = layouManager
-        recyclerViewTagR.adapter = MyAdapter(arrayList)
+        rcvTag.layoutManager = layouManager
+        rcvTag.adapter = mAdapter
+
         val call = RetrofitHelper.getApiService().room_info(room)
         call.enqueue(object : Callback<RoomInfoDTO> {
             override fun onResponse(call: Call<RoomInfoDTO>, response: Response<RoomInfoDTO>) {
@@ -92,18 +88,14 @@ class TalkActivity : AppCompatActivity() {
                         profile = response.body()!!.profile
                         maxPro = response.body()!!.maxPeo
 
-                        tvRoomName.text = title
-
                         // region checkBox 설정하기
                         field = field.substring(0, field.length -1 )
                         Log.e(TAG+ "field", field)
 
                         val arrayList = field.split(",")
 
-                        val layouManager = LinearLayoutManager(this@TalkActivity)
-                        layouManager.orientation = LinearLayoutManager.HORIZONTAL
-                        recyclerViewTagR.layoutManager = layouManager
-                        recyclerViewTagR.adapter = MyAdapter(arrayList)
+                        rcvTag.adapter = mAdapter
+                        mAdapter.list = arrayList
                         // endregion
 
                     }
@@ -115,6 +107,22 @@ class TalkActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    fun onSend(view: View) {
+
+    }
+
+    fun onPlus(view: View) {
+        val intent = Intent(this@TalkActivity, RoomMenuActivity::class.java)
+        intent.putExtra("roomId", room_id)
+        startActivity(intent)
+    }
+
+    fun onCalendar(view: View) {
+        val intent = Intent(this@TalkActivity, RoomScheduleActivity::class.java)
+        intent.putExtra("roomId", room_id)
+        startActivity(intent)
     }
 
     override fun onResume() {
