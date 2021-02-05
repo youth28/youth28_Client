@@ -57,27 +57,28 @@ class RoomInfoActivity : AppCompatActivity() {
     }
 
     fun onUpdateRoom(view: View) {
-        if (roomManager == preferences.getString("userNum", "0")!!.toInt()) {
+//        if (roomManager == preferences.getString("userNum", "0")!!.toInt()) {
             val intent = Intent(this@RoomInfoActivity, RoomModifyActivity::class.java)
             intent.putExtra("roomTitle", title)
             intent.putExtra("roomMax", maxPro)
             intent.putExtra("roomField", field)
             intent.putExtra("roomId", room_id)
+            intent.putExtra("roomProfile", profile)
             startActivity(intent)
-        } else {
-            showToast("방에대한 수정권한이 없습니다.")
-            Log.e(TAG, "userId=${preferences.getString("userNum","0")}, roomManager=${roomManager}")
-        }
+//        } else {
+//            showToast("방에대한 수정권한이 없습니다.")
+//            Log.e(TAG, "userId=${preferences.getString("userNum","0")}, roomManager=${roomManager}")
+//        }
     }
 
     fun settingUi () {
-        /*
+
         title = "안녕"
         maxPro = 5
         maxPeo = "${maxPro}명"
         field = "스터디,게임,미술"
-        profile = "http://d24a94107e01.ngrok.io/uploads/e9bd66c58d299724326e82d192b0393f.png"
-         */
+        profile = "http://d130d0731f7f.ngrok.io/uploads/98eed633ca782547430c1768572e1cdb.png"
+
         val arrayList = field.split(",")
         for (value in arrayList) {
             when (value) {
