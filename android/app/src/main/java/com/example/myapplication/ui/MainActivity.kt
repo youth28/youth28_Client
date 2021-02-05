@@ -39,8 +39,7 @@ class MainActivity: AppCompatActivity() {
 
     internal lateinit var preferences: SharedPreferences
     val list: ArrayList<RoomModel> = arrayListOf()
-
-    var myRoomList = arrayListOf<MyRoom>()
+    val myRoomList: ArrayList<MyRoom> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +52,10 @@ class MainActivity: AppCompatActivity() {
 
         val user_id = UserId(preferences.getString("userNum", "0")!!.toInt())
 
-        listRecyclerView()
+        roomRcv()
         myRoomListView()
+
+        myRoomRcv()
 
         Log.e("user_id", user_id.toString())
 
@@ -62,15 +63,6 @@ class MainActivity: AppCompatActivity() {
 //            myRoomList.add(MyRoom("이건 방이다 ${i}", i))
 //        }
 
-
-
-        listView.setOnItemClickListener { parent, view, position, id ->
-            showToast("roomName: ${myRoomList[position].roomName}, roomId: ${myRoomList[position].roomId}")
-            val intent = Intent(this@MainActivity, TalkActivity::class.java)
-            intent.putExtra("roomName", myRoomList[position].roomName)
-            intent.putExtra("roomId", myRoomList[position].roomId)
-            startActivity(intent)
-        }
         // endregion
 
         // region 사이드 메뉴바 요소
@@ -110,7 +102,7 @@ class MainActivity: AppCompatActivity() {
                         Log.e(TAG, "RoomModel(room_id=${info.room_id}, title='${info.title}', maxPeo=${info.maxPeo}," +
                                 " field='$fieldArray', profile='${info.profile}')")
 
-                        listRecyclerView()
+                        roomRcv()
                     }
                 } else {
                     Log.e(TAG, "메인 리스트: ${response.message()}")
@@ -139,16 +131,25 @@ class MainActivity: AppCompatActivity() {
         }
     }
 
-    fun listRecyclerView() {
+    fun roomRcv() {
         val mAdapter = RoomAdapter(this)
         binding.rcvRoomList.adapter = mAdapter
         val layoutManager = LinearLayoutManager(this)
         binding.rcvRoomList.layoutManager = layoutManager
         binding.rcvRoomList.setHasFixedSize(true)
-        for(i: Int in 1..5) {
-            list.add(RoomModel(i, "title${i}", i + 1, arrayListOf("안녕", "하이"), "http://d24a94107e01.ngrok.io/uploads/359cc2d83bd7eecabec16e64a2690efd.jpg"))
-        }
+//        for(i: Int in 1..5) {
+//            list.add(RoomModel(i, "title${i}", i + 1, arrayListOf("안녕", "하이"), "http://d24a94107e01.ngrok.io/uploads/359cc2d83bd7eecabec16e64a2690efd.jpg"))
+//        }
         mAdapter.list = list
+    }
+    
+    fun myRoomRcv() {
+        val myRoomAdapter = MyRoomListAdapter(this@MainActivity)
+        rcvMyRoomList.adapter = myRoomAdapter
+        val layoutManager = LinearLayoutManager(this@MainActivity)
+        rcvMyRoomList.layoutManager = layoutManager
+        rcvMyRoomList.setHasFixedSize(true)
+        myRoomAdapter.list = myRoomList
     }
 
     fun myRoomListView() {
@@ -163,10 +164,9 @@ class MainActivity: AppCompatActivity() {
                     for (i: Int in 1..result!!.room.size) {
                         myRoomList.add(MyRoom(result.room[i - 1].title, result.room[i - 1].room_id))
                         Log.e(TAG, myRoomList[i-1].toString())
+                        myRoomRcv()
                     }
-                    val myRoomAdapter = MyRoomListAdapter(this@MainActivity, myRoomList)
-                    listView.adapter = myRoomAdapter
-                    myRoomAdapter.notifyDataSetChanged()
+                    
                 } else {
                     Log.e(TAG, "사이드 리스트: ${response.message()}")
                 }
@@ -187,31 +187,6 @@ class MainActivity: AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
-    }
-
-    inner class MyRoomListAdapter (val context: Context, val myRoomList: ArrayList<MyRoom>) : BaseAdapter() {
-        override fun getCount(): Int {
-            return myRoomList.size
-        }
-
-        override fun getItem(position: Int): Any {
-            return myRoomList[position]
-        }
-
-        override fun getItemId(position: Int): Long {
-            return 0
-        }
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            val view : View = LayoutInflater.from(context).inflate(R.layout.my_room_list, null)
-            val roomTitle = view.findViewById<TextView>(R.id.tvRoomName)
-
-            val myRoom = myRoomList[position]
-            roomTitle.text = myRoom.roomName
-
-            return view
-        }
-
     }
 
     fun showToast(str: String) {
