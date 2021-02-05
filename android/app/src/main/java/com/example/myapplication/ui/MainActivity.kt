@@ -21,8 +21,9 @@ import com.example.myapplication.DTO.MyRoomsDTO
 import com.example.myapplication.DTO.UserId
 import com.example.myapplication.MyRoom
 import com.example.myapplication.R
-import com.example.myapplication.RoomAdapter
+import com.example.myapplication.adapter.RoomAdapter
 import com.example.myapplication.RoomModel
+import com.example.myapplication.adapter.MyRoomListAdapter
 import com.example.myapplication.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_menu.*

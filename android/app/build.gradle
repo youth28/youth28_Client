@@ -63,5 +63,7 @@ dependencies {
     implementation 'com.github.sundeepk:compact-calendar-view:3.0.0'
     // DataBinding
     kapt 'com.android.databinding:compiler:3.5.3'
+    // LiveData?
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
 
 }

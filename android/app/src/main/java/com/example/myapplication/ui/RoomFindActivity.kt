@@ -1,21 +1,17 @@
 package com.example.myapplication.ui
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.API.RetrofitHelper
-import com.example.myapplication.DTO.FieldDTO
 import com.example.myapplication.DTO.RoomNameDTO
 import com.example.myapplication.DTO.RoomsDTO
 import com.example.myapplication.R
-import com.example.myapplication.RoomAdapter
+import com.example.myapplication.adapter.RoomAdapter
 import com.example.myapplication.RoomModel
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_room_find.*
 import kotlinx.android.synthetic.main.activity_room_find.btnSearch
 import retrofit2.Call
