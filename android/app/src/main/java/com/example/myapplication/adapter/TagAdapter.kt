@@ -24,7 +24,7 @@ class TagAdapter(val context: Context): RecyclerView.Adapter<TagAdapter.Holder>(
 
     inner class Holder(val binding: RowTagBinding) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(list: String) {
-            binding.tag = list
+            binding.tag = "#${list}"
         }
     }
 
