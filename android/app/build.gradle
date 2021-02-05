@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
     dataBinding {
-        enabled true
+        enabled = true
     }
 
     defaultConfig {
@@ -55,8 +56,12 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     // Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
     // CalendarView
     testImplementation 'org.mockito:mockito-core:2.15.0'
     implementation 'com.github.sundeepk:compact-calendar-view:3.0.0'
+    // DataBinding
+    kapt 'com.android.databinding:compiler:3.5.3'
 
 }

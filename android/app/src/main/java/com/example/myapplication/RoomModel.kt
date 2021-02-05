@@ -1,5 +1,9 @@
 package com.example.myapplication
 
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.dialog.JoinDialog
+
 data class RoomModel(
         val room_id : Int,
         val title: String,

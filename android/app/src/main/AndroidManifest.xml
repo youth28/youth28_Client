@@ -23,19 +23,19 @@
         <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.SignUpActivity" />
 
-        <activity android:name=".ui.MainActivity" />
-        <activity android:name=".ui.MenuActivity" />
-        <activity android:name=".ui.RoomFindActivity" />
-        <activity android:name=".ui.RoomMakeActivity" />
-
-        <activity android:name=".ui.MyPageActivity" />
-        <activity android:name=".ui.ModifyActivity" >
+        <activity android:name=".ui.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.MenuActivity" />
+        <activity android:name=".ui.RoomFindActivity" />
+        <activity android:name=".ui.RoomMakeActivity" />
+
+        <activity android:name=".ui.MyPageActivity" />
+        <activity android:name=".ui.ModifyActivity" />
 
         <activity android:name=".ui.TalkActivity" />
         <activity android:name=".ui.RoomMenuActivity" />

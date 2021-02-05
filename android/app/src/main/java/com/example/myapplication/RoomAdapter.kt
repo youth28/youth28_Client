@@ -9,24 +9,27 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.databinding.RowRoomBinding
 import com.example.myapplication.dialog.JoinDialog
 
-class RoomAdapter(val context: Context, val list: ArrayList<RoomModel>): RecyclerView.Adapter<RoomAdapter.Holder>() {
+class RoomAdapter(val context: Context): RecyclerView.Adapter<RoomAdapter.Holder>() {
+    var list = listOf<RoomModel>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomAdapter.Holder {
-        val view : View = LayoutInflater.from(context).inflate(R.layout.row_room, parent, false)
-        return Holder(view)
+        val binding = RowRoomBinding.inflate(LayoutInflater.from(context), parent, false)
+
+        return Holder(binding)
     }
 
     override fun onBindViewHolder(holder: RoomAdapter.Holder, position: Int) {
-        holder.imgProfile.setImageResource(R.drawable.add)
-        holder.title.text = list[position].title
+        holder.onBind(list = list[position])
 
-        val mAdapter = TagAdapter(context, list[position].field)
-        holder.recyclerView.adapter = mAdapter
+        val mAdapter = TagAdapter(context)
+        holder.binding.rcvTag.adapter = mAdapter
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        holder.recyclerView.layoutManager = layoutManager
-        holder.recyclerView.setHasFixedSize(true)
+        holder.binding.rcvTag.layoutManager = layoutManager
+        holder.binding.rcvTag.setHasFixedSize(true)
+        mAdapter.list = list[position].field
 
         holder.itemView.setOnClickListener {
             val dialog = JoinDialog()
@@ -41,10 +44,12 @@ class RoomAdapter(val context: Context, val list: ArrayList<RoomModel>): Recycle
         return list.size
     }
 
-    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imgProfile = itemView.findViewById<ImageView>(R.id.imgRoomProfile)
-        val title = itemView.findViewById<TextView>(R.id.tvRoomName)
-        val recyclerView = itemView.findViewById<RecyclerView>(R.id.recyclerViewTag)
+    inner class Holder(val binding: RowRoomBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun onBind(list: RoomModel) {
+            binding.room = list
+        }
     }
+
+
 
 }

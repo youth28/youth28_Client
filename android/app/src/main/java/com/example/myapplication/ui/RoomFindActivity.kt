@@ -100,11 +100,12 @@ class RoomFindActivity : AppCompatActivity() {
     }
 
     fun listRecyclerView() {
-        val mAdapter = RoomAdapter(applicationContext, list)
+        val mAdapter = RoomAdapter(applicationContext)
         recyclerViewRoomFind.adapter = mAdapter
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerViewRoomFind.layoutManager = layoutManager
         recyclerViewRoomFind.setHasFixedSize(true)
+        mAdapter.list = list
     }
 
     fun showToast(str: String) {

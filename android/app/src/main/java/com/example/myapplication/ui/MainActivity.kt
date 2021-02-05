@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.API.RetrofitHelper
 import com.example.myapplication.DTO.MyRoomsDTO
@@ -22,6 +23,7 @@ import com.example.myapplication.MyRoom
 import com.example.myapplication.R
 import com.example.myapplication.RoomAdapter
 import com.example.myapplication.RoomModel
+import com.example.myapplication.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_menu.*
 import retrofit2.Call
@@ -32,6 +34,8 @@ class MainActivity: AppCompatActivity() {
 
     val TAG = "MainActivity"
 
+    private lateinit var binding: ActivityMainBinding
+
     internal lateinit var preferences: SharedPreferences
     val list: ArrayList<RoomModel> = arrayListOf()
 
@@ -39,7 +43,8 @@ class MainActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.main = this@MainActivity
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
 
@@ -117,28 +122,32 @@ class MainActivity: AppCompatActivity() {
 
         })
 
-        btnMenu.setOnClickListener {
+        binding.btnMenu.setOnClickListener {
             drawer_layout.openDrawer(GravityCompat.START)
             myRoomListView()
         }
 
-        btnSearch.setOnClickListener {
+        binding.btnSearch.setOnClickListener {
             val intent = Intent(this@MainActivity, RoomFindActivity::class.java)
             startActivity(intent)
         }
 
-        fabRoomMake.setOnClickListener {
+        binding.fabRoomMake.setOnClickListener {
             val intent = Intent(this@MainActivity, RoomMakeActivity::class.java)
             startActivity(intent)
         }
     }
 
     fun listRecyclerView() {
-        val mAdapter = RoomAdapter(this@MainActivity, list)
-        recyclerViewRoomList.adapter = mAdapter
-        val layoutManager = LinearLayoutManager(applicationContext)
-        recyclerViewRoomList.layoutManager = layoutManager
-        recyclerViewRoomList.setHasFixedSize(true)
+        val mAdapter = RoomAdapter(this)
+        binding.rcvRoomList.adapter = mAdapter
+        val layoutManager = LinearLayoutManager(this)
+        binding.rcvRoomList.layoutManager = layoutManager
+        binding.rcvRoomList.setHasFixedSize(true)
+        for(i: Int in 1..5) {
+            list.add(RoomModel(i, "title${i}", i + 1, arrayListOf("안녕", "하이"), "http://d24a94107e01.ngrok.io/uploads/359cc2d83bd7eecabec16e64a2690efd.jpg"))
+        }
+        mAdapter.list = list
     }
 
     fun myRoomListView() {
