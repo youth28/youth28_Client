@@ -6,12 +6,15 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import com.example.myapplication.API.RetrofitHelper
 import com.example.myapplication.DTO.RoomId
 import com.example.myapplication.DTO.RoomInfoDTO
 import com.example.myapplication.DTO.RoomMakeDTO
 import com.example.myapplication.R
+import com.example.myapplication.databinding.ActivityRoomInfoBinding
 import kotlinx.android.synthetic.main.activity_room_info.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,6 +26,8 @@ class RoomInfoActivity : AppCompatActivity() {
 
     internal lateinit var preferences: SharedPreferences
 
+    private lateinit var binding: ActivityRoomInfoBinding
+
     var title = ""
     var maxPro = 0
     var field = ""
@@ -30,9 +35,12 @@ class RoomInfoActivity : AppCompatActivity() {
     var room_id = 0
     var roomManager = 0
 
+    var maxPeo = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_room_info)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_room_info)
+        binding.info = this
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
 
@@ -40,20 +48,6 @@ class RoomInfoActivity : AppCompatActivity() {
         Log.e(TAG, "room_id: ${room_id}")
 
         settingUi()
-
-        btnUpdateRoom.setOnClickListener {
-            if (roomManager == preferences.getString("userNum", "0")!!.toInt()) {
-                val intent = Intent(this@RoomInfoActivity, RoomModifyActivity::class.java)
-                intent.putExtra("roomTitle", title)
-                intent.putExtra("roomMax", maxPro)
-                intent.putExtra("roomField", field)
-                intent.putExtra("roomId", room_id)
-                startActivity(intent)
-            } else {
-                showToast("방에대한 수정권한이 없습니다.")
-                Log.e(TAG, "userId=${preferences.getString("userNum","0")}, roomManager=${roomManager}")
-            }
-        }
     }
 
     override fun onResume() {
@@ -62,7 +56,40 @@ class RoomInfoActivity : AppCompatActivity() {
         settingUi()
     }
 
+    fun onUpdateRoom(view: View) {
+        if (roomManager == preferences.getString("userNum", "0")!!.toInt()) {
+            val intent = Intent(this@RoomInfoActivity, RoomModifyActivity::class.java)
+            intent.putExtra("roomTitle", title)
+            intent.putExtra("roomMax", maxPro)
+            intent.putExtra("roomField", field)
+            intent.putExtra("roomId", room_id)
+            startActivity(intent)
+        } else {
+            showToast("방에대한 수정권한이 없습니다.")
+            Log.e(TAG, "userId=${preferences.getString("userNum","0")}, roomManager=${roomManager}")
+        }
+    }
+
     fun settingUi () {
+        /*
+        title = "안녕"
+        maxPro = 5
+        maxPeo = "${maxPro}명"
+        field = "스터디,게임,미술"
+        profile = "http://d24a94107e01.ngrok.io/uploads/e9bd66c58d299724326e82d192b0393f.png"
+         */
+        val arrayList = field.split(",")
+        for (value in arrayList) {
+            when (value) {
+                "스터디" -> binding.cbStudy.isChecked = true
+                "게임" -> binding.cbGame.isChecked = true
+                "업무" -> binding.cbWork.isChecked = true
+                "음악" -> binding.cbMusic.isChecked = true
+                "미술" -> binding.cbArt.isChecked = true
+                "운동(헬스)" -> binding.cbExercise.isChecked = true
+                "기타" -> binding.cbEtc.isChecked = true
+            }
+        }
         val room = RoomId(room_id)
         val call = RetrofitHelper.getApiService().room_info(room)
         call.enqueue(object : Callback<RoomInfoDTO> {
@@ -77,8 +104,7 @@ class RoomInfoActivity : AppCompatActivity() {
 
                         Log.e(TAG, "room_manager: ${roomManager}")
 
-                        tvRName.text = title
-                        peRson.text = "${maxPro}명"
+                        maxPeo = "${maxPro}명"
 
                         // region checkBox 설정하기
                         field = field.substring(0, field.length -1 )
@@ -87,13 +113,13 @@ class RoomInfoActivity : AppCompatActivity() {
                         val arrayList = field.split(",")
                         for (value in arrayList) {
                             when (value) {
-                                "스터디" -> cbStudy.isChecked = true
-                                "게임" -> cbGame.isChecked = true
-                                "업무" -> cbWork.isChecked = true
-                                "음악" -> cbMusic.isChecked = true
-                                "미술" -> cbArt.isChecked = true
-                                "운동(헬스)" -> cbExercise.isChecked = true
-                                "기타" -> cbEtc.isChecked = true
+                                "스터디" -> binding.cbStudy.isChecked = true
+                                "게임" -> binding.cbGame.isChecked = true
+                                "업무" -> binding.cbWork.isChecked = true
+                                "음악" -> binding.cbMusic.isChecked = true
+                                "미술" -> binding.cbArt.isChecked = true
+                                "운동(헬스)" -> binding.cbExercise.isChecked = true
+                                "기타" -> binding.cbEtc.isChecked = true
                             }
                         }
                         // endregion
