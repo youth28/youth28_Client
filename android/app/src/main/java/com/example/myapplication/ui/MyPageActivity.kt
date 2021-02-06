@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.API.RetrofitHelper
@@ -21,6 +22,9 @@ import com.example.myapplication.DTO.UserId
 import com.example.myapplication.DTO.UserInfoDTO
 import com.example.myapplication.R
 import com.example.myapplication.ScheduleModel
+import com.example.myapplication.adapter.ScheduleAdapter
+import com.example.myapplication.adapter.TagAdapter
+import com.example.myapplication.databinding.ActivityMyPageBinding
 import com.example.myapplication.dialog.ScheduleDialog
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.github.sundeepk.compactcalendarview.domain.Event
@@ -38,9 +42,16 @@ class MyPageActivity : AppCompatActivity() {
 
     internal lateinit var preferences: SharedPreferences
 
+    private lateinit var binding: ActivityMyPageBinding
+
     val tagList = mutableListOf<String>()
 
     var strField = ""
+    var profile = ""
+    var name = ""
+    var email = ""
+    var topDate = ""
+    var date = ""
 
     var sYear= ""
     var sMonth=""
@@ -50,40 +61,38 @@ class MyPageActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_my_page)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_my_page)
+        binding.activity = this@MyPageActivity
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
 
-        // String 타입 날짜를 long 타입으로 바꾸기
-        var dateStr = "2021-01-03"
-        val sdf = SimpleDateFormat("yyyy-MM-dd")
-        var date = sdf.parse(dateStr)
-
-        tvDateMP.text = DateFormat.format("dd.EE", Date(System.currentTimeMillis()))
-        tvTopDate.text = DateFormat.format("yyyy년 MM월", Date(System.currentTimeMillis()))
-        event = calendarViewMP.getEvents(Date(System.currentTimeMillis()))
+        date = DateFormat.format("dd.EE", Date(System.currentTimeMillis())).toString()
+        topDate = DateFormat.format("yyyy년 MM월", Date(System.currentTimeMillis())).toString()
+        event = calendarView.getEvents(Date(System.currentTimeMillis()))
 
         sYear = SimpleDateFormat("yyyy").format(Date(System.currentTimeMillis()))
         sMonth = SimpleDateFormat("MM").format(Date(System.currentTimeMillis()))
         sDay= SimpleDateFormat("dd").format(Date(System.currentTimeMillis()))
 
         // 시작 요일 바꾸기
-        calendarViewMP.setFirstDayOfWeek(Calendar.SUNDAY)
+        binding.calendarView.setFirstDayOfWeek(Calendar.SUNDAY)
 
         // 스케쥴 받아와서 점 찍기
         readSchedule()
 
-        listRecyclerView()
+        rcvSchedule()
 
-        calendarViewMP.setListener(object : CompactCalendarView.CompactCalendarViewListener {
+        getUserInfo()
+
+        binding.calendarView.setListener(object : CompactCalendarView.CompactCalendarViewListener {
             override fun onDayClick(dateClicked: Date?) {
-                event = calendarViewMP.getEvents(dateClicked)
+                event = binding.calendarView.getEvents(dateClicked)
 
                 sYear = SimpleDateFormat("yyyy").format(dateClicked)
                 sMonth = SimpleDateFormat("MM").format(dateClicked)
                 sDay= SimpleDateFormat("dd").format(dateClicked)
 
-                tvDateMP.text = "${sDay}.${DateFormat.format("EE", dateClicked)}"
+                date = "${sDay}.${DateFormat.format("EE", dateClicked)}"
 
                 if (event.size != 0) {
                     // dateClicked = 클릭된 날짜
@@ -91,44 +100,46 @@ class MyPageActivity : AppCompatActivity() {
                     // Log.e(CAL_TAG, "DAY was clicked: ${dateClicked} with events ${events}")
 
                     for (i: Int in 0..event.size - 1) {
-                        //Log.e(CAL_TAG, "events-data: ${events[i].data}")
+                        Log.e(TAG, "events-data: ${event[i].data}")
                     }
                 } else {
                     showToast("적용된 이벤트가 없습니다.")
                 }
 
-                listRecyclerView()
+                rcvSchedule()
+                binding.invalidateAll()
             }
 
             override fun onMonthScroll(firstDayOfNewMonth: Date?) {
-                tvTopDate.text = DateFormat.format("yyyy년 MM월", firstDayOfNewMonth)
+                topDate = DateFormat.format("yyyy년 MM월", firstDayOfNewMonth).toString()
+                binding.invalidateAll()
             }
 
         })
+    }
 
-        getUserInfo()
+    fun onModify(view: View) {
+        val intent = Intent(this@MyPageActivity, ModifyActivity::class.java)
+        intent.putExtra("field", strField)
+        startActivity(intent)
+    }
 
-        btnModify.setOnClickListener {
-            val intent = Intent(this@MyPageActivity, ModifyActivity::class.java)
-            intent.putExtra("field", strField)
-            startActivity(intent)
+    fun onWriteSchedule(view: View) {
+        // String 타입 날짜를 long 타입으로 바꾸기
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+
+        val dialog = ScheduleDialog()
+        dialog.sYear = sYear.toInt()
+        dialog.sMonth = sMonth.toInt()
+        dialog.sDay = sDay.toInt()
+
+        dialog.listener = {date, content ->
+            val ev = Event(Color.LTGRAY, sdf.parse("$sYear-$sMonth-$sDay").time, ScheduleModel(content, date))
+            binding.calendarView.addEvent(ev)
+            Log.e("TAG", "등록했음: ${date}, ${content}")
         }
 
-        fabScheduleWriteMP.setOnClickListener {
-            val dialog = ScheduleDialog()
-            dialog.sYear = sYear.toInt()
-            dialog.sMonth = sMonth.toInt()
-            dialog.sDay = sDay.toInt()
-
-            dialog.listener = {date, content ->
-                val ev = Event(Color.LTGRAY, sdf.parse("$sYear-$sMonth-$sDay").time, ScheduleModel(content, date))
-                calendarViewMP.addEvent(ev)
-                Log.e("TAG", "등록했음: ${date}, ${content}")
-            }
-
-            dialog.show(supportFragmentManager, "dialog")
-        }
-
+        dialog.show(supportFragmentManager, "dialog")
     }
 
     fun getUserInfo() {
@@ -141,13 +152,13 @@ class MyPageActivity : AppCompatActivity() {
                     strField = field
                     val arrField = field.split(",")
                     for (itme in arrField) {
-                        tagList.add("#${itme}")
+                        tagList.add(itme)
                     }
                     // recyclerView setting
                     val layouManager = LinearLayoutManager(this@MyPageActivity)
                     layouManager.orientation = LinearLayoutManager.HORIZONTAL
-                    recyclerViewTag.layoutManager = layouManager
-                    recyclerViewTag.adapter = MyAdapter()
+                    binding.rcvTag.layoutManager = layouManager
+                    binding.rcvTag.adapter = TagAdapter(this@MyPageActivity)
 
                 } else Log.e(TAG+"Err", response.message())
             }
@@ -158,38 +169,30 @@ class MyPageActivity : AppCompatActivity() {
 
         })
 
-        tvName.text = preferences.getString("userName", "이름 없음")
-        tvEmail.text = preferences.getString("userId", "Id 없음")
+        tagList.clear()
+        for(i: Int in 1..5) {
+            tagList.add("태그$i")
+        }
+        // recyclerView setting
+        val mAdapter = TagAdapter(this)
+        binding.rcvTag.adapter = mAdapter
+        mAdapter.list = tagList
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        binding.rcvTag.layoutManager = layoutManager
+        binding.rcvTag.setHasFixedSize(true)
+
+        name = preferences.getString("userName", "이름 없음")!!
+        email = preferences.getString("userId", "Id 없음")!!
     }
 
-    inner class MyAdapter : RecyclerView.Adapter<MyViewHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-            return MyViewHolder(LayoutInflater.from(this@MyPageActivity).inflate(R.layout.row_tag, parent, false))
-        }
-
-        override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-            val tag = tagList[position]
-            tag?.let {
-                holder.tvTagName.text = tag
-            }
-        }
-
-        override fun getItemCount(): Int {
-            return tagList.size
-        }
-
-    }
-
-    inner class MyViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
-        val tvTagName = itemView.findViewById<TextView>(R.id.tvTagName)
-    }
-
-    fun listRecyclerView() {
-        val sAdapter = ScheduleAdapter()
-        recyclerScheduleMP.adapter = sAdapter
+    fun rcvSchedule() {
+        val sAdapter = ScheduleAdapter(this)
+        binding.rcvSchedule.adapter = sAdapter
         val layoutManager = LinearLayoutManager(applicationContext)
-        recyclerScheduleMP.layoutManager = layoutManager
-        recyclerScheduleMP.setHasFixedSize(true)
+        binding.rcvSchedule.layoutManager = layoutManager
+        binding.rcvSchedule.setHasFixedSize(true)
+        sAdapter.event = event
     }
 
 
@@ -209,9 +212,9 @@ class MyPageActivity : AppCompatActivity() {
                                 val arrDate = rDate.split("-")
                                 val date = "${arrDate[3]}:${arrDate[4]}"
                                 val ev = Event(Color.LTGRAY, sdf.parse(result[i - 1].date).time, ScheduleModel(content, date))
-                                calendarViewMP.addEvent(ev)
+                                binding.calendarView.addEvent(ev)
                             }
-                            listRecyclerView()
+                            rcvSchedule()
                         }
                         204 -> {
                             Log.e(TAG, "저장된 스케줄이 없습니다.")
@@ -227,32 +230,9 @@ class MyPageActivity : AppCompatActivity() {
         })
     }
 
-    inner class ScheduleAdapter : RecyclerView.Adapter<ScheduleViewHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduleViewHolder {
-            return ScheduleViewHolder(LayoutInflater.from(this@MyPageActivity).inflate(R.layout.row_schedule, parent, false))
-        }
-
-        override fun onBindViewHolder(holder: ScheduleViewHolder, position: Int) {
-            val schedule: ScheduleModel = event[position].data as ScheduleModel
-            Log.e(TAG, "${schedule.content}, ${schedule.date}")
-            holder.tvContent.text = schedule.content
-            holder.tvDate.text = schedule.date
-        }
-
-        override fun getItemCount(): Int {
-            return event.size
-        }
-
-    }
-
-    inner class ScheduleViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
-        val tvContent = itemView.findViewById<TextView>(R.id.tvContent)
-        val tvDate = itemView.findViewById<TextView>(R.id.tvDateS)
-    }
-
     override fun onResume() {
         super.onResume()
-        listRecyclerView()
+        rcvSchedule()
         getUserInfo()
     }
 

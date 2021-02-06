@@ -70,6 +70,8 @@ class ScheduleDialog(): DialogFragment() {
                 val content: String = view.editContent.text.toString()
                 date += time
 
+                listener.invoke("${sHour}:${sMinute}", content)
+
                 preferences = requireActivity().getSharedPreferences("user", Activity.MODE_PRIVATE)
                 val writer = ScheduleWDTO(content, date, preferences.getString("userNum", "0")!!.toInt())
                 val call = RetrofitHelper.getApiService().schedule_write(writer)
