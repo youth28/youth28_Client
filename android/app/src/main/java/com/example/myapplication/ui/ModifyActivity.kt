@@ -17,13 +17,17 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableField
 import com.example.myapplication.API.ApiService
 import com.example.myapplication.API.RetrofitHelper
 import com.example.myapplication.DTO.UserModify
 import com.example.myapplication.R
+import com.example.myapplication.databinding.ActivityModifyBinding
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_modify.*
@@ -54,17 +58,20 @@ class ModifyActivity: AppCompatActivity() {
 
     internal lateinit var preferences: SharedPreferences
 
+    private lateinit var binding : ActivityModifyBinding
+
     var user_id: Int = 0
-    var strName = ""
-    var strPW = ""
-    var strEmail = ""
-    var simgProfile = "ex"
-    var strField = ""
+    var name = ObservableField<String>()
+    var PW = ObservableField<String>()
+    var email = ObservableField<String>()
+    var profile = "http://d3c30c5e052c.ngrok.io/uploads/798545ff1676d64dd4faea6b36bb0f94.png"
+    var field = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_modify)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_modify)
+        binding.activity = this@ModifyActivity
 
         // 퍼미션 요청
         askPermissions()
@@ -76,103 +83,93 @@ class ModifyActivity: AppCompatActivity() {
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
         editName.setText(preferences.getString("userName", ""))
 
+        name.set(preferences.getString("userName", "없음"))
+
         if (intent.hasExtra("field")) {
-            strField = intent.getStringExtra("field").toString()
-            val arrayList = strField.split(",")
+            field = intent.getStringExtra("field").toString()
+            val arrayList = field.split(",")
             for (value in arrayList) {
                 when (value) {
-                    "스터디" -> mStudy.isChecked = true
-                    "게임" -> mGame.isChecked = true
-                    "업무" -> mWork.isChecked = true
-                    "음악" -> mMusic.isChecked = true
-                    "미술" -> mArt.isChecked = true
-                    "운동(헬스)" -> mExercise.isChecked = true
-                    "기타" -> mEtc.isChecked = true
+                    "스터디" -> binding.cbStudy.isChecked = true
+                    "게임" -> binding.cbGame.isChecked = true
+                    "업무" -> binding.cbWork.isChecked = true
+                    "음악" -> binding.cbMusic.isChecked = true
+                    "미술" -> binding.cbArt.isChecked = true
+                    "운동(헬스)" -> binding.cbExercise.isChecked = true
+                    "기타" -> binding.cbEtc.isChecked = true
                 }
             }
         }
 
-        imgProfile.setOnClickListener {
+        binding.imgProfile.setOnClickListener {
             startActivityForResult(getPickImageChooserIntent(), IMAGE_RESULT)
         }
+    }
 
-        btnSaveProfile.setOnClickListener {
-            if (mBitmap != null) {
-                multipartImageUpload()
-            } else {
-                Toast.makeText(applicationContext, "비트맵 비어있음", Toast.LENGTH_SHORT).show()
+    fun onSave(view: View) {
+        profile = preferences.getString("userProfile", "").toString()
+        user_id = preferences.getString("userNum", "0")!!.toInt()
+        field = ""
+
+        if (name.get() == "") {
+            showToast("이름을 입력해주세요")
+        } else if (email.get() == "") {
+            showToast("이메일을 입력해주세요")
+        } else if (PW.get() == "") {
+            showToast("현재 비밀번호를 입력해주세요")
+        } else if (email.get() != "" && PW.get() != "") {
+            if (preferences.getString("userId", "") != email.get()) {
+                showToast("일치하지 않는 아이디 입니다.")
             }
-        }
+            if (preferences.getString("userPW", "") != PW.get()) {
+                showToast("일지하지 않는 비밀번호 입니다.")
+            }
 
-        btnSave.setOnClickListener {
+            if (preferences.getString("userId", "") == email.get() && preferences.getString("userPW", "") == PW.get()) {
 
-            strName = editName.text.toString()
-            strPW = editPW.text.toString()
-            strEmail = editEmail.text.toString()
-            simgProfile = preferences.getString("userProfile", "").toString()
-            user_id = preferences.getString("userNum", "0")!!.toInt()
-            strField = ""
+                field = ""
+                if (binding.cbStudy.isChecked) field += "${binding.cbStudy.text},"
+                if (binding.cbWork.isChecked) field += "${binding.cbWork.text},"
+                if (binding.cbGame.isChecked) field += "${binding.cbGame.text},"
+                if (binding.cbMusic.isChecked) field += "${binding.cbMusic.text},"
+                if (binding.cbArt.isChecked) field += "${binding.cbArt.text},"
+                if (binding.cbExercise.isChecked) field += "${binding.cbExercise.text},"
+                if (binding.cbEtc.isChecked) field += "${binding.cbEtc.text},"
 
-            if (strName == "") {
-                showToast("이름을 입력해주세요")
-            } else if (strEmail == "") {
-                showToast("이메일을 입력해주세요")
-            } else if (strPW == "") {
-                showToast("현재 비밀번호를 입력해주세요")
-            } else if (strEmail != "" && strPW != "") {
-                if (preferences.getString("userId", "") != strEmail) {
-                    showToast("일치하지 않는 아이디 입니다.")
-                }
-                if (preferences.getString("userPW", "") != strPW) {
-                    showToast("일지하지 않는 비밀번호 입니다.")
+                if(field.length >0) {
+                    field = field.substring(0, field.length - 1)
                 }
 
-                if (preferences.getString("userId", "") == strEmail && preferences.getString("userPW", "") == strPW) {
-
-                    if (mStudy.isChecked) strField += "${mStudy.text},"
-                    if (mWork.isChecked) strField += "${mWork.text},"
-                    if (mGame.isChecked) strField += "${mGame.text},"
-                    if (mMusic.isChecked) strField += "${mMusic.text},"
-                    if (mArt.isChecked) strField += "${mArt.text},"
-                    if (mExercise.isChecked) strField += "${mExercise.text},"
-                    if (mEtc.isChecked) strField += "${mEtc.text},"
-
-                    if(strField.length >0) {
-                        strField = strField.substring(0, strField.length - 1)
+                val user = getData()
+                val call = RetrofitHelper.getApiService().modify(user)
+                call.enqueue(object : Callback<UserModify>{
+                    override fun onResponse(call: Call<UserModify>, response: Response<UserModify>) {
+                        if (response.isSuccessful) {
+                            if (response.code() == 200) {
+                                val editor = preferences.edit()
+                                editor.putString("userName", name.get())
+                                editor.putString("userProfile", profile)
+                                showToast("수정되었습니다.")
+                                finish()
+                            }
+                        } else Log.e(TAG, response.message())
                     }
-                    
-                    val user = getData()
-                    val call = RetrofitHelper.getApiService().modify(user)
-                    call.enqueue(object : Callback<UserModify>{
-                        override fun onResponse(call: Call<UserModify>, response: Response<UserModify>) {
-                            if (response.isSuccessful) {
-                                if (response.code() == 200) {
-                                    val editor = preferences.edit()
-                                    editor.putString("userName", strName)
-                                    editor.putString("userProfile", simgProfile)
-                                    showToast("수정되었습니다.")
-                                    finish()
-                                }
-                            } else Log.e(TAG, response.message())
-                        }
-                        override fun onFailure(call: Call<UserModify>, t: Throwable) {
-                            Log.e(TAG, "통신안됨: ${t.message}")
-                        }
+                    override fun onFailure(call: Call<UserModify>, t: Throwable) {
+                        Log.e(TAG, "통신안됨: ${t.message}")
+                    }
 
-                    })
-                }
+                })
             }
-
         }
     }
 
     fun getData(): UserModify {
-        val data = UserModify(user_id, strName, simgProfile, strField)
+        val data = UserModify(user_id, name.get().toString(), profile, field)
         return data
     }
 
     fun getImage() {
-        Picasso.get().load("http://f0f3e680fa1c.ngrok.io/uploads/6c81c2afa1c134bb6eda791f87edaf3a.png").into(imgProfile)
+        Picasso.get().load("http://d3c30c5e052c.ngrok.io/uploads/798545ff1676d64dd4faea6b36bb0f94.png").into(binding.imgProfile)
     }
 
     // region 프로필 사진 서버에 저장하기
@@ -199,7 +196,7 @@ class ModifyActivity: AppCompatActivity() {
     private fun initRetrofitClient() {
         val client = OkHttpClient.Builder().build()
         apiService =
-                Retrofit.Builder().baseUrl("http://f0f3e680fa1c.ngrok.io").client(client).build().create(
+                Retrofit.Builder().baseUrl("http://d3c30c5e052c.ngrok.io").client(client).build().create(
                         ApiService::class.java
                 )
     }
@@ -264,9 +261,14 @@ class ModifyActivity: AppCompatActivity() {
                     // 파일 비트맵으로 만들기
                     mBitmap = BitmapFactory.decodeFile(filePath)
                     // 이미지 뷰에 보이기
-                    imgProfile.setImageBitmap(mBitmap)
+                    binding.imgProfile.setImageBitmap(mBitmap)
                 }
             }
+        }
+        if (mBitmap != null) {
+            multipartImageUpload()
+        } else {
+            Toast.makeText(applicationContext, "비트맵 비어있음", Toast.LENGTH_SHORT).show()
         }
     }
 
