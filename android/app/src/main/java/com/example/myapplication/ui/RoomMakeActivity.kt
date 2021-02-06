@@ -4,11 +4,15 @@ import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableField
 import com.example.myapplication.API.RetrofitHelper
 import com.example.myapplication.DTO.RoomMakeDTO
 import com.example.myapplication.R
+import com.example.myapplication.databinding.ActivityRoomMakeBinding
 import kotlinx.android.synthetic.main.activity_room_make.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,67 +24,69 @@ class RoomMakeActivity: AppCompatActivity() {
 
     internal lateinit var preferences: SharedPreferences
 
-    var title = ""
+    private lateinit var binding : ActivityRoomMakeBinding
+
+    var title = ObservableField<String>()
     var maxPro = 0
     var field = ""
     var profile = ""
 
+    var maxPeo = "0"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_room_make)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_room_make)
+        binding.activity = this@RoomMakeActivity
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
+    }
 
-        btnSub.setOnClickListener {
-            peRson.text = "${Integer.parseInt(peRson.text.toString()) - 1}"
-            Log.e(TAG+ "sub", peRson.text.toString())
-        }
+    fun onCreateRoom(view: View) {
+        Log.e(TAG+ "maxpro", "$maxPro")
 
-        btnPlu.setOnClickListener {
-            peRson.text = "${Integer.parseInt(peRson.text.toString()) + 1}"
-            Log.e(TAG+ "plu", peRson.text.toString())
-        }
+        field = ""
+        if (binding.cbStudy.isChecked) field += "${binding.cbStudy.text},"
+        if (binding.cbWork.isChecked) field += "${binding.cbWork.text},"
+        if (binding.cbGame.isChecked) field += "${binding.cbGame.text},"
+        if (binding.cbMusic.isChecked) field += "${binding.cbMusic.text},"
+        if (binding.cbArt.isChecked) field += "${binding.cbArt.text},"
+        if (binding.cbExercise.isChecked) field += "${binding.cbExercise.text},"
+        if (binding.cbEtc.isChecked) field += "${binding.cbEtc.text},"
 
-        btnMakeRoom.setOnClickListener {
-            title = editRname.text.toString()
-            maxPro = Integer.parseInt(peRson.text.toString())
-            Log.e(TAG+ "maxpro", "$maxPro")
+        Log.e(TAG, "checkBox: $field 선택됨")
 
-            if (cbStudy.isChecked) field += "${cbStudy.text},"
-            if (cbWork.isChecked) field += "${cbWork.text},"
-            if (cbGame.isChecked) field += "${cbGame.text},"
-            if (cbMusic.isChecked) field += "${cbMusic.text},"
-            if (cbArt.isChecked) field += "${cbArt.text},"
-            if (cbExercise.isChecked) field += "${cbExercise.text},"
-            if (cbEtc.isChecked) field += "${cbEtc.text},"
+        val room = getData()
+        Log.e("roomMake", room.toString())
+        val call = RetrofitHelper.getApiService().make_room(room)
+        call.enqueue(object : Callback<RoomMakeDTO> {
+            override fun onResponse(call: Call<RoomMakeDTO>, response: Response<RoomMakeDTO>) {
+                if (response.isSuccessful) {
+                    if (response.code() == 200) {
+                        showToast("성공적으로 방을 만들었습니다. 사이드 메뉴에서 확인해주세요")
+                        finish()
+                    }
+                } else Log.e(TAG, "RoomMake: ${response.message()}")
+            }
 
-            Log.e(TAG, "checkBox: $field 선택됨")
+            override fun onFailure(call: Call<RoomMakeDTO>, t: Throwable) {
+                Log.e(TAG, "통신안됨 ${t.message}")
+            }
 
-            val room = getData()
-            val call = RetrofitHelper.getApiService().make_room(room)
-            call.enqueue(object : Callback<RoomMakeDTO> {
-                override fun onResponse(call: Call<RoomMakeDTO>, response: Response<RoomMakeDTO>) {
-                    if (response.isSuccessful) {
-                        if (response.code() == 200) {
-                            showToast("성공적으로 방을 만들었습니다. 사이드 메뉴에서 확인해주세요")
-                            finish()
-                        }
-                    } else Log.e(TAG, "RoomMake: ${response.message()}")
-                }
+        })
+    }
 
-                override fun onFailure(call: Call<RoomMakeDTO>, t: Throwable) {
-                    Log.e(TAG, "통신안됨 ${t.message}")
-                }
+    fun onSub(view: View) {
+        maxPeo = "${--maxPro}"
+        binding.invalidateAll()
+    }
 
-            })
-
-        }
-
-
+    fun onPlu(view: View) {
+        maxPeo = "${++maxPro}"
+        binding.invalidateAll()
     }
 
     fun getData(): RoomMakeDTO {
-        val data = RoomMakeDTO(title, maxPro, field, profile, preferences.getString("userNum", "0")!!.toInt())
+        val data = RoomMakeDTO(title.get().toString(), maxPro, field, profile, preferences.getString("userNum", "0")!!.toInt())
         return data
     }
 
