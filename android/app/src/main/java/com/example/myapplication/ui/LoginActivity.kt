@@ -3,6 +3,7 @@ package com.example.myapplication.ui
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -27,8 +28,6 @@ class LoginActivity: AppCompatActivity() {
 
     var email = ""
     var PW = ""
-    var errEmail = ""
-    var errPW = ""
 
     internal lateinit var preferences: SharedPreferences
 
@@ -69,7 +68,7 @@ class LoginActivity: AppCompatActivity() {
                                 finish()
                             }
                             204 -> {
-                                errPW = "아이디나 비밀번호가 일치하지 않습니다."
+                                binding.tvErrPw.text = "아이디나 비밀번호가 일치하지 않습니다."
                                 binding.tvErrPw.visibility = View.VISIBLE
                             }
                         }
@@ -90,67 +89,68 @@ class LoginActivity: AppCompatActivity() {
     }
 
     fun onLogin(view: View) {
-        if (email == "" || PW ==""){
-            if (email == "") {
-                tvErrId.visibility = View.VISIBLE
-                errEmail = "Email을 작성해주세요"
+        binding.apply {
+            if (email == "" || PW == "") {
+                if (email == "") {
+                    tvErrId.text = "Email을 작성해주세요"
+                    tvErrId.visibility = View.VISIBLE
+                } else {
+                    tvErrId.visibility = View.GONE
+                }
+                if (PW == "") {
+                    tvErrPw.visibility = View.VISIBLE
+                    tvErrPw.text = "비밀번호를 작성해주세요"
+                } else {
+                    tvErrPw.visibility = View.GONE
+                }
             } else {
                 tvErrId.visibility = View.GONE
-            }
-            if (PW == ""){
-                tvErrPw.visibility = View.VISIBLE
-                errPW = "비밀번호를 작성해주세요"
-            } else {
                 tvErrPw.visibility = View.GONE
-            }
-        } else {
-            tvErrId.visibility = View.GONE
-            tvErrPw.visibility = View.GONE
 
-            // 로그인 통신 코드
-            val user = getData()
-            val call = RetrofitHelper.getApiService().login(user)
-            Log.e(TAG, user.toString())
-            call.enqueue(object : Callback<ResponseLogin> {
-                override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
-                    if (response.isSuccessful) {
-                        val result = response.code()
-                        when (result) {
-                            200 -> {
-                                //성공할시
-                                showToast("자동 로그인 등록")
+                // 로그인 통신 코드
+                val user = getData()
+                val call = RetrofitHelper.getApiService().login(user)
+                Log.e(TAG, user.toString())
+                call.enqueue(object : Callback<ResponseLogin> {
+                    override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
+                        if (response.isSuccessful) {
+                            val result = response.code()
+                            when (result) {
+                                200 -> {
+                                    //성공할시
+                                    showToast("자동 로그인 등록")
 
-                                preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
-                                val editor = preferences.edit()
-                                editor.putString("userId", email)
-                                editor.putString("userPW", PW)
-                                editor.putString("userNum", response.body()!!.user_id)
-                                Log.e(TAG+" userNum", response.body()!!.user_id)
-                                editor.putString("userName", response.body()!!.name)
-                                editor.putString("userProfile", "image")
-                                editor.apply()
+                                    preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
+                                    val editor = preferences.edit()
+                                    editor.putString("userId", email)
+                                    editor.putString("userPW", PW)
+                                    editor.putString("userNum", response.body()!!.user_id)
+                                    Log.e(TAG + " userNum", response.body()!!.user_id)
+                                    editor.putString("userName", response.body()!!.name)
+                                    editor.putString("userProfile", "image")
+                                    editor.apply()
 
-                                Log.e(TAG+" Response", response.body().toString())
+                                    Log.e(TAG + " Response", response.body().toString())
 
-                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                                startActivity(intent)
-                                finish()
-                            }
-                            204 -> {
-                                tvErrPw.text = "아이디나 비밀번호가 일치하지 않습니다."
-                                tvErrPw.visibility = View.VISIBLE
-                                Log.e(TAG, "204")
+                                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                                204 -> {
+                                    tvErrPw.text = "아이디나 비밀번호가 일치하지 않습니다."
+                                    tvErrPw.visibility = View.VISIBLE
+                                    Log.e(TAG, "204")
+                                }
                             }
                         }
                     }
-                }
 
-                override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
-                    Log.e(TAG+" Err", "통신안됨: ${t.message}")
-                }
+                    override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
+                        Log.e(TAG + " Err", "통신안됨: ${t.message}")
+                    }
 
-            })
-
+                })
+            }
         }
     }
 
