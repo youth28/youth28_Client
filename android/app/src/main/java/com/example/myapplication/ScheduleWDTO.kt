@@ -1,4 +1,4 @@
-package com.example.myapplication.DTO
+package com.example.myapplication
 
 data class ScheduleWDTO(
         val content: String,
