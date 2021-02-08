@@ -12,7 +12,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.API.RetrofitHelper
-import com.example.myapplication.DTO.ScheduleWDTO
+import com.example.myapplication.ScheduleWDTO
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.dialog_schedule.*
 import kotlinx.android.synthetic.main.dialog_schedule.view.*
