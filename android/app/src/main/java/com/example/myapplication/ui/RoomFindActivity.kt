@@ -7,9 +7,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.API.RetrofitHelper
-import com.example.myapplication.DTO.RoomNameDTO
-import com.example.myapplication.DTO.RoomsDTO
+import com.example.myapplication.api.RetrofitHelper
+import com.example.myapplication.dto.RoomNameDTO
+import com.example.myapplication.dto.RoomsDTO
 import com.example.myapplication.R
 import com.example.myapplication.adapter.RoomAdapter
 import com.example.myapplication.RoomModel

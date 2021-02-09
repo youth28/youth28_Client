@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.example.myapplication.API.RetrofitHelper
-import com.example.myapplication.DTO.JoinRoomDTO
+import com.example.myapplication.api.RetrofitHelper
+import com.example.myapplication.dto.JoinRoomDTO
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.dialog_join.view.*
 import kotlinx.android.synthetic.main.dialog_join.view.btnNo

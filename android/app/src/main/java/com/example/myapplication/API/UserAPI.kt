@@ -1,6 +1,6 @@
-package com.example.myapplication.API
+package com.example.myapplication.api
 
-import com.example.myapplication.DTO.*
+import com.example.myapplication.dto.*
 import com.example.myapplication.ScheduleWDTO
 import retrofit2.Call
 import retrofit2.http.Body

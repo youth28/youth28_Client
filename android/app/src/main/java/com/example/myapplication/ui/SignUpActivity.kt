@@ -6,8 +6,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.example.myapplication.API.RetrofitHelper
-import com.example.myapplication.DTO.UserDTO
+import com.example.myapplication.api.RetrofitHelper
+import com.example.myapplication.dto.UserDTO
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySignUpBinding
 import kotlinx.android.synthetic.main.activity_sign_up.*

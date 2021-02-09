@@ -16,10 +16,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.API.RetrofitHelper
+import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.ChatModel
-import com.example.myapplication.DTO.RoomId
-import com.example.myapplication.DTO.RoomInfoDTO
+import com.example.myapplication.dto.RoomId
+import com.example.myapplication.dto.RoomInfoDTO
 import com.example.myapplication.R
 import com.example.myapplication.adapter.TagAdapter
 import com.example.myapplication.databinding.ActivityTalkBinding

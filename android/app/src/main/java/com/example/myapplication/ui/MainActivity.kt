@@ -1,24 +1,18 @@
 package com.example.myapplication.ui
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.API.RetrofitHelper
-import com.example.myapplication.DTO.MyRoomsDTO
-import com.example.myapplication.DTO.UserId
+import com.example.myapplication.api.RetrofitHelper
+import com.example.myapplication.dto.MyRoomsDTO
+import com.example.myapplication.dto.UserId
 import com.example.myapplication.MyRoom
 import com.example.myapplication.R
 import com.example.myapplication.adapter.RoomAdapter
@@ -62,11 +56,6 @@ class MainActivity: AppCompatActivity() {
         myRoomRcv()
 
         Log.e("user_id", user_id.toString())
-
-//        for (i: Int in 1..5){
-//            myRoomList.add(MyRoom("이건 방이다 ${i}", i))
-//        }
-
         // endregion
 
         // region 사이드 메뉴바 요소
@@ -141,9 +130,9 @@ class MainActivity: AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         binding.rcvRoomList.layoutManager = layoutManager
         binding.rcvRoomList.setHasFixedSize(true)
-//        for(i: Int in 1..5) {
-//            list.add(RoomModel(i, "title${i}", i + 1, arrayListOf("안녕", "하이"), "http://d24a94107e01.ngrok.io/uploads/359cc2d83bd7eecabec16e64a2690efd.jpg"))
-//        }
+        for(i: Int in 1..5) {
+            list.add(RoomModel(i, "title${i}", i + 1, arrayListOf("안녕", "하이"), "http://d24a94107e01.ngrok.io/uploads/359cc2d83bd7eecabec16e64a2690efd.jpg"))
+        }
         mAdapter.list = list
     }
     

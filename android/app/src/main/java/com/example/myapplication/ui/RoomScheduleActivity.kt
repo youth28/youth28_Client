@@ -11,8 +11,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.API.RetrofitHelper
-import com.example.myapplication.DTO.*
+import com.example.myapplication.api.RetrofitHelper
+import com.example.myapplication.dto.*
 import com.example.myapplication.R
 import com.example.myapplication.ScheduleWDTO
 import com.example.myapplication.adapter.RoomScheduleAdapter

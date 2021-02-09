@@ -1,4 +1,4 @@
-package com.example.myapplication.DTO
+package com.example.myapplication.dto
 
 data class RoomNameDTO(
         val room_name: String

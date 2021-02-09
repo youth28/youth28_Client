@@ -1,6 +1,4 @@
-package com.example.myapplication.DTO
-
-import com.example.myapplication.RoomModel
+package com.example.myapplication.dto
 
 data class RoomsDTO(
         val room: List<RoomDTO>

@@ -1,4 +1,4 @@
-package com.example.myapplication.API
+package com.example.myapplication.api
 
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

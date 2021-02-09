@@ -1,4 +1,4 @@
-package com.example.myapplication.DTO
+package com.example.myapplication.dto
 
 data class RoomScheduleRDTO(
         val room_schedule: List<RoomScheduleWDTO>

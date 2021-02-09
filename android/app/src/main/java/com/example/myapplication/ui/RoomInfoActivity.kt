@@ -9,10 +9,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.example.myapplication.API.RetrofitHelper
-import com.example.myapplication.DTO.RoomId
-import com.example.myapplication.DTO.RoomInfoDTO
-import com.example.myapplication.DTO.RoomMakeDTO
+import com.example.myapplication.api.RetrofitHelper
+import com.example.myapplication.dto.RoomId
+import com.example.myapplication.dto.RoomInfoDTO
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityRoomInfoBinding
 import kotlinx.android.synthetic.main.activity_room_info.*
@@ -77,7 +76,7 @@ class RoomInfoActivity : AppCompatActivity() {
         maxPro = 5
         maxPeo = "${maxPro}명"
         field = "스터디,게임,미술"
-        profile = "http://d130d0731f7f.ngrok.io/uploads/98eed633ca782547430c1768572e1cdb.png"
+        profile = "http://d3c30c5e052c.ngrok.io/uploads/98eed633ca782547430c1768572e1cdb.png"
 
         val arrayList = field.split(",")
         for (value in arrayList) {

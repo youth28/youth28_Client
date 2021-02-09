@@ -20,14 +20,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableField
-import com.example.myapplication.API.ApiService
-import com.example.myapplication.API.RetrofitHelper
-import com.example.myapplication.DTO.RoomModifyDTO
-import com.example.myapplication.DTO.UserInfoDTO
+import com.example.myapplication.api.ApiService
+import com.example.myapplication.api.RetrofitHelper
+import com.example.myapplication.dto.RoomModifyDTO
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityRoomModifyBinding
-import kotlinx.android.synthetic.main.activity_modify.*
-import kotlinx.android.synthetic.main.activity_room_modify.*
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -93,7 +90,7 @@ class RoomModifyActivity : AppCompatActivity() {
             Log.e(TAG, "intent 설정")
         }
 
-        imgProfile.setOnClickListener {
+        binding.imgProfile.setOnClickListener {
             startActivityForResult(getPickImageChooserIntent(), IMAGE_RESULT)
         }
     }
@@ -116,7 +113,6 @@ class RoomModifyActivity : AppCompatActivity() {
         Log.e(TAG, "checkBox: $field 선택됨")
 
         val room = getData()
-        Log.e(TAG, "RoomModifyDTO(room_id=$room_id, title='$title', maxPeo=$maxPro, field='$field', profile='$profile')")
         Log.e(TAG, room.toString())
         val call = RetrofitHelper.getApiService().modify_room(room)
         call.enqueue(object : Callback<RoomModifyDTO> {
@@ -175,7 +171,7 @@ class RoomModifyActivity : AppCompatActivity() {
     private fun initRetrofitClient() {
         val client = OkHttpClient.Builder().build()
         apiService =
-                Retrofit.Builder().baseUrl("http://d130d0731f7f.ngrok.io").client(client).build().create(
+                Retrofit.Builder().baseUrl("http://d3c30c5e052c.ngrok.io").client(client).build().create(
                         ApiService::class.java
                 )
     }
@@ -240,7 +236,7 @@ class RoomModifyActivity : AppCompatActivity() {
                     // 파일 비트맵으로 만들기
                     mBitmap = BitmapFactory.decodeFile(filePath)
                     // 이미지 뷰에 보이기
-                    imgProfile.setImageBitmap(mBitmap)
+                    binding.imgProfile.setImageBitmap(mBitmap)
                 }
             }
         }

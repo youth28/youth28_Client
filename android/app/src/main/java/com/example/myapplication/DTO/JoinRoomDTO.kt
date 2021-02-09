@@ -1,4 +1,4 @@
-package com.example.myapplication.DTO
+package com.example.myapplication.dto
 
 class JoinRoomDTO(
         val user_id: Int,

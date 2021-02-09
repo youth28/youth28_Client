@@ -9,8 +9,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableField
-import com.example.myapplication.API.RetrofitHelper
-import com.example.myapplication.DTO.RoomMakeDTO
+import com.example.myapplication.api.RetrofitHelper
+import com.example.myapplication.dto.RoomMakeDTO
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityRoomMakeBinding
 import kotlinx.android.synthetic.main.activity_room_make.*

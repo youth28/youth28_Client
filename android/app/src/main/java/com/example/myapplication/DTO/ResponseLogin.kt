@@ -1,6 +1,4 @@
-package com.example.myapplication.DTO
-
-import com.google.gson.annotations.SerializedName
+package com.example.myapplication.dto
 
 data class ResponseLogin(
         val user_id: String,
