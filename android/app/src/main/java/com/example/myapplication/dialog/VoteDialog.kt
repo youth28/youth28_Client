@@ -5,11 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.R
+import com.example.myapplication.databinding.DialogVoteBinding
 import kotlinx.android.synthetic.main.dialog_vote.*
 
 class VoteDialog : DialogFragment(){
+    private lateinit var binding: DialogVoteBinding
+
     // 다이얼로그의 버튼이 눌린경우
     var listener: (String) -> Unit = {checkRB -> }
 
@@ -18,7 +22,9 @@ class VoteDialog : DialogFragment(){
     var writer = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_vote, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_vote, container, false)
+        binding.dialog = this
+        return binding.root
     }
 
     override fun onStart() {
@@ -30,35 +36,28 @@ class VoteDialog : DialogFragment(){
         //dialog?.window?.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        tvTitle.text = title
-        tvDate.text = date
-        tvWriter.text = writer
-
+    fun onVote(view: View) {
         var checkRB = ""
-
-        btnVote.setOnClickListener {
-            when(radioGroup.checkedRadioButtonId){
-                R.id.rbAgree -> {
-                    checkRB = "동의"
-                    dismiss()
-                }
-                R.id.rbOpposi -> {
-                    checkRB = "반대"
-                    dismiss()
-                }
-                R.id.rbHold -> {
-                    checkRB = "보류"
-                    dismiss()
-                }
+        when(radioGroup.checkedRadioButtonId){
+            R.id.rbAgree -> {
+                checkRB = "동의"
+                dismiss()
             }
-
-            if(checkRB == ""){
-                showToast("투표를 선택해 주세요")
-            } else {
-                listener.invoke(checkRB)
+            R.id.rbOpposi -> {
+                checkRB = "반대"
+                dismiss()
             }
+            R.id.rbHold -> {
+                checkRB = "보류"
+                dismiss()
+            }
+        }
 
+        if(checkRB == ""){
+            showToast("투표를 선택해 주세요")
+        } else {
+            listener.invoke(checkRB)
+            dismiss()
         }
     }
 

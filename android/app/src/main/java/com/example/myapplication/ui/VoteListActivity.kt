@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.dto.VoteDTO
 import com.example.myapplication.R
 import com.example.myapplication.adapter.VoteListAdapter
+import com.example.myapplication.dialog.JoinDialog
+import com.example.myapplication.dialog.VoteDialog
 import kotlinx.android.synthetic.main.activity_my_page.*
 import kotlinx.android.synthetic.main.activity_vote_list.*
 import kotlinx.android.synthetic.main.row_vote.*

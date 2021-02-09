@@ -4,9 +4,12 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.dto.VoteDTO
 import com.example.myapplication.databinding.RowVoteBinding
+import com.example.myapplication.dialog.VoteDialog
 
 class VoteListAdapter (val context: Context): RecyclerView.Adapter<VoteListAdapter.Holder>() {
     var list = listOf<VoteDTO>()
@@ -21,6 +24,15 @@ class VoteListAdapter (val context: Context): RecyclerView.Adapter<VoteListAdapt
 
         holder.itemView.setOnClickListener {
             Log.e("click", list[position].title)
+            val dialog = VoteDialog()
+            dialog.title = list[position].title
+            dialog.date = list[position].date
+            dialog.writer = "누군가"
+            dialog.listener = { checkRB ->
+                showToast("'${checkRB}'에 투표하였습니다.")
+            }
+            val manager = (context as AppCompatActivity).supportFragmentManager
+            dialog.show(manager, "dialog")
         }
     }
 
@@ -32,5 +44,9 @@ class VoteListAdapter (val context: Context): RecyclerView.Adapter<VoteListAdapt
         fun onBind(list: VoteDTO) {
             binding.vote = list
         }
+    }
+
+    fun showToast(str: String) {
+        Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
     }
 }
