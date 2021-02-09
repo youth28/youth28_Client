@@ -10,10 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.ScheduleWDTO
 import com.example.myapplication.R
+import com.example.myapplication.databinding.DialogScheduleBinding
 import kotlinx.android.synthetic.main.dialog_schedule.*
 import kotlinx.android.synthetic.main.dialog_schedule.view.*
 import retrofit2.Call
@@ -28,12 +30,18 @@ class ScheduleDialog(): DialogFragment() {
 
     internal lateinit var preferences: SharedPreferences
 
+    private lateinit var binding: DialogScheduleBinding
+
     var sYear = 0
     var sMonth = 0
     var sDay = 0
 
     var sHour = 0
     var sMinute = 0
+
+    var date = ""
+    var time = ""
+    var content = ""
 
     override fun onStart() {
         super.onStart()
@@ -45,57 +53,59 @@ class ScheduleDialog(): DialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_schedule, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_schedule, container, false)
+        binding.dialog = this
+        return binding.root
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        tvScheduleDialog.text = "${sYear}년 ${sMonth}월 ${sDay}일"
+        date = "${sYear}년 ${sMonth}월 ${sDay}일"
 
-        var date = "${sYear}-${sMonth}-${sDay}-"
-        var time = "${timePicker.hour}-${timePicker.minute}"
+        time = "${timePicker.hour}-${timePicker.minute}"
         sHour = timePicker.hour
         sMinute = timePicker.minute
         
-        timePicker.setOnTimeChangedListener { view, hourOfDay, minute ->
+        binding.timePicker.setOnTimeChangedListener { view, hourOfDay, minute ->
             time = "${hourOfDay}-${minute}"
             sHour = hourOfDay
             sMinute = minute
         }
+    }
 
-        view.btnYes.setOnClickListener {
-            if (view.editContent.text.toString().length == 0) {
-                showToast("내용을 입력하세요")
-            } else {
-                val content: String = view.editContent.text.toString()
-                date += time
+    fun onSave(view: View) {
+        Log.e(TAG, "")
+        if (!content.isNotEmpty()) {
+            showToast("내용을 입력하세요")
+        } else {
+            date = "${sYear}-${sMonth}-${sDay}-${time}"
 
-                listener.invoke("${sHour}:${sMinute}", content)
+            listener.invoke("${sHour}:${sMinute}", content)
 
-                preferences = requireActivity().getSharedPreferences("user", Activity.MODE_PRIVATE)
-                val writer = ScheduleWDTO(content, date, preferences.getString("userNum", "0")!!.toInt())
-                val call = RetrofitHelper.getApiService().schedule_write(writer)
-                call.enqueue(object : Callback<ScheduleWDTO> {
-                    override fun onResponse(call: Call<ScheduleWDTO>, response: Response<ScheduleWDTO>) {
-                        if (response.isSuccessful) {
-                            Log.e("성공", response.message())
-                            listener.invoke("${sHour}:${sMinute}", content)
-                        } else {
-                            Log.e("실패", response.message())
-                        }
+            preferences = requireActivity().getSharedPreferences("user", Activity.MODE_PRIVATE)
+            val writer = ScheduleWDTO(content, date, preferences.getString("userNum", "0")!!.toInt())
+            val call = RetrofitHelper.getApiService().schedule_write(writer)
+            call.enqueue(object : Callback<ScheduleWDTO> {
+                override fun onResponse(call: Call<ScheduleWDTO>, response: Response<ScheduleWDTO>) {
+                    if (response.isSuccessful) {
+                        Log.e("성공", response.message())
+                        listener.invoke("${sHour}:${sMinute}", content)
+                    } else {
+                        Log.e("실패", response.message())
                     }
+                }
 
-                    override fun onFailure(call: Call<ScheduleWDTO>, t: Throwable) {
-                        Log.e(TAG + "ERR", "통신안됨 ${t.message}")
-                    }
+                override fun onFailure(call: Call<ScheduleWDTO>, t: Throwable) {
+                    Log.e(TAG + "ERR", "통신안됨 ${t.message}")
+                }
 
-                })
-                dismiss()
-            }
-        }
-        view.btnNo.setOnClickListener {
+            })
             dismiss()
         }
+    }
+
+    fun onExit(view: View) {
+        dismiss()
     }
 
     fun showToast(str: String) {
