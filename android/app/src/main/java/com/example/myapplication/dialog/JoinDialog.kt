@@ -8,10 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.JoinRoomDTO
 import com.example.myapplication.R
+import com.example.myapplication.databinding.DialogJoinBinding
 import kotlinx.android.synthetic.main.dialog_join.view.*
 import kotlinx.android.synthetic.main.dialog_join.view.btnNo
 import kotlinx.android.synthetic.main.dialog_join.view.btnYes
@@ -23,9 +25,11 @@ class JoinDialog: DialogFragment() {
 
     val TAG = "JoinDialog"
 
-    var mMainMsg : String? = null
+    var mainMsg : String = ""
     var room_id = 0
     internal lateinit var preferences: SharedPreferences
+
+    private lateinit var binding:DialogJoinBinding
 
     override fun onStart() {
         super.onStart()
@@ -37,12 +41,16 @@ class JoinDialog: DialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_join, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_join, container, false)
+        binding.dialog = this
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view.tvJoinDialog.text = "${mMainMsg}에 참여하시겠습니까?"
-        view.btnYes.setOnClickListener {
+        mainMsg = "${mainMsg}에 참여하시겠습니까?"
+        binding.invalidateAll()
+        binding.btnYes.setOnClickListener {
+            showToast("참여함")
             preferences = requireActivity().getSharedPreferences("user", Activity.MODE_PRIVATE)
             val join = JoinRoomDTO(preferences.getString("userNum", "0")!!.toInt(), room_id)
             val call = RetrofitHelper.getApiService().room_join(join)
@@ -50,8 +58,8 @@ class JoinDialog: DialogFragment() {
                 override fun onResponse(call: Call<JoinRoomDTO>, response: Response<JoinRoomDTO>) {
                     if (response.isSuccessful) {
                         when (response.code()) {
-                            200 -> Log.e(TAG, "${mMainMsg}에 참여하셨습니다.")
-                            204 -> Log.e(TAG, "이미 참여된 방입니다.")
+                            200 -> showToast("${mainMsg}에 참가하였습니다.")
+                            204 -> showToast("이미 참여된 방입니다.")
                         }
                     } else {
                         Log.e("실패", response.message())
@@ -65,13 +73,12 @@ class JoinDialog: DialogFragment() {
             })
             dismiss()
         }
-        view.btnNo.setOnClickListener {
+        binding.btnNo.setOnClickListener {
             dismiss()
         }
     }
 
     fun showToast(str: String) {
-        Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, str, Toast.LENGTH_SHORT).show()
     }
-
 }
