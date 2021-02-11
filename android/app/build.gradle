@@ -64,6 +64,6 @@ dependencies {
     // DataBinding
     kapt 'com.android.databinding:compiler:3.5.3'
     // LiveData?
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
 }
