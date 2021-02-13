@@ -30,6 +30,8 @@ class LoginActivity: AppCompatActivity() {
     var email = ""
     var PW = ""
 
+    private lateinit var loadDialog: SweetAlertDialog
+
     internal lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,22 +46,29 @@ class LoginActivity: AppCompatActivity() {
         Log.e(TAG, "$email, $PW")
 
         // email, PW 값이 null이 아니라면 자동 로그인 하기
+
+        loadDialog = SweetAlertDialog(this@LoginActivity, SweetAlertDialog.PROGRESS_TYPE)
+        loadDialog.progressHelper.barColor = Color.parseColor("#36b8ff")
+        loadDialog.titleText = "ui 로딩중"
+        loadDialog.setCancelable(false)
+        loadDialog.show()
         autoLogin()
     }
 
     fun autoLogin() {
-        if (email !="null" && PW !="null"){
+        if (true){
             val user = getData()
             Log.e(TAG, "$email  $PW")
-            val call = RetrofitHelper.getApiService().login(user)
-            Log.e(TAG, user.toString())
 
+            val call = RetrofitHelper.getApiService().login(user)
+            Log.e(TAG+"g", user.toString())
             call.enqueue(object : Callback<ResponseLogin> {
                 override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                     if (response.isSuccessful) {
                         val result = response.code()
                         when (result) {
                             200 -> {
+
                                 // 성공할 시
                                 preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
 
@@ -69,6 +78,8 @@ class LoginActivity: AppCompatActivity() {
                                 dialog.titleText = "로그인이 완료되었습니다."
                                 dialog.setCancelable(false)
                                 dialog.show()
+
+                                loadDialog.dismiss()
 
                                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                                 startActivity(intent)
@@ -84,6 +95,13 @@ class LoginActivity: AppCompatActivity() {
 
                 override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
                     Log.e(TAG+" Err", "통신안됨: ${t.message}")
+                    loadDialog.dismiss()
+                    val dialog = SweetAlertDialog(this@LoginActivity , SweetAlertDialog.ERROR_TYPE)
+                    dialog.progressHelper.barColor = Color.parseColor("#36b8ff")
+                    dialog.titleText = "로그인 실패."
+                    dialog.setCancelable(false)
+                    dialog.show()
+
                 }
 
             })
