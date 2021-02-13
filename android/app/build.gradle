@@ -65,5 +65,7 @@ dependencies {
     kapt 'com.android.databinding:compiler:3.5.3'
     // LiveData?
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    // Sweet Alert Dialog
+    implementation 'com.github.f0ris.sweetalert:library:1.5.6'
 
 }

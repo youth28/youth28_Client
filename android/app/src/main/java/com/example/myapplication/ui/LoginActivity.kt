@@ -3,12 +3,14 @@ package com.example.myapplication.ui
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.ResponseLogin
 import com.example.myapplication.dto.UserDTO
@@ -51,16 +53,22 @@ class LoginActivity: AppCompatActivity() {
             Log.e(TAG, "$email  $PW")
             val call = RetrofitHelper.getApiService().login(user)
             Log.e(TAG, user.toString())
+
             call.enqueue(object : Callback<ResponseLogin> {
                 override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                     if (response.isSuccessful) {
                         val result = response.code()
                         when (result) {
                             200 -> {
-                                //성공할시
-                                showToast("자동 로그인 했습니다.")
-
+                                // 성공할 시
                                 preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
+
+                                // SweetDialog 사용
+                                val dialog = SweetAlertDialog(this@LoginActivity , SweetAlertDialog.SUCCESS_TYPE)
+                                dialog.progressHelper.barColor = Color.parseColor("#36b8ff")
+                                dialog.titleText = "로그인이 완료되었습니다."
+                                dialog.setCancelable(false)
+                                dialog.show()
 
                                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                                 startActivity(intent)
