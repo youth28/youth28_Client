@@ -2,9 +2,11 @@ package com.example.myapplication.ui
 
 import android.Manifest
 import android.annotation.TargetApi
+import android.app.Activity
 import android.content.ComponentName
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
@@ -24,7 +27,10 @@ import androidx.lifecycle.Observer
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.myapplication.R
 import com.example.myapplication.api.ApiService
+import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ActivityModifyProfileBinding
+import com.example.myapplication.dto.ResponseLogin
+import com.example.myapplication.dto.UserDTO
 import com.squareup.picasso.Picasso
 import okhttp3.*
 import retrofit2.Call
@@ -36,6 +42,7 @@ import java.io.*
 class ModifyProfileActivity : AppCompatActivity() {
 
     val TAG = "ModifyProfile"
+    internal lateinit var preferences: SharedPreferences
 
     private lateinit var binding: ActivityModifyProfileBinding
 
@@ -57,6 +64,8 @@ class ModifyProfileActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_modify_profile)
         binding.activity = this
 
+        preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
+
         btnName.observe(this, Observer<String>() {
             binding.button.text = "${it}"
         })
@@ -72,6 +81,41 @@ class ModifyProfileActivity : AppCompatActivity() {
 
        binding.imgProfile.setOnClickListener {
             startActivityForResult(getPickImageChooserIntent(), IMAGE_RESULT)
+        }
+    }
+
+    fun onLogin() {
+        preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
+        val email: String = preferences.getString("userId", "null").toString()
+        val PW: String = preferences.getString("userPW", "null").toString()
+
+        binding.apply {
+            // 로그인 통신 코드
+            val user = UserDTO(email, PW)
+            val call = RetrofitHelper.getApiService().login(user)
+            call.enqueue(object : Callback<ResponseLogin> {
+                override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
+                    if (response.isSuccessful) {
+                        val result = response.code()
+                        when (result) {
+                            200 -> {
+                                //성공할시
+                                Log.e(TAG + " Response", response.body().toString())
+
+                                val intent = Intent(this@ModifyProfileActivity, MainActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
+                    Log.e(TAG + " Err", "통신안됨: ${t.message}")
+                }
+
+            })
+
         }
     }
 
@@ -278,6 +322,8 @@ class ModifyProfileActivity : AppCompatActivity() {
                     if (response.code() == 200) {
                         Log.e("sendImageProfile", "성공입니당")
                         loadDialog.dismiss()
+
+                        onLogin()
                     }
 
                     showToast(response.code().toString())

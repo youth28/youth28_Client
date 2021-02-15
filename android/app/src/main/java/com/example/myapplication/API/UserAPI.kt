@@ -10,7 +10,7 @@ interface UserAPI {
     @POST("register")
     fun register(
             @Body userDTO: UserDTO
-    ): Call<UserDTO>
+    ): Call<ResponseLogin>
 
     @POST("login")
     fun login(
