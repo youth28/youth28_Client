@@ -10,12 +10,15 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.ResponseLogin
 import com.example.myapplication.dto.UserDTO
 import com.example.myapplication.R
+import com.example.myapplication.UserData
 import com.example.myapplication.databinding.ActivityLoginBinding
+import com.example.myapplication.viewmodel.LoginViewModel
 import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,6 +29,7 @@ class LoginActivity: AppCompatActivity() {
     val TAG = "LoginActivity"
 
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var viewModel: LoginViewModel
 
     var email = ""
     var PW = ""
@@ -37,8 +41,25 @@ class LoginActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        binding.activity = this
+        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
+                .get(LoginViewModel::class.java)
+        binding.lifecycleOwner = this
+        binding.activity = viewModel
+        binding.executePendingBindings()
 
+        with(viewModel) {
+            onSignUpEvent.observe(this@LoginActivity, {
+                val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
+                startActivity(intent)
+                Log.e(TAG, "signUP")
+            })
+            onLoginEvent.observe(this@LoginActivity, {
+                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                startActivity(intent)
+                Log.e(TAG, "${UserData.toStringData()}")
+                Log.e(TAG, "signUP")
+            })
+        }
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
         email = preferences.getString("userId", "").toString()
         PW = preferences.getString("userPW", "").toString()
@@ -46,12 +67,6 @@ class LoginActivity: AppCompatActivity() {
         Log.e(TAG, "$email, $PW")
 
         // email, PW 값이 null이 아니라면 자동 로그인 하기
-
-        loadDialog = SweetAlertDialog(this@LoginActivity, SweetAlertDialog.PROGRESS_TYPE)
-        loadDialog.progressHelper.barColor = Color.parseColor("#36b8ff")
-        loadDialog.titleText = "ui 로딩중"
-        loadDialog.setCancelable(false)
-        loadDialog.show()
         autoLogin()
     }
 
@@ -106,11 +121,6 @@ class LoginActivity: AppCompatActivity() {
 
             })
         }
-    }
-
-    fun onSignup(view: View) {
-        val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
-        startActivity(intent)
     }
 
     fun onLogin(view: View) {

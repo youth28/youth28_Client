@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
+        <import type="android.view.View"/>
         <variable
             name="activity"
-            type="com.example.myapplication.ui.LoginActivity" />
+            type="com.example.myapplication.viewmodel.LoginViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -49,7 +50,7 @@
             android:background="@drawable/edit_text_shape"
             android:fontFamily="@font/appleneom"
             android:hint="Passwd"
-            android:text="@={activity.PW}"
+            android:text="@={activity.password}"
             android:padding="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +63,7 @@
             android:layout_marginTop="25dp"
             android:fontFamily="@font/appleneom"
             android:text="SIGN UP"
-            android:onClick="@{activity::onSignup}"
+            android:onClick="@{() -> activity.onSignup()}"
             android:textColor="#636363"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -79,7 +80,7 @@
             android:background="@drawable/btn_shape"
             android:fontFamily="@font/appleneoeb"
             android:text="LOGIN"
-            android:onClick="@{activity::onLogin}"
+            android:onClick="@{() -> activity.onLogin()}"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -92,11 +93,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:text="ID는 email형식입니다."
+            android:text="@{activity.errId}"
+            tools:text="ID는 email형식입니다."
             android:textColor="@color/red"
             android:textSize="12sp"
             android:fontFamily="@font/appleneol"
-            android:visibility="gone"
+            android:visibility="@{activity.viewErrId ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="@+id/editEmail"
             app:layout_constraintStart_toStartOf="@+id/editEmail"
             app:layout_constraintTop_toBottomOf="@+id/editEmail" />
@@ -107,11 +109,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:text="아이디나 비밀번호가 일치하지 않습니다.."
+            android:text="@{activity.errPW}"
+            tools:text="아이디나 비밀번호가 일치하지 않습니다.."
             android:textColor="@color/red"
             android:textSize="12sp"
             android:fontFamily="@font/appleneol"
-            android:visibility="gone"
+            android:visibility="@{activity.viewErrPW ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="@+id/editPW"
             app:layout_constraintStart_toStartOf="@+id/editPW"
             app:layout_constraintTop_toBottomOf="@+id/editPW" />
