@@ -57,6 +57,7 @@ class ModifyProfileActivity : AppCompatActivity() {
 
     private lateinit var loadDialog: SweetAlertDialog
 
+    var imgBool = false
     val btnName = MutableLiveData<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +69,7 @@ class ModifyProfileActivity : AppCompatActivity() {
 
         btnName.observe(this, Observer<String>() {
             binding.button.text = "${it}"
+            imgBool = it != "다음에 바꾸겠습니다."
         })
 
         // 퍼미션 요청
@@ -120,15 +122,21 @@ class ModifyProfileActivity : AppCompatActivity() {
     }
 
     fun onBtn() {
-        if (mBitmap != null) {
-            multipartImageUpload()
+        if (imgBool) {
+            if (mBitmap != null) {
+                multipartImageUpload()
+            } else {
+                showToast("비트맵 비어있음")
+            }
         } else {
-            showToast("비트맵 비어있음")
+            Log.e(TAG, "Login")
+            onLogin()
         }
+
     }
 
     fun getImage() {
-        Picasso.get().load("http://3cccfe4bf700.ngrok.io/uploads/3e11f06c47fd649f31ff123e7bcd57ac.png").into(binding.imgProfile)
+        Picasso.get().load("http://3cccfe4bf700.ngrok.io/uploads/d955174220decf56aa8a2d61fd679ec4.png").into(binding.imgProfile)
     }
 
     // region 프로필 사진 서버에 저장하기
