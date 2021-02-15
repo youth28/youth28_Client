@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.myapplication.R
 import com.example.myapplication.api.ApiService
 import com.example.myapplication.databinding.ActivityModifyProfileBinding
@@ -45,6 +47,8 @@ class ModifyProfileActivity : AppCompatActivity() {
     private val ALL_PERMISSIONS_RESULT = 107
     private val IMAGE_RESULT = 200
     var mBitmap: Bitmap? = null
+
+    private lateinit var loadDialog: SweetAlertDialog
 
     val btnName = MutableLiveData<String>()
 
@@ -185,7 +189,6 @@ class ModifyProfileActivity : AppCompatActivity() {
 
     // 이미지 경로 가져오기
     fun getImageFilePath(data: Intent?): String? {
-        Log.e(TAG, "getImageFilePath: $data")
         return getImageFromFilePath(data)
     }
 
@@ -252,6 +255,11 @@ class ModifyProfileActivity : AppCompatActivity() {
             val filesDir: File = applicationContext.filesDir
             val file = File(filesDir, "image" + ".png")
             val bos = ByteArrayOutputStream()
+            loadDialog = SweetAlertDialog(this@ModifyProfileActivity, SweetAlertDialog.PROGRESS_TYPE)
+            loadDialog.progressHelper.barColor = Color.parseColor("#36b8ff")
+            loadDialog.titleText = "이미지 프로필을 변경중입니다..."
+            loadDialog.setCancelable(false)
+            loadDialog.show()
             mBitmap!!.compress(Bitmap.CompressFormat.PNG, 0, bos)
             val bitmapdata: ByteArray = bos.toByteArray()
             val fos = FileOutputStream(file)
@@ -269,6 +277,7 @@ class ModifyProfileActivity : AppCompatActivity() {
                 ) {
                     if (response.code() == 200) {
                         Log.e("sendImageProfile", "성공입니당")
+                        loadDialog.dismiss()
                     }
 
                     showToast(response.code().toString())
