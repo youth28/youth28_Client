@@ -19,7 +19,6 @@ import retrofit2.Response
 
 class LoginViewModel: ViewModel() {
     val TAG = "LoginViewModel"
-    internal lateinit var preferences: SharedPreferences
 
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
@@ -65,7 +64,7 @@ class LoginViewModel: ViewModel() {
                             200 -> {
                                 //성공할시
                                 UserData.userId = email.value!!
-                                UserData.userpassword = email.value!!
+                                UserData.userpassword = password.value!!
                                 UserData.userNum = response.body()!!.user_id
                                 UserData.userName = response.body()!!.name
                                 UserData.userProfile = "img"
