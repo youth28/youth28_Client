@@ -44,7 +44,7 @@ class LoginActivity: AppCompatActivity() {
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
                 .get(LoginViewModel::class.java)
         binding.lifecycleOwner = this
-        binding.activity = viewModel
+        binding.viewmodel = viewModel
         binding.executePendingBindings()
 
         // email, PW 값이 null이 아니라면 자동 로그인 하기
@@ -67,6 +67,7 @@ class LoginActivity: AppCompatActivity() {
                 editor.putString("userProfile", UserData.userProfile)
                 editor.putString("userName", UserData.userName)
                 editor.apply()
+                finish()
             })
         }
     }
