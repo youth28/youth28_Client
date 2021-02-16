@@ -31,12 +31,16 @@ import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ActivityModifyProfileBinding
 import com.example.myapplication.dto.ResponseLogin
 import com.example.myapplication.dto.UserDTO
+import com.example.myapplication.dto.UserId
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.*
 
 class ModifyProfileActivity : AppCompatActivity() {
@@ -159,9 +163,15 @@ class ModifyProfileActivity : AppCompatActivity() {
 
     // 레드로핏 설정
     private fun initRetrofitClient() {
+
+        var gson : Gson =  GsonBuilder()
+                .setLenient()
+                .create()
         val client = OkHttpClient.Builder().build()
         apiService =
-                Retrofit.Builder().baseUrl("http://3cccfe4bf700.ngrok.io").client(client).build().create(
+                Retrofit.Builder().baseUrl("http://bd8abc35bd7f.ngrok.io")
+                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .client(client).build().create(
                         ApiService::class.java
                 )
     }
@@ -319,9 +329,9 @@ class ModifyProfileActivity : AppCompatActivity() {
             fos.flush()
             fos.close()
             val reqFile: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
-            val body = MultipartBody.Part.createFormData("upload", file.name, reqFile)
+            val body = MultipartBody.Part.createFormData("file", file.name, reqFile)
             val name = RequestBody.create(MediaType.parse("text/plain"), "upload")
-            val req: Call<ResponseBody> = apiService!!.postImage(body, name)
+            val req: Call<ResponseBody> = apiService!!.postImage(UserId(6), body, name)
             req.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                         call: Call<ResponseBody>,
@@ -331,6 +341,8 @@ class ModifyProfileActivity : AppCompatActivity() {
                         Log.e("sendImageProfile", "성공입니당")
                         loadDialog.dismiss()
 
+                        Log.e("gkgkgk", response.body().toString())
+
                         onLogin()
                     }
 
@@ -339,8 +351,10 @@ class ModifyProfileActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Log.e("sendImageProfile", "실패입니당")
+                    Log.e("failure", t.message.toString())
                     showToast("Request failed")
                     t.printStackTrace();
+                    loadDialog.dismiss()
                 }
 
             })
