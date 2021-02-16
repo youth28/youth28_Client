@@ -47,6 +47,14 @@ class LoginActivity: AppCompatActivity() {
         binding.activity = viewModel
         binding.executePendingBindings()
 
+        preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
+        email = preferences.getString("userId", "").toString()
+        PW = preferences.getString("userPW", "").toString()
+        Log.e(TAG, "$email, $PW")
+
+        // email, PW 값이 null이 아니라면 자동 로그인 하기
+        autoLogin()
+
         with(viewModel) {
             onSignUpEvent.observe(this@LoginActivity, {
                 val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
@@ -57,23 +65,21 @@ class LoginActivity: AppCompatActivity() {
                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                 startActivity(intent)
                 Log.e(TAG, "${UserData.toStringData()}")
-                Log.e(TAG, "signUP")
+                val editor = preferences.edit()
+                editor.putString("userId", UserData.userId)
+                editor.putString("userPW", UserData.userpassword)
+                editor.putString("userNum", UserData.userNum)
+                editor.putString("userProfile", UserData.userProfile)
+                editor.putString("userName", UserData.userName)
+                editor.apply()
             })
         }
-        preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
-        email = preferences.getString("userId", "").toString()
-        PW = preferences.getString("userPW", "").toString()
-
-        Log.e(TAG, "$email, $PW")
-
-        // email, PW 값이 null이 아니라면 자동 로그인 하기
-        autoLogin()
     }
 
     fun autoLogin() {
         if (true){
             val user = getData()
-            Log.e(TAG, "$email  $PW")
+            Log.e(TAG, "auto login")
 
             val call = RetrofitHelper.getApiService().login(user)
             Log.e(TAG+"g", user.toString())
