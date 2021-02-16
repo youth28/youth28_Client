@@ -1,5 +1,8 @@
 package com.example.myapplication.ui
 
+import android.app.Activity
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +13,7 @@ import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.UserDTO
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySignUpBinding
+import com.example.myapplication.dto.ResponseLogin
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,6 +23,8 @@ import java.util.regex.Pattern
 class SignUpActivity: AppCompatActivity() {
 
     val TAG = "SignUpActivity"
+
+    internal lateinit var preferences: SharedPreferences
 
     private lateinit var binding : ActivitySignUpBinding
 
@@ -35,9 +41,15 @@ class SignUpActivity: AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
         binding.activity = this@SignUpActivity
 
+        preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
+
     }
 
     fun onSignup(view: View) {
+        val intent = Intent(this@SignUpActivity, ModifyProfileActivity::class.java)
+        intent.putExtra("mode", "1")
+        startActivity(intent)
+
         binding.apply {
 
             // region 회원가입
@@ -110,16 +122,30 @@ class SignUpActivity: AppCompatActivity() {
                     // 회원가입 하기
                     val user = getData()
                     Log.e(TAG, user.toString())
-                    val call = RetrofitHelper.getApiService().register(user)
-                    call.enqueue(object : Callback<UserDTO> {
-                        override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
+                    val call = RetrofitHelper.getUserApi().register(user)
+                    call.enqueue(object : Callback<ResponseLogin> {
+                        override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                             if (response.isSuccessful) {
                                 showToast("회원가입 성공")
+
+                                preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
+                                val editor = preferences.edit()
+                                editor.putString("userId", email)
+                                editor.putString("userPW", PW)
+                                editor.putString("userNum", response.body()!!.user_id)
+                                Log.e(TAG + " userNum", response.body()!!.user_id)
+                                editor.putString("userName", response.body()!!.name)
+                                editor.putString("userProfile", "image")
+                                editor.apply()
+
+                                val intent = Intent(this@SignUpActivity, ModifyProfileActivity::class.java)
+                                intent.putExtra("mode", "1")
+                                startActivity(intent)
                                 finish()
                             }
                         }
 
-                        override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+                        override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
                             Log.e(TAG + " Err", "통신안됨: ${t.message}")
                         }
 
@@ -147,7 +173,7 @@ class SignUpActivity: AppCompatActivity() {
                 // 중복 확인 200-> 사용가능한 ID, 204-> 중복되는 아이디
                 val user = UserDTO(email)
                 Log.e(TAG, user.toString())
-                val call = RetrofitHelper.getApiService().check_emial(user)
+                val call = RetrofitHelper.getUserApi().check_emial(user)
                 call.enqueue(object : Callback<UserDTO> {
                     override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
                         Log.e(TAG, "성공 $user")

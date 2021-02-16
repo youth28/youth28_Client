@@ -27,6 +27,7 @@ import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.UserModify
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityModifyBinding
+import com.example.myapplication.dto.UserId
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_modify.*
@@ -99,7 +100,9 @@ class ModifyActivity: AppCompatActivity() {
         }
 
         binding.imgProfile.setOnClickListener {
-            startActivityForResult(getPickImageChooserIntent(), IMAGE_RESULT)
+            val intent = Intent(this@ModifyActivity, ModifyProfileActivity::class.java)
+            intent.putExtra("mode", "2")
+            startActivity(intent)
         }
     }
 
@@ -138,7 +141,7 @@ class ModifyActivity: AppCompatActivity() {
                 }
 
                 val user = getData()
-                val call = RetrofitHelper.getApiService().modify(user)
+                val call = RetrofitHelper.getUserApi().modify(user)
                 call.enqueue(object : Callback<UserModify>{
                     override fun onResponse(call: Call<UserModify>, response: Response<UserModify>) {
                         if (response.isSuccessful) {
@@ -352,7 +355,7 @@ class ModifyActivity: AppCompatActivity() {
             val reqFile: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
             val body = MultipartBody.Part.createFormData("upload", file.name, reqFile)
             val name = RequestBody.create(MediaType.parse("text/plain"), "upload")
-            val req: Call<ResponseBody> = apiService!!.postImage(body, name)
+            val req: Call<ResponseBody> = apiService!!.modifyImage(UserId(6) , body, name)
             req.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                         call: Call<ResponseBody>,
