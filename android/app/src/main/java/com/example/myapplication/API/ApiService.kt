@@ -16,4 +16,12 @@ interface ApiService {
             @Part file: MultipartBody.Part,
             @Part("upload") name: RequestBody
     ): Call<ResponseBody>
+
+    @Multipart
+    @POST("/image_re_upload")
+    fun modifyImage(
+            @Part("user_id") userId: UserId,
+            @Part file: MultipartBody.Part,
+            @Part("upload") name: RequestBody
+    ): Call<ResponseBody>
 }
