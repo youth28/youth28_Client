@@ -130,7 +130,7 @@ class RoomScheduleActivity: AppCompatActivity() {
 
         val roomId = RoomId(room_id)
         Log.e(TAG, roomId.toString())
-        val call = RetrofitHelper.getApiService().room_schedule_read(roomId)
+        val call = RetrofitHelper.getUserApi().room_schedule_read(roomId)
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         call.enqueue(object : Callback<RoomScheduleRDTO> {
             override fun onResponse(call: Call<RoomScheduleRDTO>, response: Response<RoomScheduleRDTO>) {

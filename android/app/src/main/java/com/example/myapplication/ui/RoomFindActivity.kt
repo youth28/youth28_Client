@@ -44,7 +44,7 @@ class RoomFindActivity : AppCompatActivity() {
         } else {
             val roomName = RoomNameDTO(key)
             Log.e(TAG, roomName.toString())
-            val call = RetrofitHelper.getApiService().room_search(roomName)
+            val call = RetrofitHelper.getUserApi().room_search(roomName)
             call.enqueue(object : Callback<RoomsDTO> {
                 override fun onResponse(call: Call<RoomsDTO>, response: Response<RoomsDTO>) {
                     if(response.isSuccessful) {

@@ -1,10 +1,6 @@
 package com.example.myapplication.viewmodel
 
-import android.app.Activity
-import android.content.Intent
-import android.content.SharedPreferences
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.UserData
@@ -12,7 +8,6 @@ import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.ResponseLogin
 import com.example.myapplication.dto.UserDTO
 import com.example.myapplication.event.SingleLiveEvent
-import com.example.myapplication.ui.MainActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,7 +49,7 @@ class LoginViewModel: ViewModel() {
 
             // 로그인 통신 코드
             val user = getData()
-            val call = RetrofitHelper.getApiService().login(user)
+            val call = RetrofitHelper.getUserApi().login(user)
             Log.e(TAG, user.toString())
             call.enqueue(object : Callback<ResponseLogin> {
                 override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {

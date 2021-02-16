@@ -17,7 +17,6 @@ import com.example.myapplication.ScheduleWDTO
 import com.example.myapplication.R
 import com.example.myapplication.databinding.DialogScheduleBinding
 import kotlinx.android.synthetic.main.dialog_schedule.*
-import kotlinx.android.synthetic.main.dialog_schedule.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -84,7 +83,7 @@ class ScheduleDialog(): DialogFragment() {
 
             preferences = requireActivity().getSharedPreferences("user", Activity.MODE_PRIVATE)
             val writer = ScheduleWDTO(content, date, preferences.getString("userNum", "0")!!.toInt())
-            val call = RetrofitHelper.getApiService().schedule_write(writer)
+            val call = RetrofitHelper.getUserApi().schedule_write(writer)
             call.enqueue(object : Callback<ScheduleWDTO> {
                 override fun onResponse(call: Call<ScheduleWDTO>, response: Response<ScheduleWDTO>) {
                     if (response.isSuccessful) {

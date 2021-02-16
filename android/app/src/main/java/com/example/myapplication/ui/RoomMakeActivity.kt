@@ -57,7 +57,7 @@ class RoomMakeActivity: AppCompatActivity() {
 
         val room = getData()
         Log.e("roomMake", room.toString())
-        val call = RetrofitHelper.getApiService().make_room(room)
+        val call = RetrofitHelper.getUserApi().make_room(room)
         call.enqueue(object : Callback<RoomMakeDTO> {
             override fun onResponse(call: Call<RoomMakeDTO>, response: Response<RoomMakeDTO>) {
                 if (response.isSuccessful) {

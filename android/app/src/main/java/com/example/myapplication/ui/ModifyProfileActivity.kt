@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
@@ -98,7 +97,7 @@ class ModifyProfileActivity : AppCompatActivity() {
         binding.apply {
             // 로그인 통신 코드
             val user = UserDTO(email, PW)
-            val call = RetrofitHelper.getApiService().login(user)
+            val call = RetrofitHelper.getUserApi().login(user)
             call.enqueue(object : Callback<ResponseLogin> {
                 override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                     if (response.isSuccessful) {

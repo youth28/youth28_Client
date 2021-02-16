@@ -14,9 +14,6 @@ import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.JoinRoomDTO
 import com.example.myapplication.R
 import com.example.myapplication.databinding.DialogJoinBinding
-import kotlinx.android.synthetic.main.dialog_join.view.*
-import kotlinx.android.synthetic.main.dialog_join.view.btnNo
-import kotlinx.android.synthetic.main.dialog_join.view.btnYes
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -53,7 +50,7 @@ class JoinDialog: DialogFragment() {
             showToast("참여함")
             preferences = requireActivity().getSharedPreferences("user", Activity.MODE_PRIVATE)
             val join = JoinRoomDTO(preferences.getString("userNum", "0")!!.toInt(), room_id)
-            val call = RetrofitHelper.getApiService().room_join(join)
+            val call = RetrofitHelper.getUserApi().room_join(join)
             call.enqueue(object : Callback<JoinRoomDTO> {
                 override fun onResponse(call: Call<JoinRoomDTO>, response: Response<JoinRoomDTO>) {
                     if (response.isSuccessful) {

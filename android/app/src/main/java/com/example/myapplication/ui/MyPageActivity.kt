@@ -140,7 +140,7 @@ class MyPageActivity : AppCompatActivity() {
 
     fun getUserInfo() {
         val user = UserId(preferences.getString("userNum", "0")!!.toInt())
-        val call = RetrofitHelper.getApiService().user_info(user)
+        val call = RetrofitHelper.getUserApi().user_info(user)
         call.enqueue(object : Callback<UserInfoDTO> {
             override fun onResponse(call: Call<UserInfoDTO>, response: Response<UserInfoDTO>) {
                 if (response.isSuccessful) {
@@ -194,7 +194,7 @@ class MyPageActivity : AppCompatActivity() {
 
     fun readSchedule () {
         val userId = UserId(preferences.getString("userNum", "0")!!.toInt())
-        val call = RetrofitHelper.getApiService().schedule_read(userId)
+        val call = RetrofitHelper.getUserApi().schedule_read(userId)
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         call.enqueue(object : Callback<ScheduleRDTO> {
             override fun onResponse(call: Call<ScheduleRDTO>, response: Response<ScheduleRDTO>) {
