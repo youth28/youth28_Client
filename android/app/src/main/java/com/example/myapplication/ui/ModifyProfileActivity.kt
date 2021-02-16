@@ -61,7 +61,9 @@ class ModifyProfileActivity : AppCompatActivity() {
     private lateinit var loadDialog: SweetAlertDialog
 
     var imgBool = false
+    var mode = ""
     val btnName = MutableLiveData<String>()
+    val mainMsg = MutableLiveData<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,14 +77,26 @@ class ModifyProfileActivity : AppCompatActivity() {
             imgBool = it != "다음에 바꾸겠습니다."
         })
 
+        mainMsg.observe(this, Observer<String>() {
+            binding.tvMainMsg.text = "${it}"
+        })
+
         // 퍼미션 요청
         askPermissions()
-        // 레트로핏 설정
-        initRetrofitClient()
 
         getImage()
 
-        btnName.value = "다음에 바꾸겠습니다."
+        if (intent.hasExtra("mode")) {
+            mode = intent.getStringExtra("mode").toString()
+            Log.e("intentMode", mode)
+            when(mode) {
+                "1","2"  -> {
+                    btnName.value = "다음에 바꾸겠습니다."
+                    mainMsg.value = "프로필 사진을 변경하려면 아래 사진을 선택해주세요"
+                }
+
+            }
+        }
 
        binding.imgProfile.setOnClickListener {
             startActivityForResult(getPickImageChooserIntent(), IMAGE_RESULT)
@@ -132,14 +146,80 @@ class ModifyProfileActivity : AppCompatActivity() {
                 showToast("비트맵 비어있음")
             }
         } else {
-            Log.e(TAG, "Login")
-            onLogin()
+            when(mode) {
+                "1" -> onLogin()
+                "2" -> finish()
+            }
         }
 
     }
 
     fun getImage() {
         Picasso.get().load("http://3cccfe4bf700.ngrok.io/uploads/d955174220decf56aa8a2d61fd679ec4.png").into(binding.imgProfile)
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+
+    // 드디어 올린다 서버에
+    private fun multipartImageUpload() {
+        try {
+            val filesDir: File = applicationContext.filesDir
+            val file = File(filesDir, "image" + ".png")
+            val bos = ByteArrayOutputStream()
+            loadDialog = SweetAlertDialog(this@ModifyProfileActivity, SweetAlertDialog.PROGRESS_TYPE)
+            loadDialog.progressHelper.barColor = Color.parseColor("#36b8ff")
+            loadDialog.titleText = "이미지 프로필을 변경중입니다..."
+            loadDialog.setCancelable(false)
+            loadDialog.show()
+            mBitmap!!.compress(Bitmap.CompressFormat.PNG, 0, bos)
+            val bitmapdata: ByteArray = bos.toByteArray()
+            val fos = FileOutputStream(file)
+            fos.write(bitmapdata)
+            fos.flush()
+            fos.close()
+            val reqFile: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
+            val body = MultipartBody.Part.createFormData("file", file.name, reqFile)
+            val name = RequestBody.create(MediaType.parse("text/plain"), "upload")
+
+            val req: Call<ResponseBody>
+            val userId: Int = preferences.getString("userNum", "1125")!!.toInt()
+            req = when(mode) {
+                "1" -> RetrofitHelper.getImageApi().postImage(UserId(userId), body, name)
+                "2" -> RetrofitHelper.getImageApi().modifyImage(UserId(userId), body, name)
+                else -> RetrofitHelper.getImageApi().modifyImage(UserId(userId), body, name)
+            }
+
+            req.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                        call: Call<ResponseBody>,
+                        response: Response<ResponseBody>
+                ) {
+                    if (response.code() == 200) {
+                        Log.e("sendImageProfile", "성공입니당")
+                        loadDialog.dismiss()
+
+                        Log.e("gkgkgk", response.body().toString())
+
+                        onLogin()
+                    }
+
+                    showToast(response.code().toString())
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.e("sendImageProfile", "실패입니당")
+                    Log.e("failure", t.message.toString())
+                    showToast("Request failed")
+                    t.printStackTrace();
+                    loadDialog.dismiss()
+                }
+
+            })
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
     }
 
     // region 프로필 사진 서버에 저장하기
@@ -158,21 +238,6 @@ class ModifyProfileActivity : AppCompatActivity() {
                     // 요청하기
             )
         }
-    }
-
-    // 레드로핏 설정
-    private fun initRetrofitClient() {
-
-        var gson : Gson =  GsonBuilder()
-                .setLenient()
-                .create()
-        val client = OkHttpClient.Builder().build()
-        apiService =
-                Retrofit.Builder().baseUrl("http://bd8abc35bd7f.ngrok.io")
-                        .addConverterFactory(GsonConverterFactory.create(gson))
-                        .client(client).build().create(
-                        ApiService::class.java
-                )
     }
 
     // 이미지 선택하기 (가져오기)
@@ -306,62 +371,6 @@ class ModifyProfileActivity : AppCompatActivity() {
 
     private fun canMakeSmores(): Boolean {
         return Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-
-    // 드디어 올린다 서버에
-    private fun multipartImageUpload() {
-        try {
-            val filesDir: File = applicationContext.filesDir
-            val file = File(filesDir, "image" + ".png")
-            val bos = ByteArrayOutputStream()
-            loadDialog = SweetAlertDialog(this@ModifyProfileActivity, SweetAlertDialog.PROGRESS_TYPE)
-            loadDialog.progressHelper.barColor = Color.parseColor("#36b8ff")
-            loadDialog.titleText = "이미지 프로필을 변경중입니다..."
-            loadDialog.setCancelable(false)
-            loadDialog.show()
-            mBitmap!!.compress(Bitmap.CompressFormat.PNG, 0, bos)
-            val bitmapdata: ByteArray = bos.toByteArray()
-            val fos = FileOutputStream(file)
-            fos.write(bitmapdata)
-            fos.flush()
-            fos.close()
-            val reqFile: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
-            val body = MultipartBody.Part.createFormData("file", file.name, reqFile)
-            val name = RequestBody.create(MediaType.parse("text/plain"), "upload")
-            val req: Call<ResponseBody> = apiService!!.postImage(UserId(6), body, name)
-            req.enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(
-                        call: Call<ResponseBody>,
-                        response: Response<ResponseBody>
-                ) {
-                    if (response.code() == 200) {
-                        Log.e("sendImageProfile", "성공입니당")
-                        loadDialog.dismiss()
-
-                        Log.e("gkgkgk", response.body().toString())
-
-                        onLogin()
-                    }
-
-                    showToast(response.code().toString())
-                }
-
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.e("sendImageProfile", "실패입니당")
-                    Log.e("failure", t.message.toString())
-                    showToast("Request failed")
-                    t.printStackTrace();
-                    loadDialog.dismiss()
-                }
-
-            })
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
     }
 
     override fun onRequestPermissionsResult(
