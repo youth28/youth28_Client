@@ -194,7 +194,7 @@ class MyPageActivity : AppCompatActivity() {
 
     fun readSchedule () {
         val userId = UserId(preferences.getString("userNum", "0")!!.toInt())
-        val call = RetrofitHelper.getUserApi().schedule_read(userId)
+        val call = RetrofitHelper.getScheduleApi().schedule_read(userId)
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         call.enqueue(object : Callback<ScheduleRDTO> {
             override fun onResponse(call: Call<ScheduleRDTO>, response: Response<ScheduleRDTO>) {

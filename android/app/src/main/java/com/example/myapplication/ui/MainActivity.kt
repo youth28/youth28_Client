@@ -75,7 +75,7 @@ class MainActivity: AppCompatActivity() {
         }
         // endregion
 
-        val call2 = RetrofitHelper.getUserApi().room_list(user_id)
+        val call2 = RetrofitHelper.getRoomApi().room_list(user_id)
         call2.enqueue(object : Callback<MyRoomsDTO>{
             override fun onResponse(call: Call<MyRoomsDTO>, response: Response<MyRoomsDTO>) {
                 if (response.isSuccessful) {

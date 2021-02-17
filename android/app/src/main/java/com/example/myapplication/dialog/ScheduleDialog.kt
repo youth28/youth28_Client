@@ -83,7 +83,7 @@ class ScheduleDialog(): DialogFragment() {
 
             preferences = requireActivity().getSharedPreferences("user", Activity.MODE_PRIVATE)
             val writer = ScheduleWDTO(content, date, preferences.getString("userNum", "0")!!.toInt())
-            val call = RetrofitHelper.getUserApi().schedule_write(writer)
+            val call = RetrofitHelper.getScheduleApi().schedule_write(writer)
             call.enqueue(object : Callback<ScheduleWDTO> {
                 override fun onResponse(call: Call<ScheduleWDTO>, response: Response<ScheduleWDTO>) {
                     if (response.isSuccessful) {

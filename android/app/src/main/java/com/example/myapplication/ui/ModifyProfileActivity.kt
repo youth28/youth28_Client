@@ -25,21 +25,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.myapplication.R
-import com.example.myapplication.api.ApiService
+import com.example.myapplication.api.ImageAPI
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ActivityModifyProfileBinding
 import com.example.myapplication.dto.ResponseLogin
 import com.example.myapplication.dto.UserDTO
 import com.example.myapplication.dto.UserId
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.*
 
 class ModifyProfileActivity : AppCompatActivity() {
@@ -49,7 +45,7 @@ class ModifyProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityModifyProfileBinding
 
-    var apiService: ApiService? = null
+    var imageAPI: ImageAPI? = null
     var picUri: Uri? = null
     private var permissionsToRequest: ArrayList<String>? = null
     private val permissionsRejected: ArrayList<String> = ArrayList()

@@ -32,53 +32,8 @@ interface UserAPI {
             @Body userModify: UserModify
     ): Call<UserModify>
 
-    @POST("make_room")
-    fun make_room(
-            @Body roomMakeDTO: RoomMakeDTO
-    ): Call<RoomMakeDTO>
-
-    @POST("modify_room")
-    fun modify_room(
-            @Body roomModifyDTO: RoomModifyDTO
-    ): Call<RoomModifyDTO>
-
-    @POST("room_info")
-    fun room_info(
-            @Body room_id: RoomId
-    ): Call<RoomInfoDTO>
-
-    @POST("room_search")
-    fun room_search(
-            @Body field: RoomNameDTO
-    ): Call<RoomsDTO>
-
     @POST("my_room")
     fun my_room(
             @Body user_id: UserId
     ): Call<MyRoomsDTO>
-
-    @POST("room_list")
-    fun room_list(
-            @Body user_id: UserId
-    ): Call<MyRoomsDTO>
-
-    @POST("room_join")
-    fun room_join(
-            @Body joinRoomDTO: JoinRoomDTO
-    ): Call<JoinRoomDTO>
-
-    @POST("schedule_write")
-    fun schedule_write(
-            @Body scheduleWDTO: ScheduleWDTO
-    ): Call<ScheduleWDTO>
-
-    @POST("schedule_read")
-    fun schedule_read(
-            @Body user_id: UserId
-    ): Call<ScheduleRDTO>
-
-    @POST("room_schedule_read")
-    fun room_schedule_read(
-            @Body room_id: RoomId
-    ): Call<RoomScheduleRDTO>
 }

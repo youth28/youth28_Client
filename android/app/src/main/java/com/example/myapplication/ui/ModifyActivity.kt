@@ -22,7 +22,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableField
-import com.example.myapplication.api.ApiService
+import com.example.myapplication.api.ImageAPI
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.UserModify
 import com.example.myapplication.R
@@ -45,7 +45,7 @@ class ModifyActivity: AppCompatActivity() {
 
     val TAG = "ModifyActivity"
 
-    var apiService: ApiService? = null
+    var imageAPI: ImageAPI? = null
     var picUri: Uri? = null
     private var permissionsToRequest: ArrayList<String>? = null
     private val permissionsRejected: ArrayList<String> = ArrayList()
@@ -195,9 +195,9 @@ class ModifyActivity: AppCompatActivity() {
     // 레드로핏 설정
     private fun initRetrofitClient() {
         val client = OkHttpClient.Builder().build()
-        apiService =
+        imageAPI =
                 Retrofit.Builder().baseUrl("http://d3c30c5e052c.ngrok.io").client(client).build().create(
-                        ApiService::class.java
+                        ImageAPI::class.java
                 )
     }
 
@@ -355,7 +355,7 @@ class ModifyActivity: AppCompatActivity() {
             val reqFile: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
             val body = MultipartBody.Part.createFormData("upload", file.name, reqFile)
             val name = RequestBody.create(MediaType.parse("text/plain"), "upload")
-            val req: Call<ResponseBody> = apiService!!.modifyImage(UserId(6) , body, name)
+            val req: Call<ResponseBody> = imageAPI!!.modifyImage(UserId(6) , body, name)
             req.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                         call: Call<ResponseBody>,

@@ -20,16 +20,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableField
-import com.example.myapplication.api.ApiService
+import com.example.myapplication.api.ImageAPI
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.RoomModifyDTO
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityRoomModifyBinding
+import com.example.myapplication.dto.UserId
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.*
 
 class RoomModifyActivity : AppCompatActivity() {
@@ -46,7 +50,7 @@ class RoomModifyActivity : AppCompatActivity() {
 
     var maxPeo = ""
 
-    var apiService: ApiService? = null
+    var imageAPI: ImageAPI? = null
     var picUri: Uri? = null
     private var permissionsToRequest: ArrayList<String>? = null
     private val permissionsRejected: ArrayList<String> = ArrayList()
@@ -114,7 +118,7 @@ class RoomModifyActivity : AppCompatActivity() {
 
         val room = getData()
         Log.e(TAG, room.toString())
-        val call = RetrofitHelper.getApiService().modify_room(room)
+        val call = RetrofitHelper.getRoomApi().modify_room(room)
         call.enqueue(object : Callback<RoomModifyDTO> {
             override fun onResponse(call: Call<RoomModifyDTO>, response: Response<RoomModifyDTO>) {
                 if (response.isSuccessful) {
@@ -169,11 +173,17 @@ class RoomModifyActivity : AppCompatActivity() {
 
     // 레드로핏 설정
     private fun initRetrofitClient() {
+
+        var gson : Gson =  GsonBuilder()
+                .setLenient()
+                .create()
         val client = OkHttpClient.Builder().build()
-        apiService =
-                Retrofit.Builder().baseUrl("http://d3c30c5e052c.ngrok.io").client(client).build().create(
-                        ApiService::class.java
-                )
+        imageAPI =
+                Retrofit.Builder().baseUrl("http://bd8abc35bd7f.ngrok.io")
+                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .client(client).build().create(
+                                ImageAPI::class.java
+                        )
     }
 
     // 이미지 선택하기 (가져오기)
@@ -331,7 +341,7 @@ class RoomModifyActivity : AppCompatActivity() {
             val reqFile: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
             val body = MultipartBody.Part.createFormData("upload", file.name, reqFile)
             val name = RequestBody.create(MediaType.parse("text/plain"), "upload")
-            val req: Call<ResponseBody> = apiService!!.postImage(body, name)
+            val req: Call<ResponseBody> = imageAPI!!.modifyImage(UserId(6) ,body, name)
             req.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                         call: Call<ResponseBody>,

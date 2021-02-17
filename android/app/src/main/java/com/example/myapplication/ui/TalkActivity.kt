@@ -77,7 +77,7 @@ class TalkActivity : AppCompatActivity() {
         rcvTag.layoutManager = layouManager
         rcvTag.adapter = mAdapter
 
-        val call = RetrofitHelper.getUserApi().room_info(room)
+        val call = RetrofitHelper.getRoomApi().room_info(room)
         call.enqueue(object : Callback<RoomInfoDTO> {
             override fun onResponse(call: Call<RoomInfoDTO>, response: Response<RoomInfoDTO>) {
                 if (response.isSuccessful) {

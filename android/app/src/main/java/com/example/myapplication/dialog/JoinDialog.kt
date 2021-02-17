@@ -50,7 +50,7 @@ class JoinDialog: DialogFragment() {
             showToast("참여함")
             preferences = requireActivity().getSharedPreferences("user", Activity.MODE_PRIVATE)
             val join = JoinRoomDTO(preferences.getString("userNum", "0")!!.toInt(), room_id)
-            val call = RetrofitHelper.getUserApi().room_join(join)
+            val call = RetrofitHelper.getRoomApi().room_join(join)
             call.enqueue(object : Callback<JoinRoomDTO> {
                 override fun onResponse(call: Call<JoinRoomDTO>, response: Response<JoinRoomDTO>) {
                     if (response.isSuccessful) {
