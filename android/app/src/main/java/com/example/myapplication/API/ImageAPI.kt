@@ -7,7 +7,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
-interface ApiService {
+interface ImageAPI {
 
     @Multipart
     @POST("/image_upload")
