@@ -51,6 +51,7 @@
             android:fontFamily="@font/appleneom"
             android:hint="Passwd"
             android:text="@={viewmodel.password}"
+            android:inputType="textPassword"
             android:padding="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
