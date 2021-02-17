@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
+        <import type="android.view.View"/>
         <variable
-            name="activity"
-            type="com.example.myapplication.ui.SignUpActivity" />
+            name="viewmodel"
+            type="com.example.myapplication.viewmodel.SignUpViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -55,7 +56,7 @@
                     android:background="@drawable/edit_text_shape"
                     android:fontFamily="@font/appleneom"
                     android:padding="15dp"
-                    android:text="@={activity.name}"
+                    android:text="@={viewmodel.name}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView2" />
@@ -84,7 +85,7 @@
                     android:background="@drawable/edit_text_shape"
                     android:fontFamily="@font/appleneom"
                     android:padding="15dp"
-                    android:text="@={activity.email}"
+                    android:text="@={viewmodel.email}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/editName" />
@@ -113,7 +114,7 @@
                     android:background="@drawable/edit_text_shape"
                     android:fontFamily="@font/appleneom"
                     android:padding="15dp"
-                    android:text="@={activity.PW}"
+                    android:text="@={viewmodel.password}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.506"
                     app:layout_constraintStart_toStartOf="parent"
@@ -143,7 +144,7 @@
                     android:background="@drawable/edit_text_shape"
                     android:fontFamily="@font/appleneom"
                     android:padding="15dp"
-                    android:text="@={activity.rePW}"
+                    android:text="@={viewmodel.rePassword}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.657"
                     app:layout_constraintStart_toStartOf="parent"
@@ -173,6 +174,7 @@
                             android:text="스터디"
                             android:textColor="#000000"
                             android:textSize="19dp"
+                            android:checked="@={viewmodel.cbStudy}"
                             android:fontFamily="@font/appleneom"/>
 
                         <CheckBox
@@ -182,6 +184,7 @@
                             android:text="업무"
                             android:textColor="#000000"
                             android:textSize="19dp"
+                            android:checked="@={viewmodel.cbWork}"
                             android:fontFamily="@font/appleneom"/>
                     </TableRow>
 
@@ -195,6 +198,7 @@
                             android:text="게임"
                             android:textColor="#000000"
                             android:textSize="19dp"
+                            android:checked="@={viewmodel.cbGame}"
                             android:fontFamily="@font/appleneom"/>
 
                         <CheckBox
@@ -204,6 +208,7 @@
                             android:text="음악"
                             android:textColor="#000000"
                             android:textSize="19dp"
+                            android:checked="@={viewmodel.cbMusic}"
                             android:fontFamily="@font/appleneom"/>
                     </TableRow>
 
@@ -219,6 +224,7 @@
                             android:text="미술"
                             android:textColor="#000000"
                             android:textSize="19dp"
+                            android:checked="@={viewmodel.cbArt}"
                             android:fontFamily="@font/appleneom"/>
 
                         <CheckBox
@@ -228,6 +234,7 @@
                             android:text="운동(헬스)"
                             android:textColor="#000000"
                             android:textSize="19dp"
+                            android:checked="@={viewmodel.cbExercise}"
                             android:fontFamily="@font/appleneom"/>
                     </TableRow>
 
@@ -241,6 +248,7 @@
                             android:text="기타"
                             android:textColor="#000000"
                             android:textSize="19dp"
+                            android:checked="@={viewmodel.cbEtc}"
                             android:fontFamily="@font/appleneom"/>
                     </TableRow>
                 </TableLayout>
@@ -257,7 +265,7 @@
                     android:text="SIGN UP"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:onClick="@{activity::onSignup}"
+                    android:onClick="@{() -> viewmodel.onSignup()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
@@ -284,7 +292,7 @@
                     android:background="@drawable/edit_text_shape"
                     android:fontFamily="@font/appleneom"
                     android:text="중복확인"
-                    android:onClick="@{activity::onCheckEmail}"
+                    android:onClick="@{() -> viewmodel.onCheckEmail()}"
                     app:layout_constraintEnd_toEndOf="@+id/editName"
                     app:layout_constraintTop_toBottomOf="@+id/editEmail" />
 
@@ -292,11 +300,12 @@
                     android:id="@+id/tvErrName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="이름을 입력해주세요"
+                    android:text="@{viewmodel.errName}"
+                    tools:text="이름을 입력해주세요"
                     android:fontFamily="@font/appleneol"
                     android:textSize="12sp"
                     android:textColor="@color/red"
-                    android:visibility="gone"
+                    android:visibility="@{viewmodel.viewErrName ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toStartOf="@+id/btnCheckEmail"
                     app:layout_constraintStart_toStartOf="@+id/editName"
                     app:layout_constraintTop_toBottomOf="@+id/editName" />
@@ -305,11 +314,12 @@
                     android:id="@+id/tvErrId"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="아이디 중복확인을 해주세요"
+                    android:text="@{viewmodel.errId}"
+                    tools:text="아이디 중복확인을 해주세요"
                     android:fontFamily="@font/appleneol"
                     android:textSize="12sp"
                     android:textColor="@color/red"
-                    android:visibility="gone"
+                    android:visibility="@{viewmodel.viewErrId ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="@+id/editEmail"
                     app:layout_constraintStart_toStartOf="@+id/editEmail"
                     app:layout_constraintTop_toBottomOf="@+id/editEmail" />
@@ -318,11 +328,12 @@
                     android:id="@+id/tvErrPw"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="비밀번호 형식은 대소문자 구분, 숫자, 특수문자가 포함된 6~16글자 입니다."
+                    android:text="@{viewmodel.errPW}"
+                    tools:text="비밀번호 형식은 대소문자 구분, 숫자, 특수문자가 포함된 6~16글자 입니다."
                     android:fontFamily="@font/appleneol"
                     android:textSize="12sp"
                     android:textColor="@color/red"
-                    android:visibility="gone"
+                    android:visibility="@{viewmodel.viewErrPW ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="@+id/editPW"
                     app:layout_constraintStart_toStartOf="@+id/editPW"
                     app:layout_constraintTop_toBottomOf="@+id/editPW" />
@@ -331,11 +342,12 @@
                     android:id="@+id/tvErrRePw"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="비밀번호를 다시 확인해주세요"
+                    android:text="@{viewmodel.errRePW}"
+                    tools:text="비밀번호를 다시 확인해주세요"
                     android:fontFamily="@font/appleneol"
                     android:textSize="12sp"
                     android:textColor="@color/red"
-                    android:visibility="gone"
+                    android:visibility="@{viewmodel.viewErrRePW ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="@+id/editRePW"
                     app:layout_constraintStart_toStartOf="@+id/editRePW"
                     app:layout_constraintTop_toBottomOf="@+id/editRePW" />
