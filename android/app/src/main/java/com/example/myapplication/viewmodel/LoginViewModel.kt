@@ -1,13 +1,19 @@
 package com.example.myapplication.viewmodel
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Color
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.myapplication.UserData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.ResponseLogin
 import com.example.myapplication.dto.UserDTO
 import com.example.myapplication.event.SingleLiveEvent
+import com.example.myapplication.ui.MainActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +30,8 @@ class LoginViewModel: ViewModel() {
 
     val onSignUpEvent = SingleLiveEvent<Unit>()
     val onLoginEvent = SingleLiveEvent<Unit>()
+    val onAutoLoginEvent = SingleLiveEvent<Unit>()
+    val onAutoLoginFailEvent = SingleLiveEvent<Unit>()
 
     fun onSignup() {
         onSignUpEvent.call()
@@ -79,6 +87,42 @@ class LoginViewModel: ViewModel() {
 
                 override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
                     Log.e("$TAG Err", "통신안됨: ${t.message}")
+                }
+
+            })
+        }
+    }
+
+    fun autoLogin() {
+        email.value = UserData.userId
+        password.value = UserData.userpassword
+        Log.e(TAG, "${email.value}, ${password.value}")
+
+        if (email.value != null && email.value != "" && password.value !=  null && password.value != ""){
+            val user = getData()
+            Log.e(TAG, "auto login")
+
+            val call = RetrofitHelper.getUserApi().login(user)
+            Log.e(TAG+"g", user.toString())
+            call.enqueue(object : Callback<ResponseLogin> {
+                override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
+                    if (response.isSuccessful) {
+                        val result = response.code()
+                        when (result) {
+                            200 -> {
+                                onAutoLoginEvent.call()
+                            }
+                            204 -> {
+                                errPW.value = "아이디나 비밀번호가 일치하지 않습니다."
+                                viewErrPW.value = true
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
+                    Log.e(TAG+" Err", "통신안됨: ${t.message}")
+                    onAutoLoginFailEvent.call()
                 }
 
             })
