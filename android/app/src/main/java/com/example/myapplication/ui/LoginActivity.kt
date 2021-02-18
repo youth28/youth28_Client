@@ -6,23 +6,16 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
-import com.example.myapplication.api.RetrofitHelper
-import com.example.myapplication.dto.ResponseLogin
-import com.example.myapplication.dto.UserDTO
 import com.example.myapplication.R
 import com.example.myapplication.UserData
 import com.example.myapplication.databinding.ActivityLoginBinding
 import com.example.myapplication.viewmodel.LoginViewModel
 import kotlinx.android.synthetic.main.activity_login.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class LoginActivity: AppCompatActivity() {
 
@@ -46,9 +39,9 @@ class LoginActivity: AppCompatActivity() {
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
         UserData.userId = preferences.getString("userId", "").toString()
-        UserData.userpassword = preferences.getString("userPW", "").toString()
+        UserData.userPassword = preferences.getString("userPW", "").toString()
 
-        Log.e(TAG, "hihi ${UserData.userId} ,,, ${UserData.userpassword}")
+        Log.e(TAG, "hihi ${UserData.userId} ,,, ${UserData.userPassword}")
 
         // email, PW 값이 null이 아니라면 자동 로그인 하기
         viewModel.autoLogin()
@@ -65,7 +58,7 @@ class LoginActivity: AppCompatActivity() {
                 Log.e(TAG, "${UserData.toStringData()}")
                 val editor = preferences.edit()
                 editor.putString("userId", UserData.userId)
-                editor.putString("userPW", UserData.userpassword)
+                editor.putString("userPW", UserData.userPassword)
                 editor.putString("userNum", UserData.userNum)
                 editor.putString("userProfile", UserData.userProfile)
                 editor.putString("userName", UserData.userName)
@@ -87,7 +80,7 @@ class LoginActivity: AppCompatActivity() {
             onAutoLoginFailEvent.observe(this@LoginActivity, {
                 val dialog = SweetAlertDialog(this@LoginActivity , SweetAlertDialog.ERROR_TYPE)
                 dialog.progressHelper.barColor = Color.parseColor("#36b8ff")
-                dialog.titleText = "로그인 실패."
+                dialog.titleText = "통신 안됨."
                 dialog.setCancelable(false)
                 dialog.show()
             })

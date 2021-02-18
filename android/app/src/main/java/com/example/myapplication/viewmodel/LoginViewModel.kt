@@ -1,19 +1,13 @@
 package com.example.myapplication.viewmodel
 
-import android.app.Activity
-import android.content.Intent
-import android.graphics.Color
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.myapplication.UserData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.ResponseLogin
 import com.example.myapplication.dto.UserDTO
 import com.example.myapplication.event.SingleLiveEvent
-import com.example.myapplication.ui.MainActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -67,7 +61,7 @@ class LoginViewModel: ViewModel() {
                             200 -> {
                                 //성공할시
                                 UserData.userId = email.value!!
-                                UserData.userpassword = password.value!!
+                                UserData.userPassword = password.value!!
                                 UserData.userNum = response.body()!!.user_id
                                 UserData.userName = response.body()!!.name
                                 UserData.userProfile = "img"
@@ -87,6 +81,7 @@ class LoginViewModel: ViewModel() {
 
                 override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
                     Log.e("$TAG Err", "통신안됨: ${t.message}")
+                    onAutoLoginFailEvent.call()
                 }
 
             })
@@ -95,7 +90,7 @@ class LoginViewModel: ViewModel() {
 
     fun autoLogin() {
         email.value = UserData.userId
-        password.value = UserData.userpassword
+        password.value = UserData.userPassword
         Log.e(TAG, "${email.value}, ${password.value}")
 
         if (email.value != null && email.value != "" && password.value !=  null && password.value != ""){
