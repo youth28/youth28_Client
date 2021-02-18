@@ -1,9 +1,6 @@
 package com.example.myapplication.viewmodel
 
-import android.app.Activity
-import android.content.Intent
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.UserData
@@ -11,7 +8,6 @@ import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.ResponseLogin
 import com.example.myapplication.dto.UserDTO
 import com.example.myapplication.event.SingleLiveEvent
-import com.example.myapplication.ui.ModifyProfileActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,9 +39,12 @@ class SignUpViewModel: ViewModel() {
     val cbArt = MutableLiveData<Boolean>()
     val cbExercise = MutableLiveData<Boolean>()
     val cbEtc = MutableLiveData<Boolean>()
+
+    val dialog = MutableLiveData<Boolean>(false)
     // endregion
 
     val onSignUpEvent = SingleLiveEvent<Unit>()
+    val onSignUpFailEvent = SingleLiveEvent<Unit>()
     val onCheckEmailEvent = SingleLiveEvent<Unit>()
 
     var isAbleId = false
@@ -119,6 +118,7 @@ class SignUpViewModel: ViewModel() {
                 Log.e("field", strField)
 
                 // 회원가입 하기
+                dialog.value = true
                 val user = getData()
                 Log.e(TAG, user.toString())
                 val call = RetrofitHelper.getUserApi().register(user)
@@ -126,17 +126,20 @@ class SignUpViewModel: ViewModel() {
                     override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                         if (response.isSuccessful) {
                             UserData.userId = email.value!!
-                            UserData.userpassword = password.value!!
+                            UserData.userPassword = password.value!!
                             UserData.userNum = response.body()!!.user_id
                             UserData.userName = response.body()!!.name
                             UserData.userProfile = "img"
 
                             onSignUpEvent.call()
-                        }
+                            dialog.value = false
+                        } else dialog.value = false
                     }
 
                     override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
                         Log.e(TAG + " Err", "통신안됨: ${t.message}")
+                        dialog.value = false
+                        onSignUpFailEvent.call()
                     }
 
                 })

@@ -3,26 +3,19 @@ package com.example.myapplication.ui
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.example.myapplication.api.RetrofitHelper
-import com.example.myapplication.dto.UserDTO
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.myapplication.R
 import com.example.myapplication.UserData
 import com.example.myapplication.databinding.ActivitySignUpBinding
-import com.example.myapplication.dto.ResponseLogin
-import com.example.myapplication.viewmodel.LoginViewModel
 import com.example.myapplication.viewmodel.SignUpViewModel
 import kotlinx.android.synthetic.main.activity_sign_up.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.regex.Pattern
 
 class SignUpActivity: AppCompatActivity() {
 
@@ -34,12 +27,9 @@ class SignUpActivity: AppCompatActivity() {
     private lateinit var viewModel: SignUpViewModel
 
     var email = ""
-    var PW =""
-    var rePW = ""
     var name = ""
-    var strField = ""
 
-    var isAbleId = true
+    private lateinit var loadDialog: SweetAlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +40,8 @@ class SignUpActivity: AppCompatActivity() {
         binding.viewmodel = viewModel
         binding.executePendingBindings()
 
+        setDialog()
+
         with(viewModel) {
             onSignUpEvent.observe(this@SignUpActivity, {
                 val intent = Intent(this@SignUpActivity, ModifyProfileActivity::class.java)
@@ -58,21 +50,49 @@ class SignUpActivity: AppCompatActivity() {
                 Log.e(TAG, "signUP")
                 val editor = preferences.edit()
                 editor.putString("userId", UserData.userId)
-                editor.putString("userPW", UserData.userpassword)
+                editor.putString("userPW", UserData.userPassword)
                 editor.putString("userNum", UserData.userNum)
                 editor.putString("userProfile", UserData.userProfile)
                 editor.putString("userName", UserData.userName)
                 editor.apply()
+
                 finish()
             })
 
+            onSignUpFailEvent.observe(this@SignUpActivity, {
+                val dialog = SweetAlertDialog(this@SignUpActivity, SweetAlertDialog.ERROR_TYPE)
+                dialog.progressHelper.barColor = Color.parseColor("#FF0000")
+                dialog.titleText = "로그인에 실패하였습니다."
+                dialog.show()
+            })
+
             onCheckEmailEvent.observe(this@SignUpActivity, {
-                showToast("${email}는 사용가능한 아이디 입니다.")
+                val dialog = SweetAlertDialog(this@SignUpActivity, SweetAlertDialog.SUCCESS_TYPE)
+                dialog.progressHelper.barColor = Color.parseColor("#FF0000")
+                dialog.titleText = "사용가능한 이메일입니다."
+                dialog.show()
+            })
+
+            dialog.observe(this@SignUpActivity, {
+                if (it) {
+                    loadDialog.show()
+                    Log.e("gg", "회원가입중")
+                } else {
+                    loadDialog.dismiss()
+                    Log.e("GG", "회원가입 완료!")
+                }
             })
         }
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
 
+    }
+
+    fun setDialog() {
+        loadDialog = SweetAlertDialog(this@SignUpActivity, SweetAlertDialog.PROGRESS_TYPE)
+        loadDialog.progressHelper.barColor = Color.parseColor("#36b8ff")
+        loadDialog.titleText = "회원가입중..."
+        loadDialog.setCancelable(false)
     }
 
     fun showToast(str: String) {
