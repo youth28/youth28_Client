@@ -29,13 +29,6 @@ class MainViewModel: ViewModel() {
 
         rcvRoomList()
         rcvMyRoomList()
-
-        val data = ArrayList<MyRoom>()
-        for(i: Int in 1..5) {
-            data.add(MyRoom("이것은 방이름 $i", i))
-        }
-        myRoomList.postValue(data)
-
     }
 
     fun onMenu() {
