@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="talk"
-            type="com.example.myapplication.view.TalkActivity" />
+            name="viewmodel"
+            type="com.example.myapplication.viewmodel.TalkViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             app:error="@{@drawable/logo}"
-            app:imageUrl="@{talk.profile}"
+            app:imageUrl="@{viewmodel.profile}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/logo" />
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"
-            android:text="@{talk.title}"
+            android:text="@{viewmodel.title}"
             tools:text="방 이름"
             android:fontFamily="@font/appleneob"
             android:textColor="@color/black"
@@ -69,7 +69,7 @@
                 android:background="@android:color/transparent"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/add"
-                android:onClick="@{talk::onPlus}"/>
+                android:onClick="@{() -> viewmodel.onPlus()}"/>
 
             <EditText
                 android:id="@+id/editMsg"
@@ -92,7 +92,7 @@
                 android:layout_marginRight="8dp"
                 android:background="@android:color/transparent"
                 android:scaleType="fitXY"
-                android:onClick="@{talk::onSend}"
+                android:onClick="@{() -> viewmodel.onSend()}"
                 app:srcCompat="@drawable/send" />
 
 
@@ -119,7 +119,7 @@
             android:layout_marginRight="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:onClick="@{talk::onCalendar}"
+            android:onClick="@{() -> viewmodel.onCalendar()}"
             app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
         <ImageView
