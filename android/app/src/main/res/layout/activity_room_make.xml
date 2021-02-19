@@ -3,14 +3,14 @@
     <data>
         <variable
             name="activity"
-            type="com.example.myapplication.ui.RoomMakeActivity" />
+            type="com.example.myapplication.view.RoomMakeActivity" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.RoomMakeActivity">
+        tools:context=".view.RoomMakeActivity">
     
         <Button
             android:id="@+id/btnMakeRoom"

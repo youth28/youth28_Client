@@ -5,7 +5,7 @@
     <data>
         <variable
             name="talk"
-            type="com.example.myapplication.ui.TalkActivity" />
+            type="com.example.myapplication.view.TalkActivity" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

@@ -5,12 +5,12 @@
     <data>
         <variable
             name="activity"
-            type="com.example.myapplication.ui.RoomFindActivity" />
+            type="com.example.myapplication.view.RoomFindActivity" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.RoomFindActivity">
+        tools:context=".view.RoomFindActivity">
 
         <ImageView
             android:id="@+id/imageView4"

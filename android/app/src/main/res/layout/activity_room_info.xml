@@ -5,12 +5,12 @@
     <data>
         <variable
             name="info"
-            type="com.example.myapplication.ui.RoomInfoActivity" />
+            type="com.example.myapplication.view.RoomInfoActivity" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.RoomModifyActivity">
+        tools:context=".view.RoomModifyActivity">
 
         <Button
             android:id="@+id/btnUpdateRoom"

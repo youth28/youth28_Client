@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.MyRoom
 import com.example.myapplication.databinding.MyRoomListBinding
-import com.example.myapplication.ui.TalkActivity
+import com.example.myapplication.view.TalkActivity
 
 class MyRoomListAdapter (val context: Context): RecyclerView.Adapter<MyRoomListAdapter.Holder>() {
     var list = listOf<MyRoom>()
