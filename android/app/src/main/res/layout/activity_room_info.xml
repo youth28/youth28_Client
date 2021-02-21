@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="info"
-            type="com.example.myapplication.view.RoomInfoActivity" />
+            name="viewmodel"
+            type="com.example.myapplication.viewmodel.RoomInfoViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
             android:layout_marginRight="33dp"
             android:background="@drawable/btn_shape"
             android:fontFamily="@font/appleneoeb"
-            android:onClick="@{info::onUpdateRoom}"
+            android:onClick="@{() -> viewmodel.onUpdateRoom()}"
             android:text="update"
             android:textColor="@color/black"
             android:textSize="18sp"
@@ -53,6 +53,7 @@
                     android:textColor="#000000"
                     android:textSize="19dp"
                     android:clickable="false"
+                    android:checked="@{viewmodel.cbStudy}"
                     android:fontFamily="@font/appleneom"/>
 
                 <CheckBox
@@ -63,6 +64,7 @@
                     android:textColor="#000000"
                     android:textSize="19dp"
                     android:clickable="false"
+                    android:checked="@{viewmodel.cbWork}"
                     android:fontFamily="@font/appleneom"/>
             </TableRow>
 
@@ -77,6 +79,7 @@
                     android:textColor="#000000"
                     android:textSize="19dp"
                     android:clickable="false"
+                    android:checked="@{viewmodel.cbGame}"
                     android:fontFamily="@font/appleneom"/>
 
                 <CheckBox
@@ -87,6 +90,7 @@
                     android:textColor="#000000"
                     android:textSize="19dp"
                     android:clickable="false"
+                    android:checked="@{viewmodel.cbMusic}"
                     android:fontFamily="@font/appleneom"/>
             </TableRow>
 
@@ -103,6 +107,7 @@
                     android:textColor="#000000"
                     android:textSize="19dp"
                     android:clickable="false"
+                    android:checked="@{viewmodel.cbArt}"
                     android:fontFamily="@font/appleneom"/>
 
                 <CheckBox
@@ -113,6 +118,7 @@
                     android:textColor="#000000"
                     android:textSize="19dp"
                     android:clickable="false"
+                    android:checked="@{viewmodel.cbExercise}"
                     android:fontFamily="@font/appleneom"/>
             </TableRow>
 
@@ -127,6 +133,7 @@
                     android:textColor="#000000"
                     android:textSize="19dp"
                     android:clickable="false"
+                    android:checked="@{viewmodel.cbEtc}"
                     android:fontFamily="@font/appleneom"/>
             </TableRow>
         </TableLayout>
@@ -154,7 +161,7 @@
             android:layout_marginRight="37dp"
             android:background="@drawable/edit_text_shape"
             android:gravity="center_vertical"
-            android:text="@{info.title}"
+            android:text="@{viewmodel.title}"
             tools:text="방 제목"
             android:textColor="@color/black"
             android:fontFamily="@font/appleneom"
@@ -198,13 +205,13 @@
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
             android:fontFamily="@font/appleneob"
-            android:text="@{info.maxPeo}"
+            android:text="@{viewmodel.maxPeo}"
+            tools:text="1명"
             android:textColor="@color/black"
             android:textSize="21dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView10"
-            app:layout_constraintTop_toTopOf="@+id/textView10"
-            tools:text="1명" />
+            app:layout_constraintTop_toTopOf="@+id/textView10" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgProfile"
@@ -212,7 +219,7 @@
             android:layout_height="100dp"
             android:layout_marginTop="20dp"
             tools:src="@drawable/logo"
-            app:imageUrl="@{info.profile}"
+            app:imageUrl="@{viewmodel.profile}"
             app:error="@{@drawable/logo}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
