@@ -1,6 +1,7 @@
 package com.example.myapplication.view
 
 import android.app.Activity
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -45,6 +46,9 @@ class RoomMakeActivity: AppCompatActivity() {
 
         with(viewmodel) {
             onRoomMakeEvent.observe(this@RoomMakeActivity, {
+                val intent = Intent(this@RoomMakeActivity, ModifyProfileActivity::class.java)
+                intent.putExtra("mode", "4")
+                startActivity(intent)
                 finish()
             })
         }
