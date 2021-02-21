@@ -46,7 +46,6 @@ class ModifyProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityModifyProfileBinding
 
-    var imageAPI: ImageAPI? = null
     var picUri: Uri? = null
     private var permissionsToRequest: ArrayList<String>? = null
     private val permissionsRejected: ArrayList<String> = ArrayList()
@@ -87,7 +86,7 @@ class ModifyProfileActivity : AppCompatActivity() {
             mode = intent.getStringExtra("mode").toString()
             Log.e("intentMode", mode)
             when(mode) {
-                "1","2"  -> {
+                "1","2","4"  -> {
                     btnName.value = "다음에 바꾸겠습니다."
                     mainMsg.value = "프로필 사진을 변경하려면 아래 사진을 선택해주세요"
                 }
@@ -95,6 +94,7 @@ class ModifyProfileActivity : AppCompatActivity() {
                     btnName.value = "프로필 사진은 바꾸지 않겠습니다."
                     mainMsg.value = "프로필 사진을 변경하려면 아래 사진을 선택해주세요"
                 }
+
             }
         }
 
@@ -151,6 +151,7 @@ class ModifyProfileActivity : AppCompatActivity() {
                 "1" -> onLogin()
                 "2" -> finish()
                 "3" -> finish()
+                "4" -> finish()
             }
         }
 
@@ -189,6 +190,7 @@ class ModifyProfileActivity : AppCompatActivity() {
                 "1" -> RetrofitHelper.getImageApi().postImage(UserId(userId), body, name)
                 "2" -> RetrofitHelper.getImageApi().modifyImage(UserId(userId), body, name)
                 "3" -> RetrofitHelper.getImageApi().modifyImage(UserId(RoomData.roomId), body, name)
+                "4" -> RetrofitHelper.getImageApi().modifyImage(UserId(RoomData.roomId), body, name)
                 else -> RetrofitHelper.getImageApi().modifyImage(UserId(userId), body, name)
             }
 
@@ -203,7 +205,9 @@ class ModifyProfileActivity : AppCompatActivity() {
 
                         when(mode) {
                             "1" -> onLogin()
+                            "2" -> finish()
                             "3" -> finish()
+                            "4" -> finish()
                         }
                     }
 
