@@ -25,6 +25,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.myapplication.R
+import com.example.myapplication.RoomData
 import com.example.myapplication.api.ImageAPI
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ActivityModifyProfileBinding
@@ -70,7 +71,7 @@ class ModifyProfileActivity : AppCompatActivity() {
 
         btnName.observe(this, Observer<String>() {
             binding.button.text = "${it}"
-            imgBool = it != "다음에 바꾸겠습니다."
+            imgBool = !(it == "프로필 사진은 바꾸지 않겠습니다." || it == "다음에 바꾸겠습니다.")
         })
 
         mainMsg.observe(this, Observer<String>() {
@@ -90,7 +91,10 @@ class ModifyProfileActivity : AppCompatActivity() {
                     btnName.value = "다음에 바꾸겠습니다."
                     mainMsg.value = "프로필 사진을 변경하려면 아래 사진을 선택해주세요"
                 }
-
+                "3" -> {
+                    btnName.value = "프로필 사진은 바꾸지 않겠습니다."
+                    mainMsg.value = "프로필 사진을 변경하려면 아래 사진을 선택해주세요"
+                }
             }
         }
 
@@ -142,9 +146,11 @@ class ModifyProfileActivity : AppCompatActivity() {
                 showToast("비트맵 비어있음")
             }
         } else {
+            // 이미지 안바꾸겠다.
             when(mode) {
                 "1" -> onLogin()
                 "2" -> finish()
+                "3" -> finish()
             }
         }
 
@@ -182,6 +188,7 @@ class ModifyProfileActivity : AppCompatActivity() {
             req = when(mode) {
                 "1" -> RetrofitHelper.getImageApi().postImage(UserId(userId), body, name)
                 "2" -> RetrofitHelper.getImageApi().modifyImage(UserId(userId), body, name)
+                "3" -> RetrofitHelper.getImageApi().modifyImage(UserId(RoomData.roomId), body, name)
                 else -> RetrofitHelper.getImageApi().modifyImage(UserId(userId), body, name)
             }
 
@@ -194,9 +201,10 @@ class ModifyProfileActivity : AppCompatActivity() {
                         Log.e("sendImageProfile", "성공입니당")
                         loadDialog.dismiss()
 
-                        Log.e("gkgkgk", response.body().toString())
-
-                        onLogin()
+                        when(mode) {
+                            "1" -> onLogin()
+                            "3" -> finish()
+                        }
                     }
 
                     showToast(response.code().toString())
