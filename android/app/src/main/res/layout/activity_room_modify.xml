@@ -2,8 +2,8 @@
 <layout>
     <data>
         <variable
-            name="modify"
-            type="com.example.myapplication.view.RoomModifyActivity" />
+            name="viewmodel"
+            type="com.example.myapplication.viewmodel.RoomModifyViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -24,7 +24,7 @@
             android:text="SAVE"
             android:textColor="#000000"
             android:textSize="18sp"
-            android:onClick="@{modify::onSaveRoom}"
+            android:onClick="@{() -> viewmodel.onSaveRoom()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imgProfile" />
@@ -51,6 +51,7 @@
                     android:text="스터디"
                     android:textColor="#000000"
                     android:textSize="19dp"
+                    android:checked="@={viewmodel.cbStudy}"
                     android:fontFamily="@font/appleneom"/>
 
                 <CheckBox
@@ -60,6 +61,7 @@
                     android:text="업무"
                     android:textColor="#000000"
                     android:textSize="19dp"
+                    android:checked="@={viewmodel.cbWork}"
                     android:fontFamily="@font/appleneom"/>
             </TableRow>
 
@@ -73,6 +75,7 @@
                     android:text="게임"
                     android:textColor="#000000"
                     android:textSize="19dp"
+                    android:checked="@={viewmodel.cbGame}"
                     android:fontFamily="@font/appleneom"/>
 
                 <CheckBox
@@ -82,6 +85,7 @@
                     android:text="음악"
                     android:textColor="#000000"
                     android:textSize="19dp"
+                    android:checked="@={viewmodel.cbMusic}"
                     android:fontFamily="@font/appleneom"/>
             </TableRow>
 
@@ -97,6 +101,7 @@
                     android:text="미술"
                     android:textColor="#000000"
                     android:textSize="19dp"
+                    android:checked="@={viewmodel.cbArt}"
                     android:fontFamily="@font/appleneom"/>
 
                 <CheckBox
@@ -106,6 +111,7 @@
                     android:text="운동(헬스)"
                     android:textColor="#000000"
                     android:textSize="19dp"
+                    android:checked="@={viewmodel.cbExercise}"
                     android:fontFamily="@font/appleneom"/>
             </TableRow>
 
@@ -119,6 +125,7 @@
                     android:text="기타"
                     android:textColor="#000000"
                     android:textSize="19dp"
+                    android:checked="@={viewmodel.cbEtc}"
                     android:fontFamily="@font/appleneom"/>
             </TableRow>
         </TableLayout>
@@ -146,7 +153,7 @@
             android:layout_marginRight="37dp"
             android:background="@drawable/edit_text_shape"
             android:hint="방 제목을 입력하세요"
-            android:text="@={modify.title}"
+            android:text="@={viewmodel.title}"
             android:fontFamily="@font/appleneom"
             android:padding="15dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -188,7 +195,7 @@
             android:layout_height="wrap_content"
             android:text="+"
             android:textSize="30dp"
-            android:onClick="@{modify.onPlu}"
+            android:onClick="@{() -> viewmodel.onPlu()}"
             android:fontFamily="@font/appleneoeb"
             app:layout_constraintStart_toEndOf="@+id/peRson"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
@@ -200,7 +207,7 @@
             android:layout_height="wrap_content"
             android:text="-"
             android:textSize="30dp"
-            android:onClick="@{modify.onSub}"
+            android:onClick="@{() -> viewmodel.onSub()}"
             android:fontFamily="@font/appleneoeb"
             app:layout_constraintEnd_toStartOf="@+id/peRson"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
@@ -210,7 +217,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@{modify.maxPeo}"
+            android:text="@{viewmodel.maxPeo}"
             tools:text="1"
             android:textSize="30dp"
             android:paddingRight="10dp"
@@ -226,7 +233,7 @@
             android:layout_height="100dp"
             android:layout_marginTop="20dp"
             app:error="@{@drawable/logo}"
-            app:imageUrl="@{modify.profile}"
+            app:imageUrl="@{viewmodel.profile}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView14"
