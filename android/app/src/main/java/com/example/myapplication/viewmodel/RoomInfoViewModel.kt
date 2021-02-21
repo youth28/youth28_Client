@@ -34,10 +34,30 @@ class RoomInfoViewModel: ViewModel() {
     var field = ""
     var room_id = 0
     var roomManager = 0
+    var maxNum = 0
 
     init {
         room_id = RoomData.roomId
-        settingUi()
+
+        title.value = "안녕"
+        maxNum = 5
+        maxPeo.value = "${maxNum}명"
+        field = "스터디,게임,미술"
+        profile.value = "http://d3c30c5e052c.ngrok.io/uploads/98eed633ca782547430c1768572e1cdb.png"
+        roomManager = 5
+
+        val arrayList = field.split(",")
+        for (value in arrayList) {
+            when (value) {
+                "스터디" -> cbStudy.value = true
+                "게임" -> cbGame.value = true
+                "업무" -> cbWork.value = true
+                "음악" -> cbMusic.value = true
+                "미술" -> cbArt.value = true
+                "운동(헬스)" -> cbExercise.value = true
+                "기타" -> cbEtc.value = true
+            }
+        }
     }
 
     fun onUpdateRoom() {
@@ -50,6 +70,37 @@ class RoomInfoViewModel: ViewModel() {
     }
 
     fun settingUi() {
+        room_id = RoomData.roomId
+
+        cbStudy.value = false
+        cbGame.value = false
+        cbWork.value = false
+        cbMusic.value = false
+        cbArt.value = false
+        cbExercise.value = false
+        cbEtc.value = false
+
+
+        title.value = RoomData.title
+        maxNum = RoomData.maxPeo
+        maxPeo.value = "${maxNum}명"
+        field = RoomData.roomField
+        profile.value = RoomData.profile
+        roomManager = 5
+
+        val arrayList = field.split(",")
+        for (value in arrayList) {
+            when (value) {
+                "스터디" -> cbStudy.value = true
+                "게임" -> cbGame.value = true
+                "업무" -> cbWork.value = true
+                "음악" -> cbMusic.value = true
+                "미술" -> cbArt.value = true
+                "운동(헬스)" -> cbExercise.value = true
+                "기타" -> cbEtc.value = true
+            }
+        }
+
         val room = RoomId(room_id)
         val call = RetrofitHelper.getRoomApi().room_info(room)
         call.enqueue(object : Callback<RoomInfoDTO> {

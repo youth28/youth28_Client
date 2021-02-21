@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -29,7 +30,7 @@ class RoomInfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
-        room_id = intent.getIntExtra("roomId", 66)
+        room_id = intent.getIntExtra("roomId", 0)
         RoomData.roomId = room_id
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_room_info)
@@ -43,7 +44,7 @@ class RoomInfoActivity : AppCompatActivity() {
             onUpdateRoomEvent.observe(this@RoomInfoActivity, {
                 val intent = Intent(this@RoomInfoActivity, RoomModifyActivity::class.java)
                 intent.putExtra("roomTitle", title.value)
-                intent.putExtra("roomMax", maxPeo.value)
+                intent.putExtra("roomMax", maxNum)
                 intent.putExtra("roomField", field)
                 intent.putExtra("roomId", room_id)
                 intent.putExtra("roomProfile", profile.value)
@@ -54,6 +55,11 @@ class RoomInfoActivity : AppCompatActivity() {
         viewmodel.errMsg.observe(this, {
             showToast(it)
         })
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        viewmodel.settingUi()
     }
 
     fun showToast(str: String) {
