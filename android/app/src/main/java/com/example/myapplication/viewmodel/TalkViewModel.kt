@@ -1,23 +1,29 @@
 package com.example.myapplication.viewmodel
 
+import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.ChatModel
-import com.example.myapplication.UserData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.RoomId
 import com.example.myapplication.dto.RoomInfoDTO
 import com.example.myapplication.event.SingleLiveEvent
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TalkViewModel: ViewModel() {
     val TAG = "TalkViewModel"
 
     val profile = MutableLiveData<String>()
     var title = MutableLiveData<String>()
+    var msg = MutableLiveData<String>()
     val tagList = MutableLiveData<ArrayList<String>>()
     val chatList = MutableLiveData<ArrayList<ChatModel>>()
 
@@ -27,6 +33,7 @@ class TalkViewModel: ViewModel() {
     var maxPro = 0
     var field = ""
     var room_id = 0
+    var chat = arrayListOf<ChatModel>()
 
     init {
         profile.value = "img"
@@ -66,11 +73,19 @@ class TalkViewModel: ViewModel() {
         })
     }
 
+    fun addItem(item: ChatModel) {//아이템 추가
+        if (chat != null) {
+            chat.add(item)
+            chatList.postValue(chat)
+        }
+    }
+
     fun onPlus() {
         onPlusEvent.call()
     }
 
     fun onSend() {
+        /*
         Log.e(TAG, "눌림")
         val data = arrayListOf<ChatModel>()
         for (i: Int in 1..10){
@@ -81,6 +96,31 @@ class TalkViewModel: ViewModel() {
             }
         }
         chatList.postValue(data)
+        */
+
+        val now = System.currentTimeMillis()
+        val date = Date(now)
+        //나중에 바꿔줄것
+        val sdf = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss")
+
+        val getTime = sdf.format(date)
+
+        val message = msg.value.toString().trim({ it <= ' ' })
+        if (TextUtils.isEmpty(message)) {
+            return
+        }
+        msg.value = ""
+        val jsonObject = JSONObject()
+        try {
+            jsonObject.put("name", "dkstnqls")
+            jsonObject.put("script", message)
+            jsonObject.put("profile_image", "example")
+            jsonObject.put("date_time", getTime)
+            jsonObject.put("room", "방이름임다")
+            Log.e("roomname2", "roomName2이다.")
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
     }
 
     fun onCalendar() {

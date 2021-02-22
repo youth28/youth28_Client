@@ -80,6 +80,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/round_shape"
                 android:fontFamily="@font/appleneom"
+                android:text="@={viewmodel.msg}"
                 android:hint="내용을 입력해 주세요."
                 android:paddingLeft="12dp"
                 android:textSize="20sp" />
@@ -92,7 +93,6 @@
                 android:layout_marginRight="8dp"
                 android:background="@android:color/transparent"
                 android:scaleType="fitXY"
-                android:onClick="@{() -> viewmodel.onSend()}"
                 app:srcCompat="@drawable/send" />
 
 

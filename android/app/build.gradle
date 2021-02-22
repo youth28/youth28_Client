@@ -71,5 +71,7 @@ dependencies {
     implementation "androidx.room:room-runtime:2.3.0-beta01"
     annotationProcessor "androidx.room:room-compiler:2.3.0-beta01"
     kapt "androidx.room:room-compiler:2.3.0-beta01"
+    // Socket
+    implementation 'com.github.nkzawa:socket.io-client:0.6.0'
 
 }
