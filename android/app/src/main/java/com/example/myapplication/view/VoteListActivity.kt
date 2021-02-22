@@ -3,39 +3,43 @@ package com.example.myapplication.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.dto.VoteDTO
 import com.example.myapplication.R
 import com.example.myapplication.adapter.VoteListAdapter
-import com.example.myapplication.dialog.JoinDialog
-import com.example.myapplication.dialog.VoteDialog
-import kotlinx.android.synthetic.main.activity_my_page.*
+import com.example.myapplication.databinding.ActivityVoteListBinding
+import com.example.myapplication.viewmodel.VoteListViewModel
 import kotlinx.android.synthetic.main.activity_vote_list.*
-import kotlinx.android.synthetic.main.row_vote.*
 
 class VoteListActivity : AppCompatActivity() {
 
     val TAG = "VoteListActivity"
 
-    val voteList = mutableListOf<VoteDTO>()
+    private lateinit var binding: ActivityVoteListBinding
+    private lateinit var viewmodel: VoteListViewModel
+
+    val voteList = MutableLiveData<ArrayList<VoteDTO>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_vote_list)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_vote_list)
+        viewmodel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
+                .get(VoteListViewModel::class.java)
+        binding.lifecycleOwner=this
+        binding.viewmodel = viewmodel
+        binding.executePendingBindings()
 
-        createVote()
-    }
-
-    fun createVote() {
-        // recyclerView setting
-        val layouManager = LinearLayoutManager(this@VoteListActivity)
-        recyclerViewVote.layoutManager = layouManager
-        val mAdapter = VoteListAdapter(this@VoteListActivity)
-        recyclerViewVote.adapter = mAdapter
-        for(i in 1..5){
-            voteList.add(VoteDTO("투표 제목$i", "2021-01-$i"))
-        }
-        mAdapter.list = voteList
+        viewmodel.voteList.observe(this, { livedata ->
+            voteList.value = livedata
+            val layouManager = LinearLayoutManager(this@VoteListActivity)
+            recyclerViewVote.layoutManager = layouManager
+            val mAdapter = VoteListAdapter(this@VoteListActivity)
+            recyclerViewVote.adapter = mAdapter
+            mAdapter.list = voteList.value!!
+        })
     }
 
     fun showToast(str: String) {
