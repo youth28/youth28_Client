@@ -11,7 +11,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
@@ -25,7 +24,6 @@ import com.example.myapplication.viewmodel.MyPageViewModel
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.github.sundeepk.compactcalendarview.domain.Event
 import kotlinx.android.synthetic.main.activity_my_page.*
-import kotlinx.android.synthetic.main.dialog_vote.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -41,6 +39,8 @@ class MyPageActivity : AppCompatActivity() {
 
     private val tagList = MutableLiveData<ArrayList<String>>()
     val event = MutableLiveData<List<Event>>()
+
+    var sDate = Date()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +75,7 @@ class MyPageActivity : AppCompatActivity() {
                 dialog.listener = {date, content ->
                     val ev = Event(Color.LTGRAY, sdf.parse("$sYear-$sMonth-$sDay").time, ScheduleModel(content, date))
                     binding.calendarView.addEvent(ev)
+                    event.postValue(binding.calendarView.getEvents(sDate))
                     rcv()
                     Log.e("TAG", "등록했음: ${date}, ${content}")
                 }
@@ -87,19 +88,6 @@ class MyPageActivity : AppCompatActivity() {
             })
         }
 
-        val dataObserver: Observer<ArrayList<String>>  =
-                Observer { livedata ->
-                    tagList.value = livedata
-                    val mAdapter = TagAdapter(this)
-                    binding.rcvTag.adapter = mAdapter
-                    val layoutManager = LinearLayoutManager(this)
-                    layoutManager.orientation = LinearLayoutManager.HORIZONTAL
-                    binding.rcvTag.layoutManager = layoutManager
-                    binding.rcvTag.setHasFixedSize(true)
-                    mAdapter.list = tagList.value!!
-                }
-        viewModel.tagList.observe(this, dataObserver)
-
         event.value = calendarView.getEvents(Date(System.currentTimeMillis()))
 
         // 시작 요일 바꾸기
@@ -107,6 +95,7 @@ class MyPageActivity : AppCompatActivity() {
 
         binding.calendarView.setListener(object : CompactCalendarView.CompactCalendarViewListener {
             override fun onDayClick(dateClicked: Date?) {
+                sDate = dateClicked!!
                 event.value = binding.calendarView.getEvents(dateClicked)
 
                 viewModel.sYear = SimpleDateFormat("yyyy").format(dateClicked)
@@ -123,14 +112,34 @@ class MyPageActivity : AppCompatActivity() {
                 } else {
                     showToast("적용된 이벤트가 없습니다.")
                 }
-                binding.invalidateAll()
             }
 
             override fun onMonthScroll(firstDayOfNewMonth: Date?) {
                 viewModel.topDate.value = DateFormat.format("yyyy년 MM월", firstDayOfNewMonth).toString()
-                binding.invalidateAll()
             }
 
+        })
+
+        viewModel.event.observe(this, { livedata ->
+            event.value = livedata
+            rcv()
+        })
+
+        event.observe(this, {
+            binding.calendarView.removeEvents(sDate)
+            binding.calendarView.addEvents(it)
+            rcv()
+        })
+
+        viewModel.tagList.observe(this, { livedata ->
+            tagList.value = livedata
+            val mAdapter = TagAdapter(this)
+            binding.rcvTag.adapter = mAdapter
+            val layoutManager = LinearLayoutManager(this)
+            layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+            binding.rcvTag.layoutManager = layoutManager
+            binding.rcvTag.setHasFixedSize(true)
+            mAdapter.list = tagList.value!!
         })
     }
 
