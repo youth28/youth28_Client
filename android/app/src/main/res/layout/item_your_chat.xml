@@ -45,13 +45,15 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:text="@{item.message}"
-            tools:text="상대가 입력한 내용"
+            tools:text="욥"
             android:textColor="@color/black"
             android:textSize="20dp"
             android:fontFamily="@font/appleneol"
             android:background="@drawable/chat_you_image"
-            android:padding="8dp"
-            android:gravity="center"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center_horizontal"
             app:layout_constraintStart_toEndOf="@+id/imgChatYou"
             app:layout_constraintTop_toBottomOf="@+id/tvChatYouName" />
 
