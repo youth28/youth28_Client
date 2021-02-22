@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.ChatModel
+import com.example.myapplication.UserData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.RoomId
 import com.example.myapplication.dto.RoomInfoDTO
@@ -29,14 +30,17 @@ class TalkViewModel: ViewModel() {
 
     val onPlusEvent = SingleLiveEvent<Unit>()
     val onCalendarEvent = SingleLiveEvent<Unit>()
+    val onSendEvent = SingleLiveEvent<Unit>()
 
     var maxPro = 0
     var field = ""
     var room_id = 0
     var chat = arrayListOf<ChatModel>()
+    val jsonObject = JSONObject()
 
     init {
         profile.value = "img"
+        UserData.userId = "dkstnqls0925"
 
         val room = RoomId(room_id)
 
@@ -101,26 +105,27 @@ class TalkViewModel: ViewModel() {
         val now = System.currentTimeMillis()
         val date = Date(now)
         //나중에 바꿔줄것
-        val sdf = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss")
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
 
         val getTime = sdf.format(date)
 
-        val message = msg.value.toString().trim({ it <= ' ' })
+        val message = msg.value.toString().trim { it <= ' ' }
+        Log.e(TAG, "message=${message}, msg=${msg.value}")
         if (TextUtils.isEmpty(message)) {
             return
         }
         msg.value = ""
-        val jsonObject = JSONObject()
         try {
-            jsonObject.put("name", "dkstnqls")
+            jsonObject.put("name", UserData.userId)
             jsonObject.put("script", message)
             jsonObject.put("profile_image", "example")
             jsonObject.put("date_time", getTime)
-            jsonObject.put("room", "방이름임다")
-            Log.e("roomname2", "roomName2이다.")
+            jsonObject.put("roomName", "room예시")
+
         } catch (e: JSONException) {
             e.printStackTrace()
         }
+        onSendEvent.call()
     }
 
     fun onCalendar() {

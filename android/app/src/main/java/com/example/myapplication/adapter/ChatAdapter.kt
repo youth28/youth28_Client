@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.ChatModel
 import com.example.myapplication.R
+import com.example.myapplication.UserData
 import com.example.myapplication.databinding.ItemMyChatBinding
 import com.example.myapplication.databinding.ItemYourChatBinding
 
@@ -19,7 +20,6 @@ class ChatAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewH
     var chatList = mutableListOf<ChatModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        Log.e(TAG, "onCreateViewHolder")
         // viewType 이 1이면 내 채팅 레이아웃, 2이면 상대 채팅 레이아웃
         if(viewType == 1) {
             val binding = ItemMyChatBinding.inflate(LayoutInflater.from(context), parent, false)
@@ -31,7 +31,6 @@ class ChatAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.e(TAG, "onBindiViewHolder")
         if (holder is Holder) {
             holder.onBind(item = chatList[position])
         }
@@ -49,7 +48,7 @@ class ChatAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewH
 
         // 내 아이디와 msgList의 name이 같다면 내 뷰타입 아니면 상대 뷰타입
         // 여기에 vote를 줘야하는디 이게 chat 모드랑 vote 모드로 나눠저야할 듯 내일 회의에서 말하자아ㅏ
-        return if (chatList[position].userId == "안수빈") {
+        return if (chatList[position].userId == UserData.userId) {
             1
         } else {
             2

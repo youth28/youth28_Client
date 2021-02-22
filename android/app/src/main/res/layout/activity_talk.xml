@@ -87,6 +87,7 @@
 
             <ImageButton
                 android:id="@+id/btnSend"
+                android:onClick="@{() -> viewmodel.onSend()}"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="8dp"

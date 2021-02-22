@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -24,7 +23,6 @@ import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
 import org.json.JSONException
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -86,7 +84,6 @@ class TalkActivity : AppCompatActivity() {
             rcvChat.layoutManager = layouManager
             rcvChat.adapter = mAdapter
             mAdapter.chatList = chatList.value!!
-            Log.e(TAG, "livedata= ${livedata}")
         })
 
         with(viewModel) {
@@ -100,8 +97,14 @@ class TalkActivity : AppCompatActivity() {
                 intent.putExtra("roomId", room_id)
                 startActivity(intent)
             })
+            onSendEvent.observe(this@TalkActivity, {
+                Log.e(TAG, viewModel.jsonObject.toString())
+                Log.e("챗룸", "sendMessage: 1" + mSocket.emit("chat message", viewModel.jsonObject))
+                Log.e("sendmmm", UserData.userId )
+            })
         }
 
+        // region 소캣
         if (savedInstanceState != null) {
             hasConnection = savedInstanceState.getBoolean("hasConnection")
         }
@@ -120,9 +123,9 @@ class TalkActivity : AppCompatActivity() {
 
             val userId = JSONObject()
             try {
-                userId.put("username", "안수빈" + " Connected")
+                userId.put("username", UserData.userId + " Connected")
                 userId.put("roomName", "room예시")
-                Log.e("username", "안수빈" + " Connected")
+                Log.e("username", UserData.userId + " Connected")
 
                 //socket.emit은 메세지 전송임
                 mSocket.emit("connect user", userId)
@@ -133,12 +136,7 @@ class TalkActivity : AppCompatActivity() {
         }
 
         hasConnection = true
-
-        btnSend.setOnClickListener {
-            //아이템 추가 부분
-            sendMessage()
-
-        }
+        // endregion
     }
 
     internal var onNewMessage: Emitter.Listener = Emitter.Listener { args ->
@@ -183,35 +181,6 @@ class TalkActivity : AppCompatActivity() {
             }
 
         })
-    }
-
-    fun sendMessage() {
-        val now = System.currentTimeMillis()
-        val date = Date(now)
-        //나중에 바꿔줄것
-        val sdf = SimpleDateFormat("yyyy-MM-dd")
-
-        val getTime = sdf.format(date)
-
-        val message = viewModel.msg.value.toString().trim { it <= ' ' }
-        if (TextUtils.isEmpty(message)) {
-            return
-        }
-        viewModel.msg.value = ""
-        val jsonObject = JSONObject()
-        try {
-            jsonObject.put("name", "안수빈")
-
-
-            jsonObject.put("script", message)
-            jsonObject.put("profile_image", "example")
-            jsonObject.put("date_time", getTime)
-            jsonObject.put("roomName", "room예시")
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        Log.e("챗룸", "sendMessage: 1" + mSocket.emit("chat message", jsonObject))
-        Log.e("sendmmm","안수빈" )
     }
 
     fun loadMessage(){
