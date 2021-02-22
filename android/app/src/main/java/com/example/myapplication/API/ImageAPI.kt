@@ -24,4 +24,9 @@ interface ImageAPI {
             @Part file: MultipartBody.Part,
             @Part("upload") name: RequestBody
     ): Call<ResponseBody>
+    
+    @POST("/image_load")
+    fun imageLoad(
+            @Body userId: UserId
+    ): Call<ResponseBody>
 }

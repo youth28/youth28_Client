@@ -33,6 +33,7 @@ import com.example.myapplication.dto.ResponseLogin
 import com.example.myapplication.dto.UserDTO
 import com.example.myapplication.dto.UserId
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_modify_profile.*
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -77,6 +78,8 @@ class ModifyProfileActivity : AppCompatActivity() {
             binding.tvMainMsg.text = "${it}"
         })
 
+        imageLoad()
+
         // 퍼미션 요청
         askPermissions()
 
@@ -101,6 +104,24 @@ class ModifyProfileActivity : AppCompatActivity() {
        binding.imgProfile.setOnClickListener {
             startActivityForResult(getPickImageChooserIntent(), IMAGE_RESULT)
         }
+    }
+
+    fun imageLoad() {
+        Log.e(TAG, "imageLoad")
+        val call = RetrofitHelper.getImageApi().imageLoad(UserId(6))
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                Log.d("AAA", "REQUEST SUCCESS ==> ")
+                val file = response.body()?.byteStream()
+                val bitmap = BitmapFactory.decodeStream(file)
+                imgProfile.setImageBitmap(bitmap)
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("AAA", "FAIL REQUEST ==> " + t.localizedMessage)
+            }
+
+        })
     }
 
     fun onLogin() {
