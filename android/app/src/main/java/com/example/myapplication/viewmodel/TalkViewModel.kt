@@ -40,7 +40,8 @@ class TalkViewModel: ViewModel() {
 
     init {
         profile.value = "img"
-        UserData.userId = "dkstnqls0925"
+        UserData.userId = "dkstnqls"
+        UserData.userNum = "6"
 
         val room = RoomId(room_id)
 
@@ -116,11 +117,11 @@ class TalkViewModel: ViewModel() {
         }
         msg.value = ""
         try {
-            jsonObject.put("name", UserData.userId)
-            jsonObject.put("script", message)
+            jsonObject.put("user_id", UserData.userNum)
+            jsonObject.put("msg", message)
             jsonObject.put("profile_image", "example")
             jsonObject.put("date_time", getTime)
-            jsonObject.put("roomName", "room예시")
+            jsonObject.put("room_id", room_id)
 
         } catch (e: JSONException) {
             e.printStackTrace()

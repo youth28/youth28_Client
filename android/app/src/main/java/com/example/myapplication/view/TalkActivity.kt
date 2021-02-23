@@ -36,8 +36,7 @@ class TalkActivity : AppCompatActivity() {
 
     private var hasConnection: Boolean = false
 
-    //private var mSocket: Socket = IO.socket("[your server url]")
-    private var mSocket: Socket = IO.socket("http://6cbca33abadc.ngrok.io/")
+    private var mSocket: Socket = IO.socket("http://eaef64e90510.ngrok.io/")
 
     var title = ""
     var room_id = 0
@@ -123,13 +122,14 @@ class TalkActivity : AppCompatActivity() {
 
             val userId = JSONObject()
             try {
-                userId.put("username", UserData.userId + " Connected")
-                userId.put("roomName", "room예시")
-                Log.e("username", UserData.userId + " Connected")
+                userId.put("user_id", UserData.userNum)
+                userId.put("room_id", room_id)
+                Log.e("send connect user", "user_id=${userId.getString("user_id")}, room_id=${userId.getString("room_id")}")
 
                 //socket.emit은 메세지 전송임
                 mSocket.emit("connect user", userId)
             } catch (e: JSONException) {
+                Log.e(TAG, "하하 ${e.message}")
                 e.printStackTrace()
             }
 
@@ -146,18 +146,21 @@ class TalkActivity : AppCompatActivity() {
             val script: String
             val profile_image: String
             val date_time: String
+            val user_id: String
             try {
                 Log.e("asdasd", data.toString())
-                name = data.getString("name")
-                script = data.getString("script")
+                name = data.getString("user_name")
+                user_id = data.getString("user_id")
+                script = data.getString("msg")
                 profile_image = data.getString("profile_image")
                 date_time = data.getString("date_time")
 
 
-                val format = ChatModel(script, date_time, name, profile_image)
+                val format = ChatModel(script, date_time, user_id, name, profile_image)
                 viewModel.addItem(format)
                 Log.e("new me",name )
             } catch (e: Exception) {
+                Log.e("하하", e.message.toString())
                 return@Runnable
             }
         })

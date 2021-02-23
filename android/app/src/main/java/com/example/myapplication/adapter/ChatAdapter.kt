@@ -28,7 +28,6 @@ class ChatAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewH
     val TAG = "ChatAdapter"
 
     var chatList = mutableListOf<ChatModel>()
-    var bitmap: Bitmap? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         // viewType 이 1이면 내 채팅 레이아웃, 2이면 상대 채팅 레이아웃
@@ -59,7 +58,7 @@ class ChatAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewH
 
         // 내 아이디와 msgList의 name이 같다면 내 뷰타입 아니면 상대 뷰타입
         // 여기에 vote를 줘야하는디 이게 chat 모드랑 vote 모드로 나눠저야할 듯 내일 회의에서 말하자아ㅏ
-        return if (chatList[position].userId == UserData.userId) {
+        return if (chatList[position].userId == UserData.userNum) {
             1
         } else {
             2

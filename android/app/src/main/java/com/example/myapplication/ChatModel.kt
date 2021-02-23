@@ -4,6 +4,7 @@ class ChatModel (
         val message: String,
         val time: String,
         val userId: String,
+        val userName: String,
         val imageUrl: String = ""
         ){
     override fun toString(): String {
