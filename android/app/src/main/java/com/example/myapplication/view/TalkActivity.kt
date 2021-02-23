@@ -119,6 +119,7 @@ class TalkActivity : AppCompatActivity() {
             //socket.on은 수신
             mSocket.on("connect user", onNewUser)
             mSocket.on("chat message", onNewMessage)
+            mSocket.on("disconnect event", onDisconnect)
 
             val userId = JSONObject()
             try {
@@ -184,6 +185,31 @@ class TalkActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    internal var onDisconnect: Emitter.Listener = Emitter.Listener { args ->
+        runOnUiThread(Runnable {
+            val data = args[0] as JSONObject
+            Log.e("하하", "onDisconnect")
+
+            try {
+                Log.e("disconnect", data.toString())
+            } catch (e: Exception) {
+                Log.e("하하", e.message.toString())
+                e.printStackTrace()
+            }
+            return@Runnable
+        })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("하하", "onDestroy")
+        val user = JSONObject()
+        user.put("user_id", UserData.userNum)
+        user.put("room_id", room_id)
+        Log.e("user", user.toString())
+        Log.e("send", " 제발!" + mSocket.emit("disconnect event", user))
     }
 
     fun loadMessage(){
