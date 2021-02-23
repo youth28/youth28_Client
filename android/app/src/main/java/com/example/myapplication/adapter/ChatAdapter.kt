@@ -1,6 +1,8 @@
 package com.example.myapplication.adapter
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,13 +13,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.ChatModel
 import com.example.myapplication.R
 import com.example.myapplication.UserData
+import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ItemMyChatBinding
 import com.example.myapplication.databinding.ItemYourChatBinding
+import com.example.myapplication.dto.UserId
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ChatAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val TAG = "ChatAdapter"
 
     var chatList = mutableListOf<ChatModel>()
+    var bitmap: Bitmap? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         // viewType 이 1이면 내 채팅 레이아웃, 2이면 상대 채팅 레이아웃
@@ -66,7 +77,31 @@ class ChatAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewH
     inner class Holder2(val binding: ItemYourChatBinding): RecyclerView.ViewHolder(binding.root) {
         fun onBind(item: ChatModel) {
             binding.item = item
+            imageLoad(binding.imgChatYou)
         }
+    }
+
+    fun imageLoad(img: CircleImageView) {
+        Log.e(TAG, "imageLoad")
+        Picasso.get().load(R.drawable.add).into(img)
+
+        val call = RetrofitHelper.getImageApi().imageLoad(UserId(6))
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.d("AAA", "REQUEST SUCCESS ==> ")
+                    val file = response.body()?.byteStream()
+                    val bitmap = BitmapFactory.decodeStream(file)
+                    img.setImageBitmap(bitmap)
+                    //Picasso.get().load(bitmap).into(img)
+                } else Log.d("AAA", "통신오류=${response.message()}")
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("AAA", "FAIL REQUEST ==> " + t.localizedMessage)
+            }
+
+        })
     }
 
     // 내 투표 뷰 홀더
