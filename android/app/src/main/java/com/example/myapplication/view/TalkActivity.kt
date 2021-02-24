@@ -93,6 +93,8 @@ class TalkActivity : AppCompatActivity() {
         viewModel.chatList.observe(this, { livedata ->
             chatList.value = livedata
             mAdapter.chatList = chatList.value!!
+            binding.rcvChat.adapter = mAdapter
+            binding.rcvChat.scrollToPosition(binding.rcvChat.adapter!!.itemCount - 1)
         })
 
         with(viewModel) {
