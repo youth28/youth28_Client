@@ -15,7 +15,10 @@ import com.example.myapplication.R
 import com.example.myapplication.UserData
 import com.example.myapplication.adapter.ChatAdapter
 import com.example.myapplication.adapter.TagAdapter
+import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ActivityTalkBinding
+import com.example.myapplication.dto.ChatListDTO
+import com.example.myapplication.dto.RoomId
 import com.example.myapplication.viewmodel.TalkViewModel
 import kotlinx.android.synthetic.main.activity_talk.*
 import org.json.JSONObject
@@ -23,6 +26,9 @@ import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
 import org.json.JSONException
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -36,7 +42,10 @@ class TalkActivity : AppCompatActivity() {
 
     private var hasConnection: Boolean = false
 
-    private var mSocket: Socket = IO.socket("http://eaef64e90510.ngrok.io/")
+    // flask
+    //private var mSocket: Socket = IO.socket("http://f9cb158980e6.ngrok.io/")
+    // node
+    private var mSocket: Socket = IO.socket("http://db42a32178bf.ngrok.io")
 
     var title = ""
     var room_id = 0
@@ -67,6 +76,10 @@ class TalkActivity : AppCompatActivity() {
         viewModel.room_id = room_id
         viewModel.title.value = title
 
+        val layouManager = LinearLayoutManager(this)
+        rcvChat.layoutManager = layouManager
+        rcvChat.adapter = mAdapter
+
         viewModel.tagList.observe(this, { livedata ->
             tagList.value = livedata
             val mAdapter = TagAdapter(this)
@@ -79,9 +92,6 @@ class TalkActivity : AppCompatActivity() {
 
         viewModel.chatList.observe(this, { livedata ->
             chatList.value = livedata
-            val layouManager = LinearLayoutManager(this)
-            rcvChat.layoutManager = layouManager
-            rcvChat.adapter = mAdapter
             mAdapter.chatList = chatList.value!!
         })
 
@@ -152,7 +162,7 @@ class TalkActivity : AppCompatActivity() {
                 Log.e("asdasd", data.toString())
                 name = data.getString("user_name")
                 user_id = data.getString("user_id")
-                script = data.getString("msg")
+                script = data.getString("message")
                 profile_image = data.getString("profile_image")
                 date_time = data.getString("date_time")
 
@@ -179,7 +189,8 @@ class TalkActivity : AppCompatActivity() {
             var username = args[0].toString()
             try {
                 val `object` = JSONObject(username)
-                username = `object`.getString("username")
+                username = `object`.getString("user_id")
+                Log.e("username onNuewUser", username)
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
@@ -212,53 +223,5 @@ class TalkActivity : AppCompatActivity() {
         Log.e("send", " 제발!" + mSocket.emit("disconnect event", user))
     }
 
-    fun loadMessage(){
-        /*preferences = getSharedPreferences("auto", MODE_PRIVATE)
-        val editor = preferences.edit()
-        var room : ChatModel = ChatModel(preferences.getString("inputId", "").toString(), preferences.getString("second_email","").toString())
-        var call: Call<LoadMsgDTO>? = RetrofitHelper.getApiService().chat_load(room)
-        call?.enqueue(object : Callback<LoadMsgDTO> {
-            override fun onResponse(call: Call<LoadMsgDTO>, response: Response<LoadMsgDTO>) {
-                Log.e("성공입니당~",response.body().toString())
-                var result : LoadMsgDTO? = response.body()
-                var name : String
-                var msg : String
-                var email : String
-                var date_time : String
 
-                editor.putString("roomName", result!!.room)
-                editor.apply()
-
-                Log.e("result", preferences.getString("roomName", "0")!!)
-                for (i in 0.. result!!.count-1){
-                    name = result.chatLine.get(i).name
-                    msg = result.chatLine.get(i).msg
-                    date_time = result.chatLine.get(i).date
-                    email = preferences.getString("second_email","").toString()
-
-                    val format = ChatModel(name, msg, "profileImage", date_time, email, "없음")
-                    mAdapter.addItem(format)
-                    mAdapter.notifyDataSetChanged()
-                    // 메세지가 올라올때마다 스크롤 최하단으로 보내기
-                    chat_recyclerview.scrollToPosition(((chat_recyclerview.adapter?.itemCount ?: Int) as Int) - 1)
-                }
-                val userId = JSONObject()
-                try {
-                    userId.put("room", preferences.getString("roomName", "0"))
-                    roomNumber = preferences.getString("roomName", "")!!
-                    Log.e("username",preferences.getString("inputId", "") + " Connected")
-
-                    //socket.emit은 메세지 전송임
-                    mSocket.emit("connect user", userId)
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-            }
-
-            override fun onFailure(call: Call<LoadMsgDTO>, t: Throwable) {
-                Log.e("d실패", t.message.toString())
-            }
-
-        })*/
-    }
 }

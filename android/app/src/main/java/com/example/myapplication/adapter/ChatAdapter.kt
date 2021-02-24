@@ -1,7 +1,6 @@
 package com.example.myapplication.adapter
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,6 +27,7 @@ class ChatAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewH
     val TAG = "ChatAdapter"
 
     var chatList = mutableListOf<ChatModel>()
+    var curNum = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         // viewType 이 1이면 내 채팅 레이아웃, 2이면 상대 채팅 레이아웃
@@ -54,11 +54,11 @@ class ChatAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     override fun getItemViewType(position: Int): Int {
-        Log.e(TAG, chatList[position].userId)
+        curNum = position
 
         // 내 아이디와 msgList의 name이 같다면 내 뷰타입 아니면 상대 뷰타입
         // 여기에 vote를 줘야하는디 이게 chat 모드랑 vote 모드로 나눠저야할 듯 내일 회의에서 말하자아ㅏ
-        return if (chatList[position].userId == UserData.userNum) {
+        return if (chatList[position].user_id == UserData.userNum) {
             1
         } else {
             2
@@ -82,9 +82,8 @@ class ChatAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewH
 
     fun imageLoad(img: CircleImageView) {
         Log.e(TAG, "imageLoad")
-        Picasso.get().load(R.drawable.add).into(img)
 
-        val call = RetrofitHelper.getImageApi().imageLoad(UserId(6))
+        val call = RetrofitHelper.getImageApi().imageLoad(UserId(chatList[curNum].user_id.toInt()))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
@@ -92,8 +91,10 @@ class ChatAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewH
                     val file = response.body()?.byteStream()
                     val bitmap = BitmapFactory.decodeStream(file)
                     img.setImageBitmap(bitmap)
-                    //Picasso.get().load(bitmap).into(img)
-                } else Log.d("AAA", "통신오류=${response.message()}")
+                } else {
+                    Log.d("AAA", "통신오류=${response.message()}")
+                    Picasso.get().load(R.drawable.add).into(img)
+                }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
