@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.ChatModel
 import com.example.myapplication.R
+import com.example.myapplication.RoomData
 import com.example.myapplication.UserData
 import com.example.myapplication.adapter.ChatAdapter
 import com.example.myapplication.adapter.TagAdapter
@@ -47,9 +48,6 @@ class TalkActivity : AppCompatActivity() {
     // node
     private var mSocket: Socket = IO.socket("http://db42a32178bf.ngrok.io")
 
-    var title = ""
-    var room_id = 0
-
     val tagList = MutableLiveData<ArrayList<String>>()
     val chatList = MutableLiveData<ArrayList<ChatModel>>()
 
@@ -59,12 +57,13 @@ class TalkActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (intent.hasExtra("roomName")) {
-            title = intent.getStringExtra("roomName").toString()
-            room_id = intent.getIntExtra("roomId", 0)
+            RoomData.title = intent.getStringExtra("roomName").toString()
+            RoomData.roomId = intent.getIntExtra("roomId", 0)
         }
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
         UserData.userId = preferences.getString("userId", "dkstnqls").toString()
+        UserData.userNum = preferences.getString("userNum", "55").toString()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_talk)
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
@@ -73,8 +72,6 @@ class TalkActivity : AppCompatActivity() {
         binding.viewmodel = viewModel
         binding.executePendingBindings()
 
-        viewModel.room_id = room_id
-        viewModel.title.value = title
 
         val layouManager = LinearLayoutManager(this)
         rcvChat.layoutManager = layouManager
@@ -136,7 +133,7 @@ class TalkActivity : AppCompatActivity() {
             val userId = JSONObject()
             try {
                 userId.put("user_id", UserData.userNum)
-                userId.put("room_id", room_id)
+                userId.put("room_id", RoomData.roomId)
                 Log.e("send connect user", "user_id=${userId.getString("user_id")}, room_id=${userId.getString("room_id")}")
 
                 //socket.emit은 메세지 전송임
@@ -220,7 +217,7 @@ class TalkActivity : AppCompatActivity() {
         Log.e("하하", "onDestroy")
         val user = JSONObject()
         user.put("user_id", UserData.userNum)
-        user.put("room_id", room_id)
+        user.put("room_id", RoomData.roomId)
         Log.e("user", user.toString())
         Log.e("send", " 제발!" + mSocket.emit("disconnect event", user))
     }

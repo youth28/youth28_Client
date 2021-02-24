@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.ChatModel
+import com.example.myapplication.RoomData
 import com.example.myapplication.UserData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.ChatListDTO
@@ -41,7 +42,8 @@ class TalkViewModel: ViewModel() {
 
     init {
         profile.value = "img"
-
+        title.value = RoomData.title
+        room_id = RoomData.roomId
         loadMessage()
 
         val room = RoomId(room_id)
