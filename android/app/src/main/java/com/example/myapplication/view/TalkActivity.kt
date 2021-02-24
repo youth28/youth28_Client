@@ -138,6 +138,7 @@ class TalkActivity : AppCompatActivity() {
                 Log.e("send connect user", "user_id=${userId.getString("user_id")}, room_id=${userId.getString("room_id")}")
 
                 //socket.emit은 메세지 전송임
+                loadMessage()
                 mSocket.emit("connect user", userId)
             } catch (e: JSONException) {
                 Log.e(TAG, "하하 ${e.message}")
@@ -223,5 +224,46 @@ class TalkActivity : AppCompatActivity() {
         Log.e("send", " 제발!" + mSocket.emit("disconnect event", user))
     }
 
+    fun loadMessage(){
+        var call: Call<ChatListDTO>? = RetrofitHelper.getRoomApi().chat_load(RoomId(room_id))
+        call?.enqueue(object : Callback<ChatListDTO> {
+            override fun onResponse(call: Call<ChatListDTO>, response: Response<ChatListDTO>) {
+                if (response.isSuccessful) {
+                    Log.e("성공입니당~", response.body().toString())
+                    var result = response.body()
+                    var name: String
+                    var msg: String
+                    var user_id: String
+                    var date_time: String
 
+                    Log.e("result", result.toString())
+                    for (i in 0..result!!.data.size - 1) {
+                        Log.e("TAG_userId", result.data[i].user_id)
+                        name = result.data[i].userName
+                        msg = result.data[i].message
+                        date_time = result.data[i].time
+                        user_id = result.data[i].user_id
+
+                        val format = ChatModel(userName = name, message = msg, imageUrl = "profileImage", time = date_time, user_id = user_id)
+                        viewModel.addItem(format)
+                    }
+                } else {
+                    Log.e("실패", "통신오류: ${response.message()}")
+
+
+                    for(i: Int in 0..10) {
+                        if (i%2 == 0)
+                            viewModel.addItem(ChatModel(userName = "안수빈", message = "메세지 $i", imageUrl = "profileImage", time = "2021-02-24", user_id = UserData.userNum))
+                        else
+                            viewModel.addItem(ChatModel(userName = "컴퓨터", message = "메세지 $i", imageUrl = "profileImage", time = "2021-02-24", user_id = (UserData.userNum.toInt()+1).toString()))
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ChatListDTO>, t: Throwable) {
+                Log.e("d실패", t.message.toString())
+            }
+
+        })
+    }
 }

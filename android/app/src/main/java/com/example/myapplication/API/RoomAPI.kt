@@ -35,4 +35,9 @@ interface RoomAPI {
     fun room_join(
             @Body joinRoomDTO: JoinRoomDTO
     ): Call<JoinRoomDTO>
+
+    @POST("chat_load")
+    fun chat_load(
+            @Body room_id: RoomId
+    ): Call<ChatListDTO>
 }
