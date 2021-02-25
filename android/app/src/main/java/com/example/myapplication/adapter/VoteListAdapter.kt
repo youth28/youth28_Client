@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.RowVoteBinding
+import com.example.myapplication.dialog.DoContentVoteDialog
 import com.example.myapplication.dialog.DoVoteDialog
 import com.example.myapplication.dto.ItemVoteDTO
 
@@ -25,10 +26,7 @@ class VoteListAdapter (val context: Context): RecyclerView.Adapter<VoteListAdapt
 
         holder.itemView.setOnClickListener {
             Log.e("click", list[position].question_text)
-            val dialog = DoVoteDialog()
-            dialog.title = list[position].question_text
-            dialog.date = list[position].time
-            dialog.writer = list[position].name
+            val dialog = DoContentVoteDialog()
             dialog.listener = { checkRB ->
                 showToast("'${checkRB}'에 투표하였습니다.")
             }

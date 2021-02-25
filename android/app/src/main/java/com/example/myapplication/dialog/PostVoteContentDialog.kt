@@ -133,25 +133,6 @@ class PostVoteContentDialog: DialogFragment() {
         })
 
  */
-
-        /*
-        val call3 = RetrofitHelper.getVoteApi().look_vote(QuestionId(2))
-        call3.enqueue(object : Callback<VoteDetailDTO> {
-            override fun onResponse(call: Call<VoteDetailDTO>, response: Response<VoteDetailDTO>) {
-                if (response.isSuccessful) {
-                    val result = response.body()
-                    Log.e("look_vote: ", "${result.toString()}")
-                } else Log.e("look_vote", " 통신오류: ${response.message()}")
-            }
-
-            override fun onFailure(call: Call<VoteDetailDTO>, t: Throwable) {
-                Log.e("onFailure", "${t.message}")
-            }
-
-        })
-
-         */
-
         /*
         val call4 = RetrofitHelper.getVoteApi().now_vote(QuestionId(2))
         call4.enqueue(object : Callback<VoteStatusDTO>{
