@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.RowVoteBinding
 import com.example.myapplication.dialog.DoContentVoteDialog
 import com.example.myapplication.dialog.DoVoteDialog
+import com.example.myapplication.dialog.NowVoteContentDialog
 import com.example.myapplication.dto.ItemVoteDTO
 
 class VoteListAdapter (val context: Context): RecyclerView.Adapter<VoteListAdapter.Holder>() {
@@ -25,13 +26,23 @@ class VoteListAdapter (val context: Context): RecyclerView.Adapter<VoteListAdapt
         holder.onBind(list[position])
 
         holder.itemView.setOnClickListener {
-            Log.e("click", list[position].question_text)
-            val dialog = DoContentVoteDialog()
-            dialog.listener = { selectContent ->
-                showToast("'${selectContent}'에 투표하였습니다.")
+            Log.e("click", list[position].done.toString())
+            if (list[position].done == 0) {
+                val dialog = DoContentVoteDialog()
+                val manager = (context as AppCompatActivity).supportFragmentManager
+                dialog.listener = { selectContent ->
+                    showToast("'${selectContent}'에 투표하였습니다.")
+
+                    val dialog = NowVoteContentDialog()
+                    dialog.show(manager, "dialog")
+                }
+                dialog.show(manager, "dialog")
+            } else {
+                showToast("마감된 투표 입니다.")
+                val manager = (context as AppCompatActivity).supportFragmentManager
+                val dialog = NowVoteContentDialog()
+                dialog.show(manager, "dialog")
             }
-            val manager = (context as AppCompatActivity).supportFragmentManager
-            dialog.show(manager, "dialog")
         }
     }
 
