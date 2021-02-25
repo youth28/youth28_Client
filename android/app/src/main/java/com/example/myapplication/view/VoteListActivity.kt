@@ -14,9 +14,8 @@ import com.example.myapplication.R
 import com.example.myapplication.ScheduleModel
 import com.example.myapplication.adapter.VoteListAdapter
 import com.example.myapplication.databinding.ActivityVoteListBinding
-import com.example.myapplication.dialog.PostVoteContentDialog
-import com.example.myapplication.dialog.PostVoteDialog
-import com.example.myapplication.dialog.ScheduleDialog
+import com.example.myapplication.dialog.*
+import com.example.myapplication.dto.DoVoteDTO
 import com.example.myapplication.viewmodel.VoteListViewModel
 import com.github.sundeepk.compactcalendarview.domain.Event
 import kotlinx.android.synthetic.main.activity_vote_list.*
@@ -50,10 +49,21 @@ class VoteListActivity : AppCompatActivity() {
 
         with(viewmodel) {
             onCreateVoteEvent.observe(this@VoteListActivity, {
-                val dialog = PostVoteContentDialog()
+                val dialog = VoteMenuDialog()
 
-                dialog.listener = {date ->
-                    Log.e("TAG", "등록했음: ${date}")
+                dialog.listener = { mode ->
+                    if (mode == 1) {
+                        val dialog = DoVoteDialog()
+                        dialog.show(supportFragmentManager, "dialog")
+                    } else {
+                        val dialog = PostVoteContentDialog()
+
+                        dialog.listener = {title ->
+                            showToast("[${title}]투표를 정상적으로 등록했습니다.")
+                        }
+
+                        dialog.show(supportFragmentManager, "dialog")
+                    }
                 }
 
                 dialog.show(supportFragmentManager, "dialog")

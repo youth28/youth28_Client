@@ -22,9 +22,9 @@
             android:layout_marginEnd="15dp"
             android:layout_marginRight="15dp"
             android:hint="투표 제목을 입력해주세요"
-            android:text="@{dialog.title}"
+            android:text="@={dialog.title}"
             tools:text="오늘 운동하실분~"
-            android:textColor="@color/text_gray"
+            android:textColor="@color/black"
             android:textSize="15sp"
             android:fontFamily="@font/appleneoeb"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,22 +35,27 @@
             android:id="@+id/tvDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="2dp"
             android:fontFamily="@font/appleneob"
             android:text="@{dialog.date}"
-            android:textColor="@color/text_gray"
+            android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@+id/tvTitle"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-            tools:text="2020-10-30" />
+            tools:text="날짜: 2020-10-30" />
 
         <EditText
             android:id="@+id/editText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:hint="content1"
-            android:text="@={dialog.content1}"
+            android:textSize="18sp"
+            android:fontFamily="@font/appleneom"
+            android:text="@={dialog.contentList[0]}"
             app:layout_constraintEnd_toEndOf="@+id/tvDate"
             app:layout_constraintStart_toStartOf="@+id/tvDate"
             app:layout_constraintTop_toBottomOf="@+id/tvDate" />
@@ -60,8 +65,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:hint="content1"
-            android:text="@={dialog.content2}"
+            android:hint="content2"
+            android:textSize="18sp"
+            android:fontFamily="@font/appleneom"
+            android:text="@={dialog.contentList[1]}"
             app:layout_constraintEnd_toEndOf="@+id/editText"
             app:layout_constraintStart_toStartOf="@+id/editText"
             app:layout_constraintTop_toBottomOf="@+id/editText" />
@@ -71,8 +78,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:hint="content1"
-            android:text="@={dialog.content3}"
+            android:hint="content3"
+            android:textSize="18sp"
+            android:fontFamily="@font/appleneom"
+            android:text="@={dialog.contentList[2]}"
             app:layout_constraintEnd_toEndOf="@+id/editText4"
             app:layout_constraintStart_toStartOf="@+id/editText4"
             app:layout_constraintTop_toBottomOf="@+id/editText4" />
@@ -82,8 +91,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:hint="content1"
-            android:text="@={dialog.content4}"
+            android:hint="content4"
+            android:textSize="18sp"
+            android:fontFamily="@font/appleneom"
+            android:text="@={dialog.contentList[3]}"
             app:layout_constraintEnd_toEndOf="@+id/editText5"
             app:layout_constraintStart_toStartOf="@+id/editText5"
             app:layout_constraintTop_toBottomOf="@+id/editText5" />
@@ -93,17 +104,30 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:hint="content1"
-            android:text="@={dialog.content5}"
+            android:hint="content5"
+            android:textSize="18sp"
+            android:fontFamily="@font/appleneom"
+            android:text="@={dialog.contentList[4]}"
+            android:textColorHighlight="@color/white"
             app:layout_constraintEnd_toEndOf="@+id/editText2"
             app:layout_constraintStart_toStartOf="@+id/editText2"
             app:layout_constraintTop_toBottomOf="@+id/editText2" />
+
+        <DatePicker
+            android:id="@+id/datePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText6" />
 
         <Button
             android:id="@+id/btnVote"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/btn_shape_white"
             android:elevation="10dp"
@@ -115,7 +139,6 @@
             app:layout_constraintEnd_toEndOf="@+id/editText6"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/editText6"
-            app:layout_constraintTop_toBottomOf="@+id/editText6"
-            app:layout_constraintVertical_bias="0.584" />
+            app:layout_constraintTop_toBottomOf="@+id/datePicker" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

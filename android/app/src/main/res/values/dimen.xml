@@ -14,4 +14,7 @@
 
     <dimen name="join_dialog_width">410dp</dimen>
     <dimen name="join_dialog_height">170dp</dimen>
+
+    <dimen name="vote_menu_width">410dp</dimen>
+    <dimen name="vote_menu_height">180dp</dimen>
 </resources>
