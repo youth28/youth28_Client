@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="dialog"
+            type="com.example.myapplication.dialog.DoVoteDialog" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/mainYellow">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:text="@{dialog.title}"
+            tools:text="오늘 운동하실분~"
+            android:textColor="@color/text_gray"
+            android:textSize="15sp"
+            android:fontFamily="@font/appleneoeb"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@{dialog.date}"
+            tools:text="2020-10-30"
+            android:textColor="@color/text_gray"
+            android:textSize="15sp"
+            android:fontFamily="@font/appleneob"
+            app:layout_constraintEnd_toEndOf="@+id/tvTitle"
+            app:layout_constraintStart_toStartOf="@+id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+        <TextView
+            android:id="@+id/tvWriter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/appleneom"
+            android:text="@{dialog.writer}"
+            android:textColor="@color/text_gray"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/tvDate"
+            app:layout_constraintStart_toStartOf="@+id/tvDate"
+            app:layout_constraintTop_toBottomOf="@+id/tvDate"
+            tools:text="게시자: 문수연" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvVote"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/tvWriter"
+            app:layout_constraintStart_toStartOf="@+id/tvWriter"
+            app:layout_constraintTop_toBottomOf="@+id/tvWriter" />
+
+        <Button
+            android:id="@+id/btnVote"
+            android:layout_width="0dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/btn_shape_white"
+            android:elevation="10dp"
+            android:fontFamily="@font/appleneob"
+            android:text="투표완료"
+            android:textSize="12sp"
+            android:onClick="@{dialog::onVote}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/rcvVote"
+            app:layout_constraintStart_toStartOf="@+id/rcvVote"
+            app:layout_constraintTop_toBottomOf="@+id/rcvVote" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

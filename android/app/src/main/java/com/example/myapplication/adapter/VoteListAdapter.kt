@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.dto.VoteDTO
 import com.example.myapplication.databinding.RowVoteBinding
-import com.example.myapplication.dialog.VoteDialog
+import com.example.myapplication.dialog.DoVoteDialog
 
 class VoteListAdapter (val context: Context): RecyclerView.Adapter<VoteListAdapter.Holder>() {
     var list = listOf<VoteDTO>()
@@ -24,7 +24,7 @@ class VoteListAdapter (val context: Context): RecyclerView.Adapter<VoteListAdapt
 
         holder.itemView.setOnClickListener {
             Log.e("click", list[position].title)
-            val dialog = VoteDialog()
+            val dialog = DoVoteDialog()
             dialog.title = list[position].title
             dialog.date = list[position].date
             dialog.writer = "누군가"

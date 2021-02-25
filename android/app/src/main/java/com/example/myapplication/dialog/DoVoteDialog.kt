@@ -8,11 +8,11 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.R
-import com.example.myapplication.databinding.DialogVoteBinding
-import kotlinx.android.synthetic.main.dialog_vote.*
+import com.example.myapplication.databinding.DialogDoVoteBinding
+import kotlinx.android.synthetic.main.dialog_do_vote.*
 
-class VoteDialog : DialogFragment(){
-    private lateinit var binding: DialogVoteBinding
+class DoVoteDialog : DialogFragment(){
+    private lateinit var binding: DialogDoVoteBinding
 
     // 다이얼로그의 버튼이 눌린경우
     var listener: (String) -> Unit = {checkRB -> }
@@ -22,7 +22,7 @@ class VoteDialog : DialogFragment(){
     var writer = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_vote, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_do_vote, container, false)
         binding.dialog = this
         return binding.root
     }
@@ -30,8 +30,8 @@ class VoteDialog : DialogFragment(){
     override fun onStart() {
         super.onStart()
         // 다이얼로그의 넓이와 높이 지정
-        val width = resources.getDimensionPixelSize(R.dimen.vote_dialog_width)
-        val height = resources.getDimensionPixelSize(R.dimen.vote_dialog_height)
+        val width = resources.getDimensionPixelSize(R.dimen.do_vote_dialog_width)
+        val height = resources.getDimensionPixelSize(R.dimen.do_vote_dialog_height)
         dialog?.window?.setLayout(width, height)
         //dialog?.window?.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
     }

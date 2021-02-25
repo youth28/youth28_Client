@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="vote_dialog_width">300dp</dimen>
-    <dimen name="vote_dialog_height">220dp</dimen>
+    <dimen name="do_vote_dialog_width">300dp</dimen>
+    <dimen name="do_vote_dialog_height">220dp</dimen>
+
+    <dimen name="post_vote_dialog_width">300dp</dimen>
+    <dimen name="post_vote_dialog_height">440dp</dimen>
+
+    <dimen name="do_vote_content_dialog_width">400dp</dimen>
+    <dimen name="do_vote_content_dialog_height">660dp</dimen>
 
     <dimen name="schedule_dialog_width">410dp</dimen>
     <dimen name="schedule_dialog_height">450dp</dimen>
