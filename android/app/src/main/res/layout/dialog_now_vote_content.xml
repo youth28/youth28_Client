@@ -85,17 +85,28 @@
             app:layout_constraintTop_toBottomOf="@+id/textView11"
             tools:text="게시자: 문수연" />
 
+        <ImageView
+            android:id="@+id/imageView15"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/line"
+            app:layout_constraintEnd_toEndOf="@+id/tvWriter"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/tvWriter"
+            app:layout_constraintTop_toBottomOf="@+id/tvWriter" />
+
         <TextView
             android:id="@+id/textView15"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/appleneom"
             android:text="@{dialog.contentList[0]}"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/tvWriter"
-            app:layout_constraintTop_toBottomOf="@+id/tvWriter"
+            app:layout_constraintTop_toBottomOf="@+id/imageView15"
             tools:text="content1" />
 
         <TextView
