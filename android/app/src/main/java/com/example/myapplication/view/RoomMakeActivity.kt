@@ -4,23 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModelProvider
-import com.example.myapplication.api.RetrofitHelper
-import com.example.myapplication.dto.RoomMakeDTO
 import com.example.myapplication.R
 import com.example.myapplication.UserData
 import com.example.myapplication.databinding.ActivityRoomMakeBinding
 import com.example.myapplication.viewmodel.RoomMakeViewModel
 import kotlinx.android.synthetic.main.activity_room_make.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class RoomMakeActivity: AppCompatActivity() {
 

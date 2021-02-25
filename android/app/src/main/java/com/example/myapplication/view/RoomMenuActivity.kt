@@ -7,7 +7,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityRoomMenuBinding
-import com.example.myapplication.viewmodel.RoomFindViewModel
 import com.example.myapplication.viewmodel.RoomMenuViewModel
 import kotlinx.android.synthetic.main.activity_room_menu.*
 

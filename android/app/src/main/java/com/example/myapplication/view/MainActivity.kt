@@ -38,7 +38,7 @@ class MainActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
-        UserData.userId = preferences.getString("userNum", "55").toString()
+        UserData.userNum = preferences.getString("userNum", "55").toString()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
@@ -101,7 +101,6 @@ class MainActivity: AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        Log.e(TAG, "onResume")
         viewModel.rcvMyRoomList()
         viewModel.rcvRoomList()
     }

@@ -25,6 +25,12 @@ class MainViewModel: ViewModel() {
     val onRoomMakeEvent = SingleLiveEvent<Unit>()
 
     init {
+        val data = arrayListOf<MyRoom>()
+        for (i: Int in 1..5){
+            data.add(MyRoom("이것은 방 이름${i}", i))
+        }
+        myRoomList.postValue(data)
+
         Log.e(TAG, "init 입니당")
 
         rcvRoomList()
@@ -44,7 +50,7 @@ class MainViewModel: ViewModel() {
     }
 
     fun rcvRoomList() {
-        val user_id = UserId(UserData.userId.toInt())
+        val user_id = UserId(UserData.userNum.toInt())
         val call = RetrofitHelper.getRoomApi().room_list(user_id)
         call.enqueue(object : Callback<MyRoomsDTO> {
             override fun onResponse(call: Call<MyRoomsDTO>, response: Response<MyRoomsDTO>) {
@@ -76,7 +82,7 @@ class MainViewModel: ViewModel() {
     }
 
     fun rcvMyRoomList() {
-        val user_id = UserId(UserData.userId.toInt())
+        val user_id = UserId(UserData.userNum.toInt())
         val call2 = RetrofitHelper.getUserApi().my_room(user_id = user_id)
         call2.enqueue(object : Callback<MyRoomsDTO> {
             override fun onResponse(call: Call<MyRoomsDTO>, response: Response<MyRoomsDTO>) {

@@ -6,46 +6,43 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"   />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true"
         tools:replace="android:icon">
-
-        <activity android:name=".ui.SplashActivity" />
-
-        <activity android:name=".ui.LoginActivity" >
+        <activity android:name=".view.ModifyProfileActivity" />
+        <activity android:name=".view.SplashActivity" />
+        <activity android:name=".view.LoginActivity" />
+        <activity android:name=".view.SignUpActivity" />
+        <activity android:name=".view.MainActivity" />
+        <activity android:name=".view.MenuActivity" />
+        <activity android:name=".view.RoomFindActivity" />
+        <activity android:name=".view.RoomMakeActivity" />
+        <activity android:name=".view.MyPageActivity" />
+        <activity android:name=".view.ModifyActivity" />
+        <activity android:name=".view.TalkActivity" />
+        <activity android:name=".view.RoomMenuActivity" />
+        <activity android:name=".view.RoomInfoActivity" />
+        <activity android:name=".view.RoomModifyActivity" />
+        <activity android:name=".view.RoomScheduleActivity" />
+        <activity android:name=".view.VoteListActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.SignUpActivity" />
-
-        <activity android:name=".ui.MainActivity" />
-        <activity android:name=".ui.MenuActivity" />
-        <activity android:name=".ui.RoomFindActivity" />
-        <activity android:name=".ui.RoomMakeActivity" />
-
-        <activity android:name=".ui.MyPageActivity" />
-        <activity android:name=".ui.ModifyActivity" />
-
-        <activity android:name=".ui.TalkActivity" />
-        <activity android:name=".ui.RoomMenuActivity" />
-        <activity android:name=".ui.RoomInfoActivity" />
-        <activity android:name=".ui.RoomModifyActivity" />
-        <activity android:name=".ui.RoomScheduleActivity" />
-        <activity android:name=".ui.VoteListActivity" />
-
     </application>
 
 </manifest>

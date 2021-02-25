@@ -16,7 +16,6 @@ import com.example.myapplication.RoomData
 import com.example.myapplication.UserData
 import com.example.myapplication.adapter.ChatAdapter
 import com.example.myapplication.adapter.TagAdapter
-import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ActivityTalkBinding
 import com.example.myapplication.dto.ChatListDTO
 import com.example.myapplication.dto.RoomId

@@ -28,7 +28,6 @@ class ScheduleDialog(): DialogFragment() {
     val TAG = "ScheduleD"
 
     internal lateinit var preferences: SharedPreferences
-
     private lateinit var binding: DialogScheduleBinding
 
     var sYear = 0
