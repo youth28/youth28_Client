@@ -27,8 +27,8 @@ class VoteListAdapter (val context: Context): RecyclerView.Adapter<VoteListAdapt
         holder.itemView.setOnClickListener {
             Log.e("click", list[position].question_text)
             val dialog = DoContentVoteDialog()
-            dialog.listener = { checkRB ->
-                showToast("'${checkRB}'에 투표하였습니다.")
+            dialog.listener = { selectContent ->
+                showToast("'${selectContent}'에 투표하였습니다.")
             }
             val manager = (context as AppCompatActivity).supportFragmentManager
             dialog.show(manager, "dialog")

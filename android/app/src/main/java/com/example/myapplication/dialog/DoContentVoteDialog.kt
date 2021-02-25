@@ -10,12 +10,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.R
+import com.example.myapplication.UserData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.DialogDoVoteBinding
 import com.example.myapplication.databinding.DialogDoVoteContentBinding
+import com.example.myapplication.dto.DoVoteDTO
 import com.example.myapplication.dto.QuestionId
 import com.example.myapplication.dto.VoteDetailDTO
 import kotlinx.android.synthetic.main.dialog_do_vote.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,7 +27,7 @@ class DoContentVoteDialog : DialogFragment(){
     private lateinit var binding: DialogDoVoteContentBinding
 
     // 다이얼로그의 버튼이 눌린경우
-    var listener: (String) -> Unit = {checkRB -> }
+    var listener: (String) -> Unit = {selectContent -> }
 
 
     val title = MutableLiveData<String>()
@@ -67,10 +70,26 @@ class DoContentVoteDialog : DialogFragment(){
             if (checkList[i].value == true)
                 seleContent.value = contentList[i].value
         }
-
-        Log.e("selectContent", seleContent.value.toString())
-
-        
+        if(isNotNull(seleContent.value)) {
+            showToast("선택지를 선택해주세요")
+        } else {
+            val doVoteDTO = DoVoteDTO(seleContent.value.toString(), UserData.userNum.toInt(), questionId)
+            val call = RetrofitHelper.getVoteApi().vote(doVoteDTO)
+            listener.invoke(seleContent.value.toString())
+            dismiss()
+            call.enqueue(object : Callback<ResponseBody>{
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        Log.e("vote: ", response.code().toString())
+                        listener.invoke(seleContent.value.toString())
+                        dismiss()
+                    } else Log.e("vote: ", "통신 안됨, ${response.message()}")
+                }
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.e("onFailure", "${t.message}")
+                }
+            })
+        }
     }
 
     fun onLookVote() {

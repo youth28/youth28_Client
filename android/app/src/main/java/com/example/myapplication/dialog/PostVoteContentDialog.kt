@@ -115,24 +115,6 @@ class PostVoteContentDialog: DialogFragment() {
                 }
             }
         }
-/*
-        val call2 = RetrofitHelper.getVoteApi().vote(DoVoteDTO("content1", 8, 2))
-        call2.enqueue(object : Callback<ResponseBody>{
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
-                    Log.e("vote: ", response.code().toString())
-                    listener.invoke(date)
-                    dismiss()
-                } else Log.e("vote: ", "통신 안됨, ${response.message()}")
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("onFailure", "${t.message}")
-            }
-
-        })
-
- */
         /*
         val call4 = RetrofitHelper.getVoteApi().now_vote(QuestionId(2))
         call4.enqueue(object : Callback<VoteStatusDTO>{

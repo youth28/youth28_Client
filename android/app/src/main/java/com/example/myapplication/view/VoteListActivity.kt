@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.RoomData
+import com.example.myapplication.UserData
 import com.example.myapplication.adapter.VoteListAdapter
 import com.example.myapplication.databinding.ActivityVoteListBinding
 import com.example.myapplication.dialog.*
@@ -31,6 +32,8 @@ class VoteListActivity : AppCompatActivity() {
         if (intent.hasExtra("roomId")) {
             RoomData.roomId = intent.getIntExtra("roomId", 0)
         }
+
+        UserData.userNum ="5"
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_vote_list)
         viewmodel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
