@@ -34,6 +34,7 @@ class VoteListActivity : AppCompatActivity() {
         }
 
         UserData.userNum ="5"
+        UserData.userName = "이름아입니다"
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_vote_list)
         viewmodel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())

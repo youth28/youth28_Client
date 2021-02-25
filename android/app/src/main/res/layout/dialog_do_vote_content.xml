@@ -3,10 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View"/>
         <variable
             name="dialog"
             type="com.example.myapplication.dialog.DoContentVoteDialog" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,14 +23,14 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
             android:layout_marginRight="15dp"
+            android:fontFamily="@font/appleneoeb"
             android:text="@{dialog.title}"
-            tools:text="오늘 운동하실분~"
             android:textColor="@color/text_gray"
             android:textSize="15sp"
-            android:fontFamily="@font/appleneoeb"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="오늘 운동하실분~" />
 
         <TextView
             android:id="@+id/tvDate"
@@ -73,6 +75,16 @@
             app:layout_constraintTop_toBottomOf="@+id/tvDate"
             tools:text="투표 마감일: 2021-10-03" />
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/line"
+            app:layout_constraintEnd_toEndOf="@+id/tvWriter"
+            app:layout_constraintStart_toStartOf="@+id/tvWriter"
+            app:layout_constraintTop_toBottomOf="@+id/tvWriter" />
+
         <RadioGroup
             android:id="@+id/radioGroup2"
             android:layout_width="0dp"
@@ -80,7 +92,7 @@
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="@+id/tvWriter"
             app:layout_constraintStart_toStartOf="@+id/tvWriter"
-            app:layout_constraintTop_toBottomOf="@+id/tvWriter">
+            app:layout_constraintTop_toBottomOf="@+id/imageView">
 
             <RadioButton
                 android:layout_width="match_parent"
@@ -137,16 +149,36 @@
             android:id="@+id/btnVote"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="8dp"
             android:background="@drawable/btn_shape_white"
             android:elevation="10dp"
             android:fontFamily="@font/appleneob"
             android:onClick="@{() -> dialog.onVote()}"
             android:text="투표완료"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="@{dialog.viewVote ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@+id/endVote"
             app:layout_constraintEnd_toEndOf="@+id/radioGroup2"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/radioGroup2"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup2" />
+
+        <Button
+            android:id="@+id/endVote"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/btn_shape_white"
+            android:elevation="10dp"
+            android:fontFamily="@font/appleneob"
+            android:onClick="@{() -> dialog.onEndVote()}"
+            android:text="투표 마감하기"
+            android:visibility="@{dialog.viewEndVote ? View.VISIBLE : View.GONE}"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/radioGroup2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/radioGroup2"
+            app:layout_constraintTop_toBottomOf="@+id/btnVote" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -15,6 +15,7 @@ import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.DialogDoVoteBinding
 import com.example.myapplication.databinding.DialogDoVoteContentBinding
 import com.example.myapplication.dto.DoVoteDTO
+import com.example.myapplication.dto.EndVoteDTO
 import com.example.myapplication.dto.QuestionId
 import com.example.myapplication.dto.VoteDetailDTO
 import kotlinx.android.synthetic.main.dialog_do_vote.*
@@ -35,6 +36,8 @@ class DoContentVoteDialog : DialogFragment(){
     val writer = MutableLiveData<String>()
     val deadLine = MutableLiveData<String>()
     val seleContent = MutableLiveData<String>()
+    val viewEndVote = MutableLiveData<Boolean>()
+    val viewVote = MutableLiveData<Boolean>()
     val contentList = arrayListOf(
             MutableLiveData<String>(),MutableLiveData<String>(),MutableLiveData<String>(),MutableLiveData<String>(),MutableLiveData<String>()
     )
@@ -92,6 +95,24 @@ class DoContentVoteDialog : DialogFragment(){
         }
     }
 
+    fun onEndVote() {
+        val endVoteDTO = EndVoteDTO(questionId, true)
+        Log.e("endVote", endVoteDTO.toString())
+        val call = RetrofitHelper.getVoteApi().end_vote(endVoteDTO)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if(response.isSuccessful) {
+                    Log.e("end_vote", "${response.code()}")
+                } else Log.e("end_vote", "통신오류: ${response.message()}")
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("onFailure", "${t.message}")
+            }
+
+        })
+    }
+
     fun onLookVote() {
         title.value = "question_text"
         date.value = "투표 시작일: 2021-02-25"
@@ -111,6 +132,17 @@ class DoContentVoteDialog : DialogFragment(){
             }
         }
 
+        if("이름임돠" == UserData.userName) {
+            viewEndVote.value = true
+            viewVote.value = false
+            for (i:Int in 0..4) {
+                clickAbleList[i].value = false
+            }
+        } else {
+            viewEndVote.value = false
+            viewVote.value = true
+        }
+
         val call = RetrofitHelper.getVoteApi().look_vote(QuestionId(questionId))
         call.enqueue(object : Callback<VoteDetailDTO> {
             override fun onResponse(call: Call<VoteDetailDTO>, response: Response<VoteDetailDTO>) {
@@ -120,6 +152,14 @@ class DoContentVoteDialog : DialogFragment(){
                     date.value = "투표 시작일: ${result.time}"
                     writer.value = "게시자: ${result.name}"
                     deadLine.value = "투표 마감일: ${result.dead_line}"
+
+                    if(result.name == UserData.userName) {
+                        viewEndVote.value = true
+                        viewVote.value = false
+                    } else {
+                        viewEndVote.value = false
+                        viewVote.value = true
+                    }
 
                     contentList[0].value = result.content1
                     contentList[1].value = result.content2
