@@ -34,6 +34,7 @@ class RoomMenuActivity : AppCompatActivity() {
         with(viewmodel) {
             onVoteListEvent.observe(this@RoomMenuActivity, {
                 val intent = Intent(this@RoomMenuActivity, VoteListActivity::class.java)
+                intent.putExtra("roomId", roomId)
                 startActivity(intent)
             })
             onRoomInfoEvent.observe(this@RoomMenuActivity, {
