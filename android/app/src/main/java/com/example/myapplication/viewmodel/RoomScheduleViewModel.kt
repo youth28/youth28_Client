@@ -27,13 +27,11 @@ class RoomScheduleViewModel: ViewModel() {
     val event = MutableLiveData<List<Event>>()
 
     val onWriteScheduleEvent = SingleLiveEvent<Unit>()
-    val onReadScheduleEvent = SingleLiveEvent<Unit>()
 
     var sYear= ""
     var sMonth=""
     var sDay=""
     var room_id = 0
-    lateinit var ev : Event
 
     init {
         room_id = RoomData.roomId
@@ -54,12 +52,10 @@ class RoomScheduleViewModel: ViewModel() {
     fun readSchedule () {
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         val data = arrayListOf<Event>()
-        for (i: Int in 1..10) {
-            data.add(Event(Color.MAGENTA, sdf.parse("2021-2-2${i}-10-${i}0").time, ScheduleWDTO("하이루 $i", "10:${i}0", UserData.userNum.toInt())))
+        for (i: Int in 1..8) {
+            data.add(Event(Color.MAGENTA, sdf.parse("2021-2-2$i-10-$i").time, ScheduleWDTO("하이루 $i", "2021-2-2$i-10-$i", UserData.userNum.toInt())))
         }
-        Log.e(TAG, data.toString())
         event.postValue(data)
-
 
         val roomId = RoomId(room_id)
         Log.e(TAG, roomId.toString())
@@ -82,7 +78,6 @@ class RoomScheduleViewModel: ViewModel() {
                                 Log.e("viewMode", ev.toString())
                             }
                             event.postValue(data)
-                            onReadScheduleEvent.call()
                         }
                         204 -> {
                             Log.e(TAG, "저장된 스케줄이 없습니다.")

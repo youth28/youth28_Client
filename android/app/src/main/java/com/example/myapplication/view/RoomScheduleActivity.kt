@@ -83,20 +83,14 @@ class RoomScheduleActivity: AppCompatActivity() {
 
                 dialog.show(supportFragmentManager, "dialog")
             })
-            onReadScheduleEvent.observe(this@RoomScheduleActivity, {
-                binding.calendarView.addEvent(ev)
-                Log.e("Activity", ev.toString())
-            })
         }
 
         viewmodel.event.observe(this, { livedata ->
             event.value = livedata
-            rcv()
-        })
-
-        event.observe(this, {
             binding.calendarView.removeEvents(sDate)
-            binding.calendarView.addEvents(it)
+            binding.calendarView.addEvents(event.value)
+            event.value = binding.calendarView.getEvents(sDate)
+            Log.e("event", "event.observe")
             rcv()
         })
 
