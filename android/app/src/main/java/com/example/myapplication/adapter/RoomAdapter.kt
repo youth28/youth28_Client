@@ -49,7 +49,7 @@ class RoomAdapter(val context: Context): RecyclerView.Adapter<RoomAdapter.Holder
         holder.itemView.setOnClickListener {
             val dialog = JoinDialog()
             dialog.room_id = list[position].room_id
-            dialog.mainMsg = "${list[position].title}"
+            dialog.mainMsg = "[${list[position].title}]"
             val manager = (context as AppCompatActivity).supportFragmentManager
             dialog.show(manager, "dialog")
         }
@@ -62,13 +62,14 @@ class RoomAdapter(val context: Context): RecyclerView.Adapter<RoomAdapter.Holder
     inner class Holder(val binding: RowRoomBinding) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(list: RoomModel) {
             binding.room = list
+            imageLoad(binding.imgRoomProfile)
         }
     }
 
     fun imageLoad(img: CircleImageView) {
         Log.e(TAG, "imageLoad")
 
-        val call = RetrofitHelper.getImageApi().imageLoad(UserId(list[curNum].room_id)
+        val call = RetrofitHelper.getImageApi().imageLoad(UserId(list[curNum].room_id))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
