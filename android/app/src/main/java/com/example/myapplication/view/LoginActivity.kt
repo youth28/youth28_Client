@@ -24,8 +24,6 @@ class LoginActivity: AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
 
-    private lateinit var loadDialog: SweetAlertDialog
-
     internal lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +52,11 @@ class LoginActivity: AppCompatActivity() {
                 Log.e(TAG, "signUP")
             })
             onLoginEvent.observe(this@LoginActivity, {
+                val dialog = SweetAlertDialog(this@LoginActivity , SweetAlertDialog.SUCCESS_TYPE)
+                dialog.progressHelper.barColor = Color.parseColor("#36b8ff")
+                dialog.titleText = "로그인이 완료되었습니다."
+                dialog.show()
+
                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                 startActivity(intent)
                 Log.e(TAG, "${UserData.toStringData()}")
@@ -71,8 +74,6 @@ class LoginActivity: AppCompatActivity() {
                 dialog.progressHelper.barColor = Color.parseColor("#36b8ff")
                 dialog.titleText = "로그인이 완료되었습니다."
                 dialog.show()
-
-                loadDialog.dismiss()
 
                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                 startActivity(intent)

@@ -64,7 +64,7 @@ class LoginViewModel: ViewModel() {
                                 UserData.userPassword = password.value!!
                                 UserData.userNum = response.body()!!.user_id
                                 UserData.userName = response.body()!!.name
-                                UserData.userProfile = "img"
+                                UserData.userProfile = response.body()!!.profile
 
                                 Log.e("$TAG Response", response.body().toString())
 
@@ -96,6 +96,8 @@ class LoginViewModel: ViewModel() {
         if (email.value != null && email.value != "" && password.value !=  null && password.value != ""){
             val user = getData()
             Log.e(TAG, "auto login")
+
+            onAutoLoginEvent.call()
 
             val call = RetrofitHelper.getUserApi().login(user)
             Log.e(TAG+"g", user.toString())
