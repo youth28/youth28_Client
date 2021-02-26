@@ -22,17 +22,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.myapplication.R
 import com.example.myapplication.RoomData
+import com.example.myapplication.UserData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ActivityModifyProfileBinding
 import com.example.myapplication.dto.id.RoomId
 import com.example.myapplication.dto.room.ResponseLogin
 import com.example.myapplication.dto.user.UserDTO
 import com.example.myapplication.dto.id.UserId
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_modify_profile.*
 import okhttp3.*
 import retrofit2.Call
@@ -103,10 +102,9 @@ class ModifyProfileActivity : AppCompatActivity() {
     }
 
     fun onLogin() {
-        val email: String = preferences.getString("userId", "null").toString()
-        val PW: String = preferences.getString("userPW", "null").toString()
-
-        Log.e("login", "$email, $PW")
+        val email: String = UserData.userId
+        val PW: String = UserData.userPassword
+        Log.e("login", "email=$email, password=$PW")
 
         binding.apply {
             // 로그인 통신 코드
@@ -175,7 +173,7 @@ class ModifyProfileActivity : AppCompatActivity() {
             val body = MultipartBody.Part.createFormData("file", file.name, reqFile)
             val name = RequestBody.create(MediaType.parse("text/plain"), "upload")
             val req: Call<ResponseBody>
-            val userId: Int = preferences.getInt("userNum", 55)
+            val userId: Int = UserData.userNum.toInt()
             req = when(mode) {
                 "1" -> RetrofitHelper.getImageApi().postImage(UserId(userId), body, name)
                 "2" -> RetrofitHelper.getImageApi().modifyImage(UserId(userId), body, name)

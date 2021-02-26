@@ -21,7 +21,8 @@ class SignUpViewModel: ViewModel() {
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
     val rePassword = MutableLiveData<String>()
-    
+    val errMsg = MutableLiveData<String>()
+
     val errId = MutableLiveData<String>()
     val errPW = MutableLiveData<String>()
     val errRePW = MutableLiveData<String>()
@@ -40,7 +41,7 @@ class SignUpViewModel: ViewModel() {
     val cbExercise = MutableLiveData<Boolean>()
     val cbEtc = MutableLiveData<Boolean>()
 
-    val dialog = MutableLiveData<Boolean>(false)
+    val dialog = MutableLiveData(false)
     // endregion
 
     val onSignUpEvent = SingleLiveEvent<Unit>()
@@ -51,21 +52,20 @@ class SignUpViewModel: ViewModel() {
     var strField = ""
 
     fun onSignup() {
-        if(email.value == null || password.value == null || email.value == "" || password.value == ""
-                || rePassword.value == null || name.value == null || rePassword.value == "" || name.value == "") {
-            if (email.value == null || email.value == ""){
+        if(isNotNull(email.value) || isNotNull(password.value) || isNotNull(rePassword.value) || isNotNull(name.value)) {
+            if (isNotNull(email.value)){
                 errId.value= "이메일을 입력해주세요."
                 viewErrId.value = true
             } else viewErrId.value = false
-            if (password.value == null || password.value == "") {
+            if (isNotNull(password.value)) {
                 errPW.value = "비빌번호를 입력해주세요."
                 viewErrPW.value = true
             } else viewErrPW.value = false
-            if (rePassword.value == null || rePassword.value == "") {
+            if (isNotNull(rePassword.value)) {
                 errRePW.value = "비밀번호를 다시 입력해주세요"
                 viewErrRePW.value = true
             } else viewErrRePW.value = false
-            if (name.value == null || name.value == "") {
+            if (isNotNull(name.value)) {
                 errName.value = "이름을 입력해주세요"
                 viewErrName.value = true
             } else {
@@ -97,7 +97,7 @@ class SignUpViewModel: ViewModel() {
             } else viewErrPW.value = false
 
             // 모두 통과하면
-            if (isAbleId && password == rePassword && Pattern.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*#?&]).{6,16}.\$", password.value)) {
+            if (isAbleId && password.value == rePassword.value) {
                 viewErrId.value = false
                 viewErrPW.value = false
                 viewErrRePW.value = false
@@ -111,11 +111,15 @@ class SignUpViewModel: ViewModel() {
                 if (cbExercise.value == true) strField += "운동(헬스),"
                 if (cbEtc.value == true) strField += "기타,"
 
+                if (strField == "") {
+                    errMsg.value = "분야를 선택하지 않아 기타로 표시됩니다."
+                    cbEtc.value = true
+                    strField = "기타,"
+                }
+
                 if (strField.isNotEmpty()) {
                     strField = strField.substring(0, strField.length - 1)
                 }
-
-                Log.e("field", strField)
 
                 // 회원가입 하기
                 dialog.value = true
@@ -139,7 +143,7 @@ class SignUpViewModel: ViewModel() {
                     override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
                         Log.e(TAG + " Err", "통신안됨: ${t.message}")
                         dialog.value = false
-                        onSignUpFailEvent.call()
+                       // onSignUpFailEvent.call()
                     }
 
                 })
@@ -148,7 +152,7 @@ class SignUpViewModel: ViewModel() {
     }
 
     fun onCheckEmail() {
-        if (email.value == "" || email.value == null) {
+        if (isNotNull(email.value)) {
             errId.value = "아이디를 비워둘 수 없습니다."
             viewErrId.value = true
         }
@@ -188,6 +192,14 @@ class SignUpViewModel: ViewModel() {
 
             })
         }
+    }
+
+    fun infoEmail() {
+        errMsg.value = "이메일 중복확인이 완료되면\n수정할 수 없습니다."
+    }
+
+    fun isNotNull(value: String?): Boolean {
+        return (value == null || value == "")
     }
 
     fun getData(): UserDTO {
