@@ -18,8 +18,6 @@
             android:layout_width="86dp"
             android:layout_height="83dp"
             tools:src="@drawable/logo"
-            app:imageUrl="@{room.profile}"
-            app:error="@{@drawable/logo}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

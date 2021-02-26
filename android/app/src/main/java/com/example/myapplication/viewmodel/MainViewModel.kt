@@ -31,6 +31,12 @@ class MainViewModel: ViewModel() {
         }
         myRoomList.postValue(data)
 
+        val daTa = arrayListOf<RoomModel>()
+        for (i:Int in 1..5) {
+            daTa.add(RoomModel(i, "이것은 방 제목$i", i, arrayListOf("안녕", "난", "태그야"), "profile"))
+        }
+        list.postValue(daTa)
+
         Log.e(TAG, "init 입니당")
 
         rcvRoomList()
@@ -57,18 +63,19 @@ class MainViewModel: ViewModel() {
                 if (response.isSuccessful) {
                     val result = response.body()
 
+                    val data = ArrayList<RoomModel>()
                     for (i: Int in 1..result!!.room.size) {
                         val field = result.room[i-1].field.substring(0, result.room[i-1].field.length -1 )
                         val fieldArray = field.split(",")
                         val info = result.room[i-1]
 
-                        val data = ArrayList<RoomModel>()
+
                         data.add(RoomModel(info.room_id, info.title, info.maxPeo,
                                 fieldArray, info.profile))
-                        list.postValue(data)
                         Log.e(TAG, "RoomModel(room_id=${info.room_id}, title='${info.title}', maxPeo=${info.maxPeo}," +
                                 " field='$fieldArray', profile='${info.profile}')")
                     }
+                    list.postValue(data)
                 } else {
                     Log.e(TAG, "메인 리스트: ${response.message()}")
                 }
@@ -89,7 +96,6 @@ class MainViewModel: ViewModel() {
                 if (response.isSuccessful) {
                     val result = response.body()
                     val data = ArrayList<MyRoom>()
-                    myRoomList.postValue(data)
                     for (i: Int in 1..result!!.room.size) {
                         data.add(MyRoom(result.room[i - 1].title, result.room[i - 1].room_id))
                         Log.e(TAG, myRoomList.value!![i-1].toString())

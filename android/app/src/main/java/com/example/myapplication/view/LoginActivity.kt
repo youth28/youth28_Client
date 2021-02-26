@@ -30,18 +30,19 @@ class LoginActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
-                .get(LoginViewModel::class.java)
-        binding.lifecycleOwner = this
-        binding.viewmodel = viewModel
-        binding.executePendingBindings()
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
         UserData.userId = preferences.getString("userId", "").toString()
         UserData.userPassword = preferences.getString("userPW", "").toString()
 
         Log.e(TAG, "hihi ${UserData.userId} ,,, ${UserData.userPassword}")
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
+                .get(LoginViewModel::class.java)
+        binding.lifecycleOwner = this
+        binding.viewmodel = viewModel
+        binding.executePendingBindings()
 
         // email, PW 값이 null이 아니라면 자동 로그인 하기
         viewModel.autoLogin()
