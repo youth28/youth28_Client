@@ -37,9 +37,7 @@ class ModifyViewModel: ViewModel() {
 
         Log.e(TAG, "${UserData.userName}, ${UserData.userId}, ${UserData.userPassword}")
 
-        UserData.userField = "스터디,게임,미술"
-
-        if (UserData.userField == "") {
+        if (UserData.userField != "") {
             val arrayList = UserData.userField.split(",")
             for (value in arrayList) {
                 when (value) {
@@ -129,6 +127,7 @@ class ModifyViewModel: ViewModel() {
 
             if (UserData.userId == email.value && UserData.userPassword == password.value) {
                 onModifyImageEvent.call()
+
             }
         }
     }

@@ -1,8 +1,6 @@
 package com.example.myapplication.view
 
-import android.app.Activity
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +24,6 @@ import com.example.myapplication.dto.id.UserId
 import com.example.myapplication.viewmodel.MyPageViewModel
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.github.sundeepk.compactcalendarview.domain.Event
-import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_my_page.*
 import okhttp3.ResponseBody
@@ -35,13 +32,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MyPageActivity : AppCompatActivity() {
 
     val TAG = "MyPageActivity"
-
-    internal lateinit var preferences: SharedPreferences
 
     private lateinit var binding: ActivityMyPageBinding
     private lateinit var viewModel: MyPageViewModel
@@ -53,13 +47,6 @@ class MyPageActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
-        UserData.userNum = preferences.getString("userNum", "5").toString()
-        UserData.userName = preferences.getString("userName", "이것은 이름이다").toString()
-        UserData.userId = preferences.getString("userId", "this is id").toString()
-        UserData.userProfile = preferences.getString("userProfile", "imgg").toString()
-        UserData.userPassword = preferences.getString("userPW", "asdf1234").toString()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_my_page)
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
@@ -164,8 +151,6 @@ class MyPageActivity : AppCompatActivity() {
     }
 
     fun imageLoad(img: CircleImageView) {
-        img.setImageResource(R.drawable.add)
-
         val call = RetrofitHelper.getImageApi().imageLoad(UserId(UserData.userNum.toInt()))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -176,12 +161,13 @@ class MyPageActivity : AppCompatActivity() {
                     img.setImageBitmap(bitmap)
                 } else {
                     Log.d("AAA", "통신오류=${response.message()}")
-                    Picasso.get().load(R.drawable.add).into(img)
+                    img.setImageResource(R.drawable.add)
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("AAA", "FAIL REQUEST ==> " + t.localizedMessage)
+                img.setImageResource(R.drawable.add)
             }
 
         })
