@@ -80,11 +80,27 @@ class MyPageActivity : AppCompatActivity() {
                 }
                 dialog.show(supportFragmentManager, "dialog")
             })
-            onReadScheduleEvent.observe(this@MyPageActivity, {
-                binding.calendarView.addEvent(ev)
-                Log.e("Activity", ev.toString())
-            })
         }
+
+        viewModel.event.observe(this, { livedata ->
+            event.value = livedata
+            binding.calendarView.removeEvents(sDate)
+            binding.calendarView.addEvents(event.value)
+            event.value = binding.calendarView.getEvents(sDate)
+            Log.e("event", "event.observe")
+            rcv()
+        })
+
+        viewModel.tagList.observe(this, { livedata ->
+            tagList.value = livedata
+            val mAdapter = TagAdapter(this)
+            binding.rcvTag.adapter = mAdapter
+            val layoutManager = LinearLayoutManager(this)
+            layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+            binding.rcvTag.layoutManager = layoutManager
+            binding.rcvTag.setHasFixedSize(true)
+            mAdapter.list = tagList.value!!
+        })
 
         event.value = calendarView.getEvents(Date(System.currentTimeMillis()))
 
@@ -116,28 +132,6 @@ class MyPageActivity : AppCompatActivity() {
                 viewModel.topDate.value = DateFormat.format("yyyy년 MM월", firstDayOfNewMonth).toString()
             }
 
-        })
-
-        viewModel.event.observe(this, { livedata ->
-            event.value = livedata
-            rcv()
-        })
-
-        event.observe(this, {
-            binding.calendarView.removeEvents(sDate)
-            binding.calendarView.addEvents(it)
-            rcv()
-        })
-
-        viewModel.tagList.observe(this, { livedata ->
-            tagList.value = livedata
-            val mAdapter = TagAdapter(this)
-            binding.rcvTag.adapter = mAdapter
-            val layoutManager = LinearLayoutManager(this)
-            layoutManager.orientation = LinearLayoutManager.HORIZONTAL
-            binding.rcvTag.layoutManager = layoutManager
-            binding.rcvTag.setHasFixedSize(true)
-            mAdapter.list = tagList.value!!
         })
     }
 

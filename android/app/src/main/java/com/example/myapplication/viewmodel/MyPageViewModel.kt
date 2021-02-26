@@ -12,6 +12,7 @@ import com.example.myapplication.UserData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.schedule.ScheduleRDTO
 import com.example.myapplication.dto.id.UserId
+import com.example.myapplication.dto.schedule.ScheduleWDTO
 import com.example.myapplication.dto.user.UserInfoDTO
 import com.example.myapplication.event.SingleLiveEvent
 import com.github.sundeepk.compactcalendarview.domain.Event
@@ -37,7 +38,6 @@ class MyPageViewModel: ViewModel() {
 
     val onModifyEvent = SingleLiveEvent<Unit>()
     val onWriteScheduleEvent = SingleLiveEvent<Unit>()
-    val onReadScheduleEvent = SingleLiveEvent<Unit>()
 
     var sYear= ""
     var sMonth=""
@@ -95,21 +95,30 @@ class MyPageViewModel: ViewModel() {
         val userId = UserId(UserData.userNum.toInt())
         val call = RetrofitHelper.getScheduleApi().schedule_read(userId)
         val sdf = SimpleDateFormat("yyyy-MM-dd")
+
+        val data = arrayListOf<Event>()
+        for (i: Int in 1..8) {
+            data.add(Event(Color.MAGENTA, sdf.parse("2021-2-2$i-10-$i").time, ScheduleModel("하이루 $i", "2021-2-2$i-10-$i")))
+        }
+        event.postValue(data)
+
         call.enqueue(object : Callback<ScheduleRDTO> {
             override fun onResponse(call: Call<ScheduleRDTO>, response: Response<ScheduleRDTO>) {
                 if (response.isSuccessful) {
                     when (response.code()) {
                         200 -> {
                             val result = response.body()!!.schedule
+                            val data = arrayListOf<Event>()
                             for (i: Int in 1..result.size) {
                                 val content = result[i-1].content
                                 val rDate = result[i-1].date
                                 val arrDate = rDate.split("-")
                                 val date = "${arrDate[3]}:${arrDate[4]}"
                                 ev = Event(Color.LTGRAY, sdf.parse(result[i - 1].date).time, ScheduleModel(content, date))
+                                data.add(ev)
                                 Log.e("viewMode", ev.toString())
-                                onReadScheduleEvent.call()
                             }
+                            event.postValue(data)
                         }
                         204 -> {
                             Log.e(TAG, "저장된 스케줄이 없습니다.")
