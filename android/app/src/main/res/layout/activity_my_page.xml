@@ -21,8 +21,6 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="32dp"
             android:src="@drawable/logo"
-            app:error="@{@drawable/logo}"
-            app:imageUrl="@{viewmodel.profile}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -1,10 +1,12 @@
 package com.example.myapplication.viewmodel
 
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.text.format.DateFormat
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.myapplication.R
 import com.example.myapplication.dto.schedule.ScheduleModel
 import com.example.myapplication.UserData
 import com.example.myapplication.api.RetrofitHelper
@@ -13,6 +15,9 @@ import com.example.myapplication.dto.id.UserId
 import com.example.myapplication.dto.user.UserInfoDTO
 import com.example.myapplication.event.SingleLiveEvent
 import com.github.sundeepk.compactcalendarview.domain.Event
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,7 +29,6 @@ class MyPageViewModel: ViewModel() {
 
     val name = MutableLiveData<String>()
     val email = MutableLiveData<String>()
-    val profile = MutableLiveData<String>()
     val topDate = MutableLiveData<String>()
     val date = MutableLiveData<String>()
 
@@ -38,7 +42,6 @@ class MyPageViewModel: ViewModel() {
     var sYear= ""
     var sMonth=""
     var sDay=""
-    var strField = ""
     lateinit var ev : Event
 
     init {
@@ -54,9 +57,6 @@ class MyPageViewModel: ViewModel() {
     }
 
     fun onModify() {
-        strField = "안녕,자기,렛,미,쉣더,부리"
-        UserData.userField = strField
-        UserData.userNum = "5"
         onModifyEvent.call()
     }
 
@@ -65,7 +65,6 @@ class MyPageViewModel: ViewModel() {
     }
 
     fun getUserInfo() {
-        profile.value = "img"
         name.value = UserData.userName
         email.value = UserData.userId
 
@@ -75,7 +74,7 @@ class MyPageViewModel: ViewModel() {
             override fun onResponse(call: Call<UserInfoDTO>, response: Response<UserInfoDTO>) {
                 if (response.isSuccessful) {
                     val field = response.body()!!.field
-                    strField = field
+                    UserData.userField = field
                     val arrField = field.split(",")
                     val data = arrayListOf<String>()
                     for (itme in arrField) {
@@ -90,12 +89,6 @@ class MyPageViewModel: ViewModel() {
             }
 
         })
-
-        val data = arrayListOf<String>()
-        for(i: Int in 1..5) {
-            data.add("태그$i")
-        }
-        tagList.postValue(data)
     }
 
     fun readSchedule () {
@@ -131,5 +124,4 @@ class MyPageViewModel: ViewModel() {
 
         })
     }
-
 }

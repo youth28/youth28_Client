@@ -26,13 +26,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imgProfile"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="40dp"
-                    app:error="@{@drawable/logo}"
-                    app:imageUrl="@{viewmodel.profile}"
                     android:onClick="@{() -> viewmodel.onModifyImage()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -266,11 +264,13 @@
                     android:layout_marginLeft="33dp"
                     android:layout_marginTop="27dp"
                     android:layout_marginRight="33dp"
+                    android:layout_marginBottom="40dp"
                     android:background="@drawable/btn_shape"
+                    android:onClick="@{() -> viewmodel.onSave()}"
                     android:text="save"
                     android:textColor="#000000"
                     android:textSize="35dp"
-                    android:onClick="@{() -> viewmodel.onSave()}"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tableLayout" />

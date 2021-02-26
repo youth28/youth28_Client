@@ -17,7 +17,6 @@ class ModifyViewModel: ViewModel() {
     val name = MutableLiveData<String>()
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
-    val profile = MutableLiveData<String>()
     var errMsg = MutableLiveData<String>()
 
     val cbStudy = MutableLiveData<Boolean>()
@@ -35,9 +34,10 @@ class ModifyViewModel: ViewModel() {
 
     init {
         name.value = UserData.userName
-        profile.value = UserData.userProfile
 
         Log.e(TAG, "${UserData.userName}, ${UserData.userId}, ${UserData.userPassword}")
+
+        UserData.userField = "스터디,게임,미술"
 
         if (UserData.userField == "") {
             val arrayList = UserData.userField.split(",")
@@ -71,7 +71,6 @@ class ModifyViewModel: ViewModel() {
             }
 
             if (UserData.userId == email.value && UserData.userPassword == password.value) {
-
                 strField = ""
                 if (cbStudy.value == true) strField += "스터디,"
                 if (cbWork.value == true) strField += "업무,"
@@ -81,22 +80,25 @@ class ModifyViewModel: ViewModel() {
                 if (cbExercise.value == true) strField += "운동(헬스),"
                 if (cbEtc.value == true) strField += "기타,"
 
-                if(strField.length >0) {
+                if (strField == "") {
+                    errMsg.value = "분야를 선택하지 않아 기타로 표시됩니다."
+                    cbEtc.value = true
+                    strField = "기타,"
+                }
+
+                if(strField.isNotEmpty()) {
                     strField = strField.substring(0, strField.length - 1)
                 }
 
-                val user = UserModify(UserData.userNum.toInt(), name.value.toString(), profile.value.toString(), strField)
-                Log.e(TAG, user.toString())
+                val user = UserModify(UserData.userNum.toInt(), name.value.toString(), "img", strField)
                 val call = RetrofitHelper.getUserApi().modify(user)
                 call.enqueue(object : Callback<UserModify> {
                     override fun onResponse(call: Call<UserModify>, response: Response<UserModify>) {
                         if (response.isSuccessful) {
                             if (response.code() == 200) {
                                 UserData.userName = name.value.toString()
-                                UserData.userProfile = profile.value.toString()
 
                                 errMsg.value = "수정되었습니다."
-
                                 onSaveEvent.call()
                             }
                         } else Log.e(TAG, response.message())
@@ -111,6 +113,23 @@ class ModifyViewModel: ViewModel() {
     }
 
     fun onModifyImage() {
-        onModifyImageEvent.call()
+        if (name.value == "") {
+            errMsg.value = "이름을 입력해주세요"
+        } else if (email.value == "" || email.value == null) {
+            errMsg.value = "이메일을 입력해주세요"
+        } else if (password.value == "" || password.value == null) {
+            errMsg.value = "현재 비밀번호를 입력해주세요"
+        } else if (email.value != "" && password.value != "") {
+            if (UserData.userId != email.value) {
+                errMsg.value = "일치하지 않는 아이디 입니다."
+            }
+            if (UserData.userPassword != password.value) {
+                errMsg.value = "일지하지 않는 비밀번호 입니다."
+            }
+
+            if (UserData.userId == email.value && UserData.userPassword == password.value) {
+                onModifyImageEvent.call()
+            }
+        }
     }
 }
