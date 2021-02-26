@@ -29,12 +29,11 @@ class RoomMakeViewModel: ViewModel() {
 
     val onRoomMakeEvent = SingleLiveEvent<Unit>()
 
-    var roomId = 0
     var strField = ""
-    var maxNum = 1
+    var maxNum = 2
 
     init {
-        maxPeo.value = "1"
+        maxPeo.value = maxNum.toString()
     }
 
     fun onCreateRoom() {
@@ -59,12 +58,7 @@ class RoomMakeViewModel: ViewModel() {
             if (strField.isNotEmpty()) {
                 strField = strField.substring(0, strField.length - 1)
             }
-
-            Log.e(TAG, "checkBox: $strField 선택됨")
-
             val room = RoomMakeDTO(title.value.toString(), maxNum, strField, profile.value.toString(), UserData.userNum.toInt())
-            Log.e("roomMake", room.toString())
-            onRoomMakeEvent.call()
             val call = RetrofitHelper.getRoomApi().make_room(room)
             call.enqueue(object : Callback<RoomMakeDTO> {
                 override fun onResponse(call: Call<RoomMakeDTO>, response: Response<RoomMakeDTO>) {
@@ -91,7 +85,7 @@ class RoomMakeViewModel: ViewModel() {
     }
 
     fun onSub() {
-        if (maxNum > 0) {
+        if (maxNum > 2) {
             maxPeo.value = "${--maxNum}"
         }
     }

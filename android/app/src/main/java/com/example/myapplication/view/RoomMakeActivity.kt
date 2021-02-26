@@ -27,7 +27,7 @@ class RoomMakeActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
-        UserData.userNum = preferences.getString("userNum", "105").toString()
+        UserData.userNum = preferences.getString("userNum", "55").toString()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_room_make)
         viewmodel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())

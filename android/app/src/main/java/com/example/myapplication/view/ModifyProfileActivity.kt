@@ -28,6 +28,7 @@ import com.example.myapplication.R
 import com.example.myapplication.RoomData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ActivityModifyProfileBinding
+import com.example.myapplication.dto.id.RoomId
 import com.example.myapplication.dto.room.ResponseLogin
 import com.example.myapplication.dto.user.UserDTO
 import com.example.myapplication.dto.id.UserId
@@ -68,21 +69,17 @@ class ModifyProfileActivity : AppCompatActivity() {
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
 
-        btnName.observe(this, Observer<String>() {
+        btnName.observe(this, {
             binding.button.text = "${it}"
             imgBool = !(it == "프로필 사진은 바꾸지 않겠습니다." || it == "다음에 바꾸겠습니다.")
         })
 
-        mainMsg.observe(this, Observer<String>() {
+        mainMsg.observe(this, {
             binding.tvMainMsg.text = "${it}"
         })
 
-        imageLoad()
-
         // 퍼미션 요청
         askPermissions()
-
-        getImage()
 
         if (intent.hasExtra("mode")) {
             mode = intent.getStringExtra("mode").toString()
@@ -105,28 +102,11 @@ class ModifyProfileActivity : AppCompatActivity() {
         }
     }
 
-    fun imageLoad() {
-        Log.e(TAG, "imageLoad")
-        val call = RetrofitHelper.getImageApi().imageLoad(UserId(6))
-        call.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                Log.d("AAA", "REQUEST SUCCESS ==> ")
-                val file = response.body()?.byteStream()
-                val bitmap = BitmapFactory.decodeStream(file)
-                imgProfile.setImageBitmap(bitmap)
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("AAA", "FAIL REQUEST ==> " + t.localizedMessage)
-            }
-
-        })
-    }
-
     fun onLogin() {
-        preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
         val email: String = preferences.getString("userId", "null").toString()
         val PW: String = preferences.getString("userPW", "null").toString()
+
+        Log.e("login", "$email, $PW")
 
         binding.apply {
             // 로그인 통신 코드
@@ -135,22 +115,18 @@ class ModifyProfileActivity : AppCompatActivity() {
             call.enqueue(object : Callback<ResponseLogin> {
                 override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                     if (response.isSuccessful) {
-                        val result = response.code()
-                        when (result) {
+                        when (response.code()) {
                             200 -> {
-                                //성공할시
-                                Log.e(TAG + " Response", response.body().toString())
-
                                 val intent = Intent(this@ModifyProfileActivity, MainActivity::class.java)
                                 startActivity(intent)
                                 finish()
                             }
                         }
-                    }
+                    } else Log.e("$TAG Err", "통신안됨: ${response.message()}")
                 }
 
                 override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
-                    Log.e(TAG + " Err", "통신안됨: ${t.message}")
+                    Log.e("$TAG Err", "통신안됨: ${t.message}")
                 }
 
             })
@@ -177,12 +153,7 @@ class ModifyProfileActivity : AppCompatActivity() {
 
     }
 
-    fun getImage() {
-        Picasso.get().load("http://3cccfe4bf700.ngrok.io/uploads/d955174220decf56aa8a2d61fd679ec4.png").into(binding.imgProfile)
-    }
-
     @TargetApi(Build.VERSION_CODES.M)
-
     // 드디어 올린다 서버에
     private fun multipartImageUpload() {
         try {
@@ -203,14 +174,13 @@ class ModifyProfileActivity : AppCompatActivity() {
             val reqFile: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
             val body = MultipartBody.Part.createFormData("file", file.name, reqFile)
             val name = RequestBody.create(MediaType.parse("text/plain"), "upload")
-
             val req: Call<ResponseBody>
-            val userId: Int = preferences.getString("userNum", "1125")!!.toInt()
+            val userId: Int = preferences.getInt("userNum", 55)
             req = when(mode) {
                 "1" -> RetrofitHelper.getImageApi().postImage(UserId(userId), body, name)
                 "2" -> RetrofitHelper.getImageApi().modifyImage(UserId(userId), body, name)
-                "3" -> RetrofitHelper.getImageApi().modifyImage(UserId(RoomData.roomId), body, name)
-                "4" -> RetrofitHelper.getImageApi().modifyImage(UserId(RoomData.roomId), body, name)
+                "3" -> RetrofitHelper.getImageApi().modifyRoomImage(RoomId(RoomData.roomId), body, name)
+                "4" -> RetrofitHelper.getImageApi().postRoomImage(RoomId(RoomData.roomId), body, name)
                 else -> RetrofitHelper.getImageApi().modifyImage(UserId(userId), body, name)
             }
 
@@ -222,24 +192,26 @@ class ModifyProfileActivity : AppCompatActivity() {
                     if (response.code() == 200) {
                         Log.e("sendImageProfile", "성공입니당")
                         loadDialog.dismiss()
-
-                        when(mode) {
+                        when (mode) {
                             "1" -> onLogin()
                             "2" -> finish()
                             "3" -> finish()
                             "4" -> finish()
                         }
                     }
-
-                    showToast(response.code().toString())
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.e("sendImageProfile", "실패입니당")
-                    Log.e("failure", t.message.toString())
-                    showToast("Request failed")
+                    Log.e("sendImageProfile", "실패입니당 ${t.message}")
                     t.printStackTrace();
+                    showToast("서버 오류로 인해 이미지 요청은 나중에 하주세요")
                     loadDialog.dismiss()
+                    when (mode) {
+                        "1" -> onLogin()
+                        "2" -> finish()
+                        "3" -> finish()
+                        "4" -> finish()
+                    }
                 }
 
             })

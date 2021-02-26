@@ -1,5 +1,6 @@
 package com.example.myapplication.api
 
+import com.example.myapplication.dto.id.RoomId
 import com.example.myapplication.dto.id.UserId
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -21,6 +22,22 @@ interface ImageAPI {
     @POST("/image_re_upload")
     fun modifyImage(
             @Part("user_id") userId: UserId,
+            @Part file: MultipartBody.Part,
+            @Part("upload") name: RequestBody
+    ): Call<ResponseBody>
+
+    @Multipart
+    @POST("/room_image_upload")
+    fun postRoomImage(
+            @Part("room_id") roomId: RoomId,
+            @Part file: MultipartBody.Part,
+            @Part("upload") name: RequestBody
+    ): Call<ResponseBody>
+
+    @Multipart
+    @POST("/room_image_re_upload")
+    fun modifyRoomImage(
+            @Part("room_id") roomId: RoomId,
             @Part file: MultipartBody.Part,
             @Part("upload") name: RequestBody
     ): Call<ResponseBody>
