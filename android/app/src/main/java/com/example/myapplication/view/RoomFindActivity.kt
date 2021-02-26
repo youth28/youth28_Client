@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.adapter.RoomAdapter
-import com.example.myapplication.RoomModel
+import com.example.myapplication.dto.room.RoomModel
 import com.example.myapplication.databinding.ActivityRoomFindBinding
 import com.example.myapplication.viewmodel.RoomFindViewModel
 import kotlinx.android.synthetic.main.activity_room_find.*

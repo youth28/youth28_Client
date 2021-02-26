@@ -1,10 +1,10 @@
 package com.example.myapplication.api
 
-import com.example.myapplication.ScheduleWDTO
-import com.example.myapplication.dto.RoomId
-import com.example.myapplication.dto.RoomScheduleRDTO
-import com.example.myapplication.dto.ScheduleRDTO
-import com.example.myapplication.dto.UserId
+import com.example.myapplication.dto.schedule.ScheduleWDTO
+import com.example.myapplication.dto.id.RoomId
+import com.example.myapplication.dto.room.RoomScheduleRDTO
+import com.example.myapplication.dto.schedule.ScheduleRDTO
+import com.example.myapplication.dto.id.UserId
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST

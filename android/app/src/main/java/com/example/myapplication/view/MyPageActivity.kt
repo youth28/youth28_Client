@@ -14,7 +14,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.ScheduleModel
+import com.example.myapplication.dto.schedule.ScheduleModel
 import com.example.myapplication.UserData
 import com.example.myapplication.adapter.ScheduleAdapter
 import com.example.myapplication.adapter.TagAdapter

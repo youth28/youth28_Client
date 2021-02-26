@@ -15,7 +15,7 @@ import com.example.myapplication.UserData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ItemMyChatBinding
 import com.example.myapplication.databinding.ItemYourChatBinding
-import com.example.myapplication.dto.UserId
+import com.example.myapplication.dto.id.UserId
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.ResponseBody

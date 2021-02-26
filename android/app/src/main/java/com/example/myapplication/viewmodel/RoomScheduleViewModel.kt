@@ -6,11 +6,11 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.RoomData
-import com.example.myapplication.ScheduleWDTO
+import com.example.myapplication.dto.schedule.ScheduleWDTO
 import com.example.myapplication.UserData
 import com.example.myapplication.api.RetrofitHelper
-import com.example.myapplication.dto.RoomId
-import com.example.myapplication.dto.RoomScheduleRDTO
+import com.example.myapplication.dto.id.RoomId
+import com.example.myapplication.dto.room.RoomScheduleRDTO
 import com.example.myapplication.event.SingleLiveEvent
 import com.github.sundeepk.compactcalendarview.domain.Event
 import retrofit2.Call

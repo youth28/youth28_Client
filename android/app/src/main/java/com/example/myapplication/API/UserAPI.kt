@@ -1,7 +1,11 @@
 package com.example.myapplication.api
 
 import com.example.myapplication.dto.*
-import com.example.myapplication.ScheduleWDTO
+import com.example.myapplication.dto.id.UserId
+import com.example.myapplication.dto.room.ResponseLogin
+import com.example.myapplication.dto.user.UserDTO
+import com.example.myapplication.dto.user.UserInfoDTO
+import com.example.myapplication.dto.user.UserModify
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST

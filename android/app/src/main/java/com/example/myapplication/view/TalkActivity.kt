@@ -17,8 +17,6 @@ import com.example.myapplication.UserData
 import com.example.myapplication.adapter.ChatAdapter
 import com.example.myapplication.adapter.TagAdapter
 import com.example.myapplication.databinding.ActivityTalkBinding
-import com.example.myapplication.dto.ChatListDTO
-import com.example.myapplication.dto.RoomId
 import com.example.myapplication.viewmodel.TalkViewModel
 import kotlinx.android.synthetic.main.activity_talk.*
 import org.json.JSONObject
@@ -26,9 +24,6 @@ import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
 import org.json.JSONException
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 import kotlin.collections.ArrayList
 

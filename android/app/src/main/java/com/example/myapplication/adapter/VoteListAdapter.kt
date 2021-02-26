@@ -8,10 +8,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.RowVoteBinding
-import com.example.myapplication.dialog.DoContentVoteDialog
-import com.example.myapplication.dialog.DoVoteDialog
-import com.example.myapplication.dialog.NowVoteContentDialog
-import com.example.myapplication.dto.ItemVoteDTO
+import com.example.myapplication.dialog.vote.DoContentVoteDialog
+import com.example.myapplication.dialog.vote.NowVoteContentDialog
+import com.example.myapplication.dto.vote.ItemVoteDTO
 
 class VoteListAdapter (val context: Context): RecyclerView.Adapter<VoteListAdapter.Holder>() {
     var list = listOf<ItemVoteDTO>()

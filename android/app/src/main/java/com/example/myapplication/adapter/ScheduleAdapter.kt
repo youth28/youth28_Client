@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.ScheduleModel
+import com.example.myapplication.dto.schedule.ScheduleModel
 import com.example.myapplication.databinding.RowScheduleBinding
 import com.github.sundeepk.compactcalendarview.domain.Event
 

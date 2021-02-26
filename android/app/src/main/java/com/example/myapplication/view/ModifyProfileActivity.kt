@@ -28,9 +28,9 @@ import com.example.myapplication.R
 import com.example.myapplication.RoomData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ActivityModifyProfileBinding
-import com.example.myapplication.dto.ResponseLogin
-import com.example.myapplication.dto.UserDTO
-import com.example.myapplication.dto.UserId
+import com.example.myapplication.dto.room.ResponseLogin
+import com.example.myapplication.dto.user.UserDTO
+import com.example.myapplication.dto.id.UserId
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_modify_profile.*
 import okhttp3.*

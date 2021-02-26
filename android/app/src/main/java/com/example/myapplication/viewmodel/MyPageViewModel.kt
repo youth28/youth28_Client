@@ -5,12 +5,12 @@ import android.text.format.DateFormat
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.ScheduleModel
+import com.example.myapplication.dto.schedule.ScheduleModel
 import com.example.myapplication.UserData
 import com.example.myapplication.api.RetrofitHelper
-import com.example.myapplication.dto.ScheduleRDTO
-import com.example.myapplication.dto.UserId
-import com.example.myapplication.dto.UserInfoDTO
+import com.example.myapplication.dto.schedule.ScheduleRDTO
+import com.example.myapplication.dto.id.UserId
+import com.example.myapplication.dto.user.UserInfoDTO
 import com.example.myapplication.event.SingleLiveEvent
 import com.github.sundeepk.compactcalendarview.domain.Event
 import retrofit2.Call

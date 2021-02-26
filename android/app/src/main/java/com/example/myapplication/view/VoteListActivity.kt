@@ -13,7 +13,9 @@ import com.example.myapplication.UserData
 import com.example.myapplication.adapter.VoteListAdapter
 import com.example.myapplication.databinding.ActivityVoteListBinding
 import com.example.myapplication.dialog.*
-import com.example.myapplication.dto.ItemVoteDTO
+import com.example.myapplication.dialog.vote.DoVoteDialog
+import com.example.myapplication.dialog.vote.PostVoteContentDialog
+import com.example.myapplication.dto.vote.ItemVoteDTO
 import com.example.myapplication.viewmodel.VoteListViewModel
 import kotlinx.android.synthetic.main.activity_vote_list.*
 

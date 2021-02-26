@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.RoomData
-import com.example.myapplication.ScheduleWDTO
+import com.example.myapplication.dto.schedule.ScheduleWDTO
 import com.example.myapplication.UserData
 import com.example.myapplication.dto.*
 import com.example.myapplication.adapter.RoomScheduleAdapter

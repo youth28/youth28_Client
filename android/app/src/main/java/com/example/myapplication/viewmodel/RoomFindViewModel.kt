@@ -3,10 +3,10 @@ package com.example.myapplication.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.RoomModel
+import com.example.myapplication.dto.room.RoomModel
 import com.example.myapplication.api.RetrofitHelper
-import com.example.myapplication.dto.RoomNameDTO
-import com.example.myapplication.dto.RoomsDTO
+import com.example.myapplication.dto.room.RoomNameDTO
+import com.example.myapplication.dto.room.RoomsDTO
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

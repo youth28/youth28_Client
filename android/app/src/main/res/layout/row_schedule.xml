@@ -3,7 +3,7 @@
     <data>
         <variable
             name="row"
-            type="com.example.myapplication.ScheduleModel" />
+            type="com.example.myapplication.dto.schedule.ScheduleModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

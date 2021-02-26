@@ -1,6 +1,8 @@
 package com.example.myapplication.api
 
-import com.example.myapplication.dto.*
+import com.example.myapplication.dto.id.QuestionId
+import com.example.myapplication.dto.id.RoomId
+import com.example.myapplication.dto.vote.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body

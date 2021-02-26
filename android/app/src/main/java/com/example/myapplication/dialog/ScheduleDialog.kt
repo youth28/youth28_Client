@@ -13,7 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.api.RetrofitHelper
-import com.example.myapplication.ScheduleWDTO
+import com.example.myapplication.dto.schedule.ScheduleWDTO
 import com.example.myapplication.R
 import com.example.myapplication.databinding.DialogScheduleBinding
 import kotlinx.android.synthetic.main.dialog_schedule.*

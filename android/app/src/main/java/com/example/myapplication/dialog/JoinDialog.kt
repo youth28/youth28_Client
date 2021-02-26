@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.api.RetrofitHelper
-import com.example.myapplication.dto.JoinRoomDTO
+import com.example.myapplication.dto.room.JoinRoomDTO
 import com.example.myapplication.R
 import com.example.myapplication.databinding.DialogJoinBinding
 import retrofit2.Call

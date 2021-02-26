@@ -3,7 +3,7 @@
     <data>
         <variable
             name="dialog"
-            type="com.example.myapplication.dialog.DoVoteDialog" />
+            type="com.example.myapplication.dialog.vote.DoVoteDialog" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"

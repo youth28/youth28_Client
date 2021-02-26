@@ -1,6 +1,9 @@
 package com.example.myapplication.api
 
 import com.example.myapplication.dto.*
+import com.example.myapplication.dto.id.RoomId
+import com.example.myapplication.dto.id.UserId
+import com.example.myapplication.dto.room.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST

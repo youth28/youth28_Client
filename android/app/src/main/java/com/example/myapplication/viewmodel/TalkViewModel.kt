@@ -9,8 +9,8 @@ import com.example.myapplication.RoomData
 import com.example.myapplication.UserData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.ChatListDTO
-import com.example.myapplication.dto.RoomId
-import com.example.myapplication.dto.RoomInfoDTO
+import com.example.myapplication.dto.id.RoomId
+import com.example.myapplication.dto.room.RoomInfoDTO
 import com.example.myapplication.event.SingleLiveEvent
 import org.json.JSONException
 import org.json.JSONObject

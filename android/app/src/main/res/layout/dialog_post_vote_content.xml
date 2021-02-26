@@ -5,7 +5,7 @@
     <data>
         <variable
             name="dialog"
-            type="com.example.myapplication.dialog.PostVoteContentDialog" />
+            type="com.example.myapplication.dialog.vote.PostVoteContentDialog" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

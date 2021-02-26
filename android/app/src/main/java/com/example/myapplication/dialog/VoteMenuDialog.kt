@@ -1,10 +1,8 @@
 package com.example.myapplication.dialog
 
-import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,16 +10,9 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import com.example.myapplication.api.RetrofitHelper
-import com.example.myapplication.ScheduleWDTO
 import com.example.myapplication.R
-import com.example.myapplication.databinding.DialogScheduleBinding
 import com.example.myapplication.databinding.DialogVoteMenuBinding
-import com.example.myapplication.event.SingleLiveEvent
 import kotlinx.android.synthetic.main.dialog_schedule.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class VoteMenuDialog(): DialogFragment() {
     // 다이얼로그에 버튼이 눌리면

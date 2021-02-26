@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.MyRoom
 import com.example.myapplication.R
 import com.example.myapplication.adapter.RoomAdapter
-import com.example.myapplication.RoomModel
+import com.example.myapplication.dto.room.RoomModel
 import com.example.myapplication.UserData
 import com.example.myapplication.adapter.MyRoomListAdapter
 import com.example.myapplication.databinding.ActivityMainBinding

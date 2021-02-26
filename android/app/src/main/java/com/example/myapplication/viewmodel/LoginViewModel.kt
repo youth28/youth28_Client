@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.UserData
 import com.example.myapplication.api.RetrofitHelper
-import com.example.myapplication.dto.ResponseLogin
-import com.example.myapplication.dto.UserDTO
+import com.example.myapplication.dto.room.ResponseLogin
+import com.example.myapplication.dto.user.UserDTO
 import com.example.myapplication.event.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback

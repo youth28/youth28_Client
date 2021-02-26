@@ -6,7 +6,7 @@
         <import type="android.view.View"/>
         <variable
             name="dialog"
-            type="com.example.myapplication.dialog.DoContentVoteDialog" />
+            type="com.example.myapplication.dialog.vote.DoContentVoteDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
