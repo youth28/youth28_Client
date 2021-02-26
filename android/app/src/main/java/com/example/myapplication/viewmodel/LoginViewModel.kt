@@ -107,7 +107,7 @@ class LoginViewModel: ViewModel() {
                         val result = response.code()
                         when (result) {
                             200 -> {
-                                onAutoLoginEvent.call()
+                                //onAutoLoginEvent.call()
                             }
                             204 -> {
                                 errPW.value = "아이디나 비밀번호가 일치하지 않습니다."
@@ -119,7 +119,7 @@ class LoginViewModel: ViewModel() {
 
                 override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
                     Log.e(TAG+" Err", "통신안됨: ${t.message}")
-                    onAutoLoginFailEvent.call()
+//                    onAutoLoginFailEvent.call()
                 }
 
             })

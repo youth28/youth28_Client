@@ -55,7 +55,7 @@ class RoomScheduleViewModel: ViewModel() {
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         val data = arrayListOf<Event>()
         for (i: Int in 1..10) {
-            data.add(Event(Color.MAGENTA, sdf.parse("2021-2-23-10-$i").time, ScheduleWDTO("하이루 $i", "10:$i", UserData.userNum.toInt())))
+            data.add(Event(Color.MAGENTA, sdf.parse("2021-2-2${i}-10-${i}0").time, ScheduleWDTO("하이루 $i", "10:${i}0", UserData.userNum.toInt())))
         }
         Log.e(TAG, data.toString())
         event.postValue(data)

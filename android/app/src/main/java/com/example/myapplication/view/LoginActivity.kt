@@ -73,11 +73,16 @@ class LoginActivity: AppCompatActivity() {
                 val dialog = SweetAlertDialog(this@LoginActivity , SweetAlertDialog.SUCCESS_TYPE)
                 dialog.progressHelper.barColor = Color.parseColor("#36b8ff")
                 dialog.titleText = "로그인이 완료되었습니다."
+                dialog.confirmText = "완료"
+                dialog.showCancelButton(false)
+                dialog.setConfirmClickListener {
+                    dialog.dismiss()
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
                 dialog.show()
 
-                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                startActivity(intent)
-                finish()
             })
             onAutoLoginFailEvent.observe(this@LoginActivity, {
                 val dialog = SweetAlertDialog(this@LoginActivity , SweetAlertDialog.ERROR_TYPE)
