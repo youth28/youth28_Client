@@ -1,7 +1,5 @@
 package com.example.myapplication.dialog
 
-import android.app.Activity
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.room.JoinRoomDTO
 import com.example.myapplication.R
+import com.example.myapplication.UserData
 import com.example.myapplication.databinding.DialogJoinBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,9 +22,8 @@ class JoinDialog: DialogFragment() {
 
     val TAG = "JoinDialog"
 
-    var mainMsg : String = ""
+    var mainMsg = MutableLiveData<String>()
     var room_id = 0
-    internal lateinit var preferences: SharedPreferences
 
     private lateinit var binding:DialogJoinBinding
 
@@ -44,35 +43,34 @@ class JoinDialog: DialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mainMsg = "${mainMsg}에 참여하시겠습니까?"
-        binding.invalidateAll()
-        binding.btnYes.setOnClickListener {
-            showToast("참여함")
-            preferences = requireActivity().getSharedPreferences("user", Activity.MODE_PRIVATE)
-            val join = JoinRoomDTO(preferences.getString("userNum", "0")!!.toInt(), room_id)
-            val call = RetrofitHelper.getRoomApi().room_join(join)
-            call.enqueue(object : Callback<JoinRoomDTO> {
-                override fun onResponse(call: Call<JoinRoomDTO>, response: Response<JoinRoomDTO>) {
-                    if (response.isSuccessful) {
-                        when (response.code()) {
-                            200 -> showToast("${mainMsg}에 참가하였습니다.")
-                            204 -> showToast("이미 참여된 방입니다.")
-                        }
-                    } else {
-                        Log.e("실패", response.message())
+        mainMsg.value = "${mainMsg.value}에 참여하시겠습니까?"
+    }
+
+    fun onYes() {
+        val join = JoinRoomDTO(UserData.userNum.toInt(), room_id)
+        val call = RetrofitHelper.getRoomApi().room_join(join)
+        call.enqueue(object : Callback<JoinRoomDTO> {
+            override fun onResponse(call: Call<JoinRoomDTO>, response: Response<JoinRoomDTO>) {
+                if (response.isSuccessful) {
+                    when (response.code()) {
+                        200 -> showToast("${mainMsg}에 참가하였습니다.")
+                        204 -> showToast("이미 참여된 방입니다.")
                     }
+                } else {
+                    Log.e("실패", response.message())
                 }
+            }
 
-                override fun onFailure(call: Call<JoinRoomDTO>, t: Throwable) {
-                    Log.e(TAG+"ERR", "통신안됨 ${t.message}")
-                }
+            override fun onFailure(call: Call<JoinRoomDTO>, t: Throwable) {
+                Log.e(TAG+"ERR", "통신안됨 ${t.message}")
+            }
 
-            })
-            dismiss()
-        }
-        binding.btnNo.setOnClickListener {
-            dismiss()
-        }
+        })
+        dismiss()
+    }
+
+    fun onNo() {
+        dismiss()
     }
 
     fun showToast(str: String) {

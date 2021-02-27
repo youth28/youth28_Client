@@ -67,8 +67,6 @@ class RoomAdapter(val context: Context): RecyclerView.Adapter<RoomAdapter.Holder
     }
 
     fun imageLoad(img: CircleImageView) {
-        Log.e(TAG, "imageLoad")
-
         val call = RetrofitHelper.getImageApi().imageLoad(UserId(list[curNum].room_id))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {

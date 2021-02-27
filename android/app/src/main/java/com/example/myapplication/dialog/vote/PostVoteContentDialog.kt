@@ -21,6 +21,8 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PostVoteContentDialog: DialogFragment() {
     private lateinit var binding: DialogPostVoteContentBinding
@@ -64,9 +66,6 @@ class PostVoteContentDialog: DialogFragment() {
     }
 
     fun onCreateVote() {
-        RoomData.roomId = 5
-        UserData.userNum = "6"
-
         contentCnt = 0
         contentCntS = 0
 
@@ -88,14 +87,12 @@ class PostVoteContentDialog: DialogFragment() {
                 if (contentCnt != contentCntS) {
                     showToast("선택지는 앞당겨서 작성해주세요!")
                 } else {
-                    date.value = date.value!!.substring(4, date.value!!.length - 1)
+                    val sdf = SimpleDateFormat("yyyy-MM-dd")
+                    date.value = date.value!!.substring(4, date.value!!.length)
                     val voteMakeDTO = VoteMakeDTO(title.value.toString(), contentList[0].value.toString(), contentList[1].value.toString(),
                             contentList[2].value.toString(), contentList[3].value.toString(), contentList[4].value.toString(),
-                            date.value.toString(), "2021-02-27", false, RoomData.roomId, UserData.userNum.toInt())
+                            sdf.format(Date()), date.value.toString(), false, RoomData.roomId, UserData.userNum.toInt())
                     Log.e("voteMakeDTO", "$voteMakeDTO")
-
-                    listener.invoke(title.value.toString())
-                    dismiss()
 
                     val call = RetrofitHelper.getVoteApi().question_make(voteMakeDTO = voteMakeDTO)
                     call.enqueue(object : Callback<ResponseBody> {

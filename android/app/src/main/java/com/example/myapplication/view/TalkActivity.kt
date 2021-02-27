@@ -3,8 +3,10 @@ package com.example.myapplication.view
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
@@ -16,14 +18,20 @@ import com.example.myapplication.RoomData
 import com.example.myapplication.UserData
 import com.example.myapplication.adapter.ChatAdapter
 import com.example.myapplication.adapter.TagAdapter
+import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ActivityTalkBinding
+import com.example.myapplication.dto.id.UserId
 import com.example.myapplication.viewmodel.TalkViewModel
 import kotlinx.android.synthetic.main.activity_talk.*
 import org.json.JSONObject
 import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
+import okhttp3.ResponseBody
 import org.json.JSONException
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -55,16 +63,14 @@ class TalkActivity : AppCompatActivity() {
             RoomData.roomId = intent.getIntExtra("roomId", 0)
         }
 
-        preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
-        UserData.userId = preferences.getString("userId", "dkstnqls").toString()
-        UserData.userNum = preferences.getString("userNum", "55").toString()
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_talk)
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
                 .get(TalkViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewmodel = viewModel
         binding.executePendingBindings()
+
+        imageLoad(binding.imgRoomProfile)
 
 
         val layouManager = LinearLayoutManager(this)
@@ -214,5 +220,28 @@ class TalkActivity : AppCompatActivity() {
         user.put("room_id", RoomData.roomId)
         Log.e("user", user.toString())
         Log.e("send", " 제발!" + mSocket.emit("disconnect event", user))
+    }
+
+    fun imageLoad(img: ImageView) {
+        val call = RetrofitHelper.getImageApi().imageLoad(UserId(RoomData.roomId))
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.d("AAA", "REQUEST SUCCESS ==> ")
+                    val file = response.body()?.byteStream()
+                    val bitmap = BitmapFactory.decodeStream(file)
+                    img.setImageBitmap(bitmap)
+                } else {
+                    Log.d("AAA", "통신오류=${response.message()}")
+                    img.setImageResource(R.drawable.add)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("AAA", "FAIL REQUEST ==> " + t.localizedMessage)
+                img.setImageResource(R.drawable.add)
+            }
+
+        })
     }
 }

@@ -47,6 +47,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_weight="1"
                 android:text="네"
+                android:onClick="@{() -> dialog.onYes()}"
                 android:fontFamily="@font/appleneom"/>
 
             <Button
@@ -56,6 +57,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
                 android:text="아니요"
+                android:onClick="@{() -> dialog.onNo()}"
                 android:fontFamily="@font/appleneom"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

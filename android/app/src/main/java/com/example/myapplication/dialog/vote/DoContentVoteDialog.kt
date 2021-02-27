@@ -27,6 +27,7 @@ class DoContentVoteDialog : DialogFragment(){
 
     // 다이얼로그의 버튼이 눌린경우
     var listener: (String) -> Unit = {selectContent -> }
+    var listener2: (String) -> Unit = {title -> }
 
 
     val title = MutableLiveData<String>()
@@ -76,8 +77,6 @@ class DoContentVoteDialog : DialogFragment(){
         } else {
             val doVoteDTO = DoVoteDTO(seleContent.value.toString(), UserData.userNum.toInt(), questionId)
             val call = RetrofitHelper.getVoteApi().vote(doVoteDTO)
-            listener.invoke(seleContent.value.toString())
-            dismiss()
             call.enqueue(object : Callback<ResponseBody>{
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.isSuccessful) {
@@ -101,6 +100,8 @@ class DoContentVoteDialog : DialogFragment(){
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if(response.isSuccessful) {
                     Log.e("end_vote", "${response.code()}")
+                    listener2.invoke(title.value.toString())
+                    dismiss()
                 } else Log.e("end_vote", "통신오류: ${response.message()}")
             }
 
@@ -112,35 +113,6 @@ class DoContentVoteDialog : DialogFragment(){
     }
 
     fun onLookVote() {
-        title.value = "question_text"
-        date.value = "투표 시작일: 2021-02-25"
-        writer.value = "게시자: 이름임돠"
-        deadLine.value = "투표 마감일: 2021-02-26"
-
-        contentList[0].value = "선택지1"
-        contentList[1].value = "선택지2"
-        contentList[2].value = "null"
-        contentList[3].value = ""
-        contentList[4].value = null
-
-        for (i: Int in 0..4) {
-            if (isNotNull(contentList[i].value)) {
-                clickAbleList[i].value = false
-                contentList[i].value = "없는 항목입니다."
-            }
-        }
-
-        if("이름임돠" == UserData.userName) {
-            viewEndVote.value = true
-            viewVote.value = false
-            for (i:Int in 0..4) {
-                clickAbleList[i].value = false
-            }
-        } else {
-            viewEndVote.value = false
-            viewVote.value = true
-        }
-
         val call = RetrofitHelper.getVoteApi().look_vote(QuestionId(questionId))
         call.enqueue(object : Callback<VoteDetailDTO> {
             override fun onResponse(call: Call<VoteDetailDTO>, response: Response<VoteDetailDTO>) {
@@ -154,6 +126,9 @@ class DoContentVoteDialog : DialogFragment(){
                     if(result.name == UserData.userName) {
                         viewEndVote.value = true
                         viewVote.value = false
+                        for (i:Int in 0..4) {
+                            clickAbleList[i].value = false
+                        }
                     } else {
                         viewEndVote.value = false
                         viewVote.value = true
@@ -166,8 +141,8 @@ class DoContentVoteDialog : DialogFragment(){
                     contentList[4].value = result.content5
 
                     for (i: Int in 0..4) {
-                        if (!isNotNull(contentList[i].value)) {
-                            clickAbleList[i].value = true
+                        if (isNotNull(contentList[i].value)) {
+                            clickAbleList[i].value = false
                             contentList[i].value = "없는 항목입니다."
                         }
                     }

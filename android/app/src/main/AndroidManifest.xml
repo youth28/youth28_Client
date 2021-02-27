@@ -23,7 +23,13 @@
         tools:replace="android:icon">
         <activity android:name=".view.ModifyProfileActivity" />
         <activity android:name=".view.SplashActivity" />
-        <activity android:name=".view.LoginActivity" />
+        <activity android:name=".view.LoginActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".view.SignUpActivity" />
         <activity android:name=".view.MainActivity" />
         <activity android:name=".view.MenuActivity" />
@@ -36,13 +42,7 @@
         <activity android:name=".view.RoomInfoActivity" />
         <activity android:name=".view.RoomModifyActivity" />
         <activity android:name=".view.RoomScheduleActivity" />
-        <activity android:name=".view.VoteListActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".view.VoteListActivity" />
     </application>
 
 </manifest>

@@ -70,6 +70,10 @@ class LoginActivity: AppCompatActivity() {
                 finish()
             })
             onAutoLoginEvent.observe(this@LoginActivity, {
+                UserData.userName = preferences.getString("userName", "하이").toString()
+                UserData.userId = preferences.getString("userId", "하이").toString()
+                UserData.userPassword = preferences.getString("userPW", "하이").toString()
+                UserData.userNum = preferences.getString("userNum", "0").toString()
                 val dialog = SweetAlertDialog(this@LoginActivity , SweetAlertDialog.SUCCESS_TYPE)
                 dialog.progressHelper.barColor = Color.parseColor("#36b8ff")
                 dialog.titleText = "로그인이 완료되었습니다."

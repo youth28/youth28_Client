@@ -30,10 +30,13 @@ class VoteListAdapter (val context: Context): RecyclerView.Adapter<VoteListAdapt
                 val dialog = DoContentVoteDialog()
                 val manager = (context as AppCompatActivity).supportFragmentManager
                 dialog.listener = { selectContent ->
-                    showToast("'${selectContent}'에 투표하였습니다.")
+                    showToast("[${selectContent}]에 투표하였습니다.")
 
                     val dialog = NowVoteContentDialog()
                     dialog.show(manager, "dialog")
+                }
+                dialog.listener2 = {
+                    showToast("[${it}]이(가) 마감되었습니다.")
                 }
                 dialog.show(manager, "dialog")
             } else {

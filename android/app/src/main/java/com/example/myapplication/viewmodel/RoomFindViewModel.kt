@@ -24,7 +24,6 @@ class RoomFindViewModel: ViewModel() {
            errMsg.value = "방 제목을 입력해주세요."
         } else {
             val roomName = RoomNameDTO(key.value.toString())
-            Log.e(TAG, roomName.toString())
             val call = RetrofitHelper.getRoomApi().room_search(roomName)
             call.enqueue(object : Callback<RoomsDTO> {
                 override fun onResponse(call: Call<RoomsDTO>, response: Response<RoomsDTO>) {

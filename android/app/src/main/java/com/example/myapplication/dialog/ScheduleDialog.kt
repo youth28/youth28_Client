@@ -71,8 +71,7 @@ class ScheduleDialog(): DialogFragment() {
         }
     }
 
-    fun onSave(view: View) {
-        Log.e(TAG, "")
+    fun onSave() {
         if (!content.isNotEmpty()) {
             showToast("내용을 입력하세요")
         } else {
@@ -102,7 +101,7 @@ class ScheduleDialog(): DialogFragment() {
         }
     }
 
-    fun onExit(view: View) {
+    fun onExit() {
         dismiss()
     }
 

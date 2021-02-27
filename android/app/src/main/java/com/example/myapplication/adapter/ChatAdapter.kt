@@ -81,8 +81,6 @@ class ChatAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     fun imageLoad(img: CircleImageView) {
-        Log.e(TAG, "imageLoad")
-
         val call = RetrofitHelper.getImageApi().imageLoad(UserId(chatList[curNum].user_id.toInt()))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {

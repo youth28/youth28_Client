@@ -1,7 +1,7 @@
 package com.example.myapplication.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
@@ -9,11 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.RoomData
-import com.example.myapplication.UserData
 import com.example.myapplication.adapter.VoteListAdapter
 import com.example.myapplication.databinding.ActivityVoteListBinding
 import com.example.myapplication.dialog.*
-import com.example.myapplication.dialog.vote.DoVoteDialog
 import com.example.myapplication.dialog.vote.PostVoteContentDialog
 import com.example.myapplication.dto.vote.ItemVoteDTO
 import com.example.myapplication.viewmodel.VoteListViewModel
@@ -26,7 +24,7 @@ class VoteListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityVoteListBinding
     private lateinit var viewmodel: VoteListViewModel
 
-    val voteList = MutableLiveData<ArrayList<ItemVoteDTO>>()
+    private val voteList = MutableLiveData<ArrayList<ItemVoteDTO>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +32,6 @@ class VoteListActivity : AppCompatActivity() {
         if (intent.hasExtra("roomId")) {
             RoomData.roomId = intent.getIntExtra("roomId", 0)
         }
-
-        UserData.userNum ="5"
-        UserData.userName = "이름아입니다"
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_vote_list)
         viewmodel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
@@ -60,13 +55,15 @@ class VoteListActivity : AppCompatActivity() {
 
                 dialog.listener = { mode ->
                     if (mode == 1) {
-                        val dialog = DoVoteDialog()
-                        dialog.show(supportFragmentManager, "dialog")
+//                        val dialog = DoVoteDialog()
+//                        dialog.show(supportFragmentManager, "dialog")
+                        showToast("현재 개발중 입니다.")
                     } else {
                         val dialog = PostVoteContentDialog()
 
                         dialog.listener = {title ->
                             showToast("[${title}]투표를 정상적으로 등록했습니다.")
+                            onReadList()
                         }
 
                         dialog.show(supportFragmentManager, "dialog")

@@ -51,12 +51,6 @@ class RoomScheduleViewModel: ViewModel() {
 
     fun readSchedule () {
         val sdf = SimpleDateFormat("yyyy-MM-dd")
-        val data = arrayListOf<Event>()
-        for (i: Int in 1..8) {
-            data.add(Event(Color.MAGENTA, sdf.parse("2021-2-2$i-10-$i").time, ScheduleWDTO("하이루 $i", "2021-2-2$i-10-$i", UserData.userNum.toInt())))
-        }
-        event.postValue(data)
-
         val roomId = RoomId(room_id)
         Log.e(TAG, roomId.toString())
         val call = RetrofitHelper.getScheduleApi().room_schedule_read(roomId)
@@ -68,8 +62,8 @@ class RoomScheduleViewModel: ViewModel() {
                             val data = arrayListOf<Event>()
                             val result = response.body()!!.room_schedule
                             for (i: Int in 1..result.size) {
-                                val content = result[i-1].content
-                                val rDate = result[i-1].date
+                                val content = result[i - 1].content
+                                val rDate = result[i - 1].date
                                 val arrDate = rDate.split("-")
                                 val date = "${arrDate[3]}:${arrDate[4]}"
                                 val ev = Event(Color.MAGENTA, sdf.parse(result[i - 1].date).time,
@@ -83,7 +77,14 @@ class RoomScheduleViewModel: ViewModel() {
                             Log.e(TAG, "저장된 스케줄이 없습니다.")
                         }
                     }
-                } else Log.e(TAG, "schedule_read, ERR: ${response.message()}")
+                } else {
+                    Log.e(TAG, "schedule_read, ERR: ${response.message()}")
+                    val data = arrayListOf<Event>()
+                    for (i: Int in 1..8) {
+                        data.add(Event(Color.MAGENTA, sdf.parse("2021-2-2$i-10-$i").time, ScheduleWDTO("하이루 $i", "2021-2-2$i-10-$i", UserData.userNum.toInt())))
+                    }
+                    event.postValue(data)
+                }
             }
 
             override fun onFailure(call: Call<RoomScheduleRDTO>, t: Throwable) {

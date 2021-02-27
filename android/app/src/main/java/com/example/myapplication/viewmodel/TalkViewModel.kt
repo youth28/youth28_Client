@@ -42,7 +42,6 @@ class TalkViewModel: ViewModel() {
 
     init {
         profile.value = "img"
-        title.value = RoomData.title
         room_id = RoomData.roomId
         loadMessage()
 
@@ -92,19 +91,6 @@ class TalkViewModel: ViewModel() {
     }
 
     fun onSend() {
-        /*
-        Log.e(TAG, "눌림")
-        val data = arrayListOf<ChatModel>()
-        for (i: Int in 1..10){
-            if (i % 2 == 0){
-                data.add(ChatModel("안녕?!$i", "2021-02-0$i", "subinJoHa", "img"))
-            } else {
-                data.add(ChatModel("잘지내?!$i", "2021-020$i", UserData.userId, "img"))
-            }
-        }
-        chatList.postValue(data)
-        */
-
         val now = System.currentTimeMillis()
         val date = Date(now)
         //나중에 바꿔줄것
@@ -160,21 +146,23 @@ class TalkViewModel: ViewModel() {
                     }
                 } else {
                     Log.e("실패", "통신오류: ${response.message()}")
-
-
-                    for(i: Int in 0..10) {
-                        if (i%2 == 0)
-                            addItem(ChatModel(userName = "안수빈", message = "메세지 $i", imageUrl = "profileImage", time = "2021-02-24", user_id = UserData.userNum))
-                        else
-                            addItem(ChatModel(userName = "컴퓨터", message = "메세지 $i", imageUrl = "profileImage", time = "2021-02-24", user_id = (UserData.userNum.toInt()+1).toString()))
-                    }
                 }
             }
 
             override fun onFailure(call: Call<ChatListDTO>, t: Throwable) {
                 Log.e("d실패", t.message.toString())
+
+                for(i: Int in 0..10) {
+                    if (i%2 == 0)
+                        addItem(ChatModel(userName = "안수빈", message = "메세지 $i", imageUrl = "profileImage", time = "2021-02-24", user_id = UserData.userNum))
+                    else
+                        addItem(ChatModel(userName = "컴퓨터", message = "메세지 $i", imageUrl = "profileImage", time = "2021-02-24", user_id = (UserData.userNum.toInt()+1).toString()))
+                }
             }
 
         })
     }
+
+
+
 }

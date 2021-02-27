@@ -54,29 +54,6 @@ class NowVoteContentDialog : DialogFragment(){
 
 
     fun onNowVote() {
-
-        title.value = "question_text"
-        date.value = "투표 시작일: 2021-02-25"
-        writer.value = "게시자: 이름임돠"
-        deadLine.value = "투표 마감일: 2021-02-26"
-
-        contentList[0].value = "선택지1"
-        contentList[1].value = "선택지2"
-        contentList[2].value = "null"
-        contentList[3].value = ""
-        contentList[4].value = null
-
-        for (i: Int in 0..4) {
-            if (isNotNull(contentList[i].value))
-                contentList[i].value = "없는 항목입니다."
-        }
-
-        cntList[0].value = "${5}표"
-        cntList[1].value = "${3}표"
-        cntList[2].value = "${0}표"
-        cntList[3].value = "${0}표"
-        cntList[4].value = "${0}표"
-
         val call = RetrofitHelper.getVoteApi().now_vote(QuestionId(questionId))
         call.enqueue(object : Callback<VoteStatusDTO> {
             override fun onResponse(call: Call<VoteStatusDTO>, response: Response<VoteStatusDTO>) {
