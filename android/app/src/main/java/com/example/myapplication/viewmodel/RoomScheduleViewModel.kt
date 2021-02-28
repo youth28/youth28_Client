@@ -79,16 +79,16 @@ class RoomScheduleViewModel: ViewModel() {
                     }
                 } else {
                     Log.e(TAG, "schedule_read, ERR: ${response.message()}")
-                    val data = arrayListOf<Event>()
-                    for (i: Int in 1..8) {
-                        data.add(Event(Color.MAGENTA, sdf.parse("2021-2-2$i-10-$i").time, ScheduleWDTO("하이루 $i", "2021-2-2$i-10-$i", UserData.userNum.toInt())))
-                    }
-                    event.postValue(data)
                 }
             }
 
             override fun onFailure(call: Call<RoomScheduleRDTO>, t: Throwable) {
                 Log.e(TAG, "통신안됨: ${t.message}")
+                val data = arrayListOf<Event>()
+                for (i: Int in 1..8) {
+                    data.add(Event(Color.MAGENTA, sdf.parse("2021-2-2$i-10-$i").time, ScheduleWDTO("하이루 $i", "2021-2-2$i-10-$i", UserData.userNum.toInt())))
+                }
+                event.postValue(data)
             }
 
         })

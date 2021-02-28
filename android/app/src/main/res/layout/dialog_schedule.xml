@@ -57,7 +57,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/appleneom"
-                android:onClick="@{dialog::onSave}"
+                android:onClick="@{() -> dialog.onSave()}"
                 android:text="저장" />
 
             <Button
@@ -67,7 +67,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/appleneom"
-                android:onClick="@{dialog::onExit}"
+                android:onClick="@{() -> dialog.onExit()}"
                 android:text="나가기" />
         </LinearLayout>
 

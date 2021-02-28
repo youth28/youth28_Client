@@ -23,7 +23,7 @@ import retrofit2.Response
 
 class ScheduleDialog(): DialogFragment() {
     // 다이얼로그에 버튼이 눌리면
-    var listener: (String, String) -> Unit = {date, content -> }
+    var listener: () -> Unit = { }
 
     val TAG = "ScheduleD"
 
@@ -77,7 +77,7 @@ class ScheduleDialog(): DialogFragment() {
         } else {
             date = "${sYear}-${sMonth}-${sDay}-${time}"
 
-            listener.invoke("${sHour}:${sMinute}", content)
+            listener.invoke()
 
             preferences = requireActivity().getSharedPreferences("user", Activity.MODE_PRIVATE)
             val writer = ScheduleWDTO(content, date, preferences.getString("userNum", "0")!!.toInt())
@@ -86,7 +86,7 @@ class ScheduleDialog(): DialogFragment() {
                 override fun onResponse(call: Call<ScheduleWDTO>, response: Response<ScheduleWDTO>) {
                     if (response.isSuccessful) {
                         Log.e("성공", response.message())
-                        listener.invoke("${sHour}:${sMinute}", content)
+                        listener.invoke()
                     } else {
                         Log.e("실패", response.message())
                     }

@@ -71,12 +71,10 @@ class MyPageActivity : AppCompatActivity() {
                 dialog.sMonth = sMonth.toInt()
                 dialog.sDay = sDay.toInt()
 
-                dialog.listener = {date, content ->
-                    val ev = Event(Color.LTGRAY, sdf.parse("$sYear-$sMonth-$sDay").time, ScheduleModel(content, date))
-                    binding.calendarView.addEvent(ev)
-                    event.postValue(binding.calendarView.getEvents(sDate))
+                dialog.listener = {
+                    binding.calendarView.removeAllEvents()
+                    viewModel.readSchedule()
                     rcv()
-                    Log.e("TAG", "등록했음: ${date}, ${content}")
                 }
                 dialog.show(supportFragmentManager, "dialog")
             })

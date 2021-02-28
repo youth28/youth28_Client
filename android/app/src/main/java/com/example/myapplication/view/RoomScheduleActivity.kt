@@ -72,13 +72,10 @@ class RoomScheduleActivity: AppCompatActivity() {
                 dialog.sMonth = sMonth.toInt()
                 dialog.sDay = sDay.toInt()
 
-                dialog.listener = {date, content ->
-                    val ev = Event(Color.LTGRAY, sdf.parse("$sYear-$sMonth-$sDay").time,
-                            ScheduleWDTO(content, date, UserData.userNum.toInt() ))
-                    binding.calendarView.addEvent(ev)
-                    event.postValue(binding.calendarView.getEvents(sDate))
+                dialog.listener = {
+                    binding.calendarView.removeAllEvents()
+                    viewmodel.readSchedule()
                     rcv()
-                    Log.e("TAG", "등록했음: ${date}, ${content}")
                 }
 
                 dialog.show(supportFragmentManager, "dialog")

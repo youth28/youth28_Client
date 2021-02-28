@@ -44,6 +44,8 @@ class MyPageViewModel: ViewModel() {
     var sDay=""
     lateinit var ev : Event
 
+    var bool = false
+
     init {
         getUserInfo()
         readSchedule()
