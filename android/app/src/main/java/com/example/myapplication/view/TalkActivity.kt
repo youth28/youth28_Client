@@ -1,8 +1,6 @@
 package com.example.myapplication.view
 
-import android.app.Activity
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
@@ -38,8 +36,6 @@ import kotlin.collections.ArrayList
 class TalkActivity : AppCompatActivity() {
     val TAG = "TalkActivity"
 
-    internal lateinit var preferences: SharedPreferences
-
     private lateinit var binding: ActivityTalkBinding
     private lateinit var viewModel: TalkViewModel
 
@@ -71,7 +67,6 @@ class TalkActivity : AppCompatActivity() {
         binding.executePendingBindings()
 
         imageLoad(binding.imgRoomProfile)
-
 
         val layouManager = LinearLayoutManager(this)
         rcvChat.layoutManager = layouManager
@@ -108,7 +103,7 @@ class TalkActivity : AppCompatActivity() {
             onSendEvent.observe(this@TalkActivity, {
                 Log.e(TAG, viewModel.jsonObject.toString())
                 Log.e("챗룸", "sendMessage: 1" + mSocket.emit("chat message", viewModel.jsonObject))
-                Log.e("sendmmm", UserData.userId )
+                Log.e("sendmmm", UserData.userNum )
             })
         }
 

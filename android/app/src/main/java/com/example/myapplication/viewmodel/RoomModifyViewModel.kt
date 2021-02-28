@@ -29,7 +29,6 @@ class RoomModifyViewModel: ViewModel() {
 
     val onSaveEvent = SingleLiveEvent<Unit>()
 
-    var roomId = 0
     var strField = ""
     var maxNum = 0
 
@@ -55,48 +54,59 @@ class RoomModifyViewModel: ViewModel() {
         maxNum = RoomData.maxPeo
         maxPeo.value = "${RoomData.maxPeo}"
         profile.value = RoomData.profile
-        roomId = RoomData.roomId
     }
 
     fun onSaveRoom() {
-        if (cbStudy.value == true) strField += "스터디,"
-        if (cbWork.value == true) strField += "업무,"
-        if (cbGame.value == true) strField += "게임,"
-        if (cbMusic.value == true) strField += "음악,"
-        if (cbArt.value == true) strField += "미술,"
-        if (cbExercise.value == true) strField += "운동(헬스),"
-        if (cbEtc.value == true) strField += "기타,"
+        if (title.value == null || title.value == "") errMsg.value = "방 이름을 입력해주세요"
+        else if (maxNum < 2) errMsg.value = "방 최소 인원은 2명입니다."
+        else {
+            if (cbStudy.value == true) strField += "스터디,"
+            if (cbWork.value == true) strField += "업무,"
+            if (cbGame.value == true) strField += "게임,"
+            if (cbMusic.value == true) strField += "음악,"
+            if (cbArt.value == true) strField += "미술,"
+            if (cbExercise.value == true) strField += "운동(헬스),"
+            if (cbEtc.value == true) strField += "기타,"
 
-        Log.e(TAG, "checkBox: $strField 선택됨")
-
-        RoomData.title = title.value.toString()
-        RoomData.maxPeo = maxPeo.value!!.toInt()
-        RoomData.profile = profile.value.toString()
-        RoomData.roomField = strField
-        onSaveEvent.call()
-
-        val room = RoomModifyDTO(roomId, title.value.toString(), maxPeo.value!!.toInt(), strField, profile.value.toString())
-        Log.e(TAG, room.toString())
-        val call = RetrofitHelper.getRoomApi().modify_room(room)
-        call.enqueue(object : Callback<RoomModifyDTO> {
-            override fun onResponse(call: Call<RoomModifyDTO>, response: Response<RoomModifyDTO>) {
-                if (response.isSuccessful) {
-                    if (response.code() == 200) {
-                        errMsg.value = "성공적으로 방을 수정하였습니다."
-                        RoomData.title = title.value.toString()
-                        RoomData.maxPeo = maxPeo.value!!.toInt()
-                        RoomData.profile = profile.value.toString()
-                        RoomData.roomField = strField
-                        onSaveEvent.call()
-                    }
-                } else Log.e(TAG, "통신안됨 ${response.message()}")
+            if (strField == "") {
+                errMsg.value = "분야를 선택하지 않아 기타로 표시됩니다."
+                cbEtc.value = true
+                strField = "기타,"
             }
 
-            override fun onFailure(call: Call<RoomModifyDTO>, t: Throwable) {
-                Log.e(TAG, "통신안됨 ${t.message}")
+            if(strField.isNotEmpty()) {
+                strField = strField.substring(0, strField.length - 1)
             }
 
-        })
+            RoomData.title = title.value.toString()
+            RoomData.maxPeo = maxPeo.value!!.toInt()
+            RoomData.profile = profile.value.toString()
+            RoomData.roomField = strField
+            onSaveEvent.call()
+
+            val room = RoomModifyDTO(RoomData.roomId, RoomData.title, RoomData.maxPeo, RoomData.roomField, RoomData.profile)
+            Log.e(TAG, room.toString())
+            val call = RetrofitHelper.getRoomApi().modify_room(room)
+            call.enqueue(object : Callback<RoomModifyDTO> {
+                override fun onResponse(call: Call<RoomModifyDTO>, response: Response<RoomModifyDTO>) {
+                    if (response.isSuccessful) {
+                        if (response.code() == 200) {
+                            errMsg.value = "성공적으로 방을 수정하였습니다."
+                            RoomData.title = title.value.toString()
+                            RoomData.maxPeo = maxPeo.value!!.toInt()
+                            RoomData.profile = profile.value.toString()
+                            RoomData.roomField = strField
+                            onSaveEvent.call()
+                        }
+                    } else Log.e(TAG, "통신안됨 ${response.message()}")
+                }
+
+                override fun onFailure(call: Call<RoomModifyDTO>, t: Throwable) {
+                    Log.e(TAG, "통신안됨 ${t.message}")
+                }
+
+            })
+        }
     }
 
     fun onPlu() {

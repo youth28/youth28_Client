@@ -25,20 +25,6 @@ class MainViewModel: ViewModel() {
     val onRoomMakeEvent = SingleLiveEvent<Unit>()
 
     init {
-        val data = arrayListOf<MyRoom>()
-        for (i: Int in 1..5){
-            data.add(MyRoom("이것은 방 이름${i}", i))
-        }
-        myRoomList.postValue(data)
-
-        val daTa = arrayListOf<RoomModel>()
-        for (i:Int in 1..5) {
-            daTa.add(RoomModel(i, "이것은 방 제목$i", i, arrayListOf("안녕", "난", "태그야"), "profile"))
-        }
-        list.postValue(daTa)
-
-        Log.e(TAG, "init 입니당")
-
         rcvRoomList()
         rcvMyRoomList()
     }

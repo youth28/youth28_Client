@@ -22,7 +22,8 @@ class JoinDialog: DialogFragment() {
 
     val TAG = "JoinDialog"
 
-    var mainMsg = MutableLiveData<String>()
+    val mainMsg = MutableLiveData<String>()
+    var title = ""
     var room_id = 0
 
     private lateinit var binding:DialogJoinBinding
@@ -43,7 +44,7 @@ class JoinDialog: DialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mainMsg.value = "${mainMsg.value}에 참여하시겠습니까?"
+        mainMsg.value = "${title}에 참여하시겠습니까?"
     }
 
     fun onYes() {
@@ -53,7 +54,7 @@ class JoinDialog: DialogFragment() {
             override fun onResponse(call: Call<JoinRoomDTO>, response: Response<JoinRoomDTO>) {
                 if (response.isSuccessful) {
                     when (response.code()) {
-                        200 -> showToast("${mainMsg}에 참가하였습니다.")
+                        200 -> showToast("${title}에 참가하였습니다.")
                         204 -> showToast("이미 참여된 방입니다.")
                     }
                 } else {

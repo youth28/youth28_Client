@@ -33,7 +33,7 @@ class MainActivity: AppCompatActivity() {
 
     internal lateinit var preferences: SharedPreferences
     val list = MutableLiveData<ArrayList<RoomModel>>()
-    val myRoomList = MutableLiveData<ArrayList<MyRoom>>()
+    private val myRoomList = MutableLiveData<ArrayList<MyRoom>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +47,7 @@ class MainActivity: AppCompatActivity() {
         binding.viewmodel = viewModel
         binding.executePendingBindings()
 
-        viewModel.list.observe(this, Observer { livedata ->
+        viewModel.list.observe(this, { livedata ->
             list.value = livedata
             val mAdapter = RoomAdapter(this)
             binding.rcvRoomList.adapter = mAdapter

@@ -151,13 +151,6 @@ class TalkViewModel: ViewModel() {
 
             override fun onFailure(call: Call<ChatListDTO>, t: Throwable) {
                 Log.e("d실패", t.message.toString())
-
-                for(i: Int in 0..10) {
-                    if (i%2 == 0)
-                        addItem(ChatModel(userName = "안수빈", message = "메세지 $i", imageUrl = "profileImage", time = "2021-02-24", user_id = UserData.userNum))
-                    else
-                        addItem(ChatModel(userName = "컴퓨터", message = "메세지 $i", imageUrl = "profileImage", time = "2021-02-24", user_id = (UserData.userNum.toInt()+1).toString()))
-                }
             }
 
         })

@@ -3,16 +3,25 @@ package com.example.myapplication.view
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.RoomData
+import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ActivityRoomInfoBinding
+import com.example.myapplication.dto.id.UserId
 import com.example.myapplication.viewmodel.RoomInfoViewModel
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_room_info.*
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RoomInfoActivity : AppCompatActivity() {
 
@@ -23,14 +32,11 @@ class RoomInfoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoomInfoBinding
     private lateinit var viewmodel: RoomInfoViewModel
 
-    var room_id = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
-        room_id = intent.getIntExtra("roomId", 0)
-        RoomData.roomId = room_id
+        RoomData.roomId = intent.getIntExtra("roomId", 0)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_room_info)
         viewmodel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
@@ -39,20 +45,44 @@ class RoomInfoActivity : AppCompatActivity() {
         binding.viewmodel = viewmodel
         binding.executePendingBindings()
 
+        imageLoad(imgProfile)
+
         with(viewmodel) {
             onUpdateRoomEvent.observe(this@RoomInfoActivity, {
                 val intent = Intent(this@RoomInfoActivity, RoomModifyActivity::class.java)
                 intent.putExtra("roomTitle", title.value)
                 intent.putExtra("roomMax", maxNum)
                 intent.putExtra("roomField", field)
-                intent.putExtra("roomId", room_id)
-                intent.putExtra("roomProfile", profile.value)
+                intent.putExtra("roomId", RoomData.roomId)
                 startActivity(intent)
             })
         }
 
         viewmodel.errMsg.observe(this, {
             showToast(it)
+        })
+    }
+
+    fun imageLoad(img: CircleImageView) {
+        val call = RetrofitHelper.getImageApi().imageLoad(UserId(RoomData.roomId))
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.d("AAA", "REQUEST SUCCESS ==> ")
+                    val file = response.body()?.byteStream()
+                    val bitmap = BitmapFactory.decodeStream(file)
+                    img.setImageBitmap(bitmap)
+                } else {
+                    Log.d("AAA", "통신오류=${response.message()}")
+                    img.setImageResource(R.drawable.add)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("AAA", "FAIL REQUEST ==> " + t.localizedMessage)
+                img.setImageResource(R.drawable.add)
+            }
+
         })
     }
 

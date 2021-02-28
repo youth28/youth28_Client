@@ -1,14 +1,20 @@
 package com.example.myapplication.viewmodel
 
+import android.graphics.BitmapFactory
 import android.util.Log
+import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.myapplication.R
 import com.example.myapplication.RoomData
 import com.example.myapplication.UserData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.id.RoomId
+import com.example.myapplication.dto.id.UserId
 import com.example.myapplication.dto.room.RoomInfoDTO
 import com.example.myapplication.event.SingleLiveEvent
+import de.hdodenhof.circleimageview.CircleImageView
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,7 +24,6 @@ class RoomInfoViewModel: ViewModel() {
 
     val title = MutableLiveData<String>()
     val maxPeo = MutableLiveData<String>()
-    val profile = MutableLiveData<String>()
     val errMsg = MutableLiveData<String>()
 
     val cbStudy = MutableLiveData<Boolean>()
@@ -32,32 +37,13 @@ class RoomInfoViewModel: ViewModel() {
     val onUpdateRoomEvent = SingleLiveEvent<Unit>()
 
     var field = ""
-    var room_id = 0
     var roomManager = 0
     var maxNum = 0
 
     init {
-        room_id = RoomData.roomId
+        settingUi()
 
-        title.value = "안녕"
-        maxNum = 5
-        maxPeo.value = "${maxNum}명"
-        field = "스터디,게임,미술"
-        profile.value = "http://d3c30c5e052c.ngrok.io/uploads/98eed633ca782547430c1768572e1cdb.png"
-        roomManager = 5
-
-        val arrayList = field.split(",")
-        for (value in arrayList) {
-            when (value) {
-                "스터디" -> cbStudy.value = true
-                "게임" -> cbGame.value = true
-                "업무" -> cbWork.value = true
-                "음악" -> cbMusic.value = true
-                "미술" -> cbArt.value = true
-                "운동(헬스)" -> cbExercise.value = true
-                "기타" -> cbEtc.value = true
-            }
-        }
+        UserData.userNum = "0"
     }
 
     fun onUpdateRoom() {
@@ -70,8 +56,6 @@ class RoomInfoViewModel: ViewModel() {
     }
 
     fun settingUi() {
-        room_id = RoomData.roomId
-
         cbStudy.value = false
         cbGame.value = false
         cbWork.value = false
@@ -79,29 +63,7 @@ class RoomInfoViewModel: ViewModel() {
         cbArt.value = false
         cbExercise.value = false
         cbEtc.value = false
-
-
-        title.value = RoomData.title
-        maxNum = RoomData.maxPeo
-        maxPeo.value = "${maxNum}명"
-        field = RoomData.roomField
-        profile.value = RoomData.profile
-        roomManager = 5
-
-        val arrayList = field.split(",")
-        for (value in arrayList) {
-            when (value) {
-                "스터디" -> cbStudy.value = true
-                "게임" -> cbGame.value = true
-                "업무" -> cbWork.value = true
-                "음악" -> cbMusic.value = true
-                "미술" -> cbArt.value = true
-                "운동(헬스)" -> cbExercise.value = true
-                "기타" -> cbEtc.value = true
-            }
-        }
-
-        val room = RoomId(room_id)
+        val room = RoomId(RoomData.roomId)
         val call = RetrofitHelper.getRoomApi().room_info(room)
         call.enqueue(object : Callback<RoomInfoDTO> {
             override fun onResponse(call: Call<RoomInfoDTO>, response: Response<RoomInfoDTO>) {
@@ -109,14 +71,12 @@ class RoomInfoViewModel: ViewModel() {
                     if (response.code() == 200) {
                         field = response.body()!!.field
                         title.value = response.body()!!.title
-                        profile.value = response.body()!!.profile
                         maxPeo.value = "${response.body()!!.maxPeo}명"
                         roomManager = response.body()!!.room_manager
 
                         Log.e(TAG, "room_manager: ${roomManager}")
 
                         // region checkBox 설정하기
-                        field = field.substring(0, field.length - 1)
                         Log.e(TAG + "field", field)
 
                         val arrayList = field.split(",")
@@ -145,5 +105,4 @@ class RoomInfoViewModel: ViewModel() {
 
         })
     }
-
 }

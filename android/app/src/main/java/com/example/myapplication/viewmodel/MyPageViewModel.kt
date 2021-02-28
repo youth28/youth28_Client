@@ -44,8 +44,6 @@ class MyPageViewModel: ViewModel() {
     var sDay=""
     lateinit var ev : Event
 
-    var bool = false
-
     init {
         getUserInfo()
         readSchedule()
@@ -97,13 +95,6 @@ class MyPageViewModel: ViewModel() {
         val userId = UserId(UserData.userNum.toInt())
         val call = RetrofitHelper.getScheduleApi().schedule_read(userId)
         val sdf = SimpleDateFormat("yyyy-MM-dd")
-
-        val data = arrayListOf<Event>()
-        for (i: Int in 1..8) {
-            data.add(Event(Color.MAGENTA, sdf.parse("2021-2-2$i-10-$i").time, ScheduleModel("하이루 $i", "2021-2-2$i-10-$i")))
-        }
-        event.postValue(data)
-
         call.enqueue(object : Callback<ScheduleRDTO> {
             override fun onResponse(call: Call<ScheduleRDTO>, response: Response<ScheduleRDTO>) {
                 if (response.isSuccessful) {

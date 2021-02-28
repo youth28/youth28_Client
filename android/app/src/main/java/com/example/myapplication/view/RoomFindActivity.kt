@@ -21,7 +21,6 @@ class RoomFindActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoomFindBinding
     private lateinit var viewmodel: RoomFindViewModel
 
-    var key = ""
     val list = MutableLiveData<ArrayList<RoomModel>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
