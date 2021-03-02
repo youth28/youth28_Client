@@ -42,9 +42,9 @@ class TalkActivity : AppCompatActivity() {
     private var hasConnection: Boolean = false
 
     // flask
-    //private var mSocket: Socket = IO.socket("http://f9cb158980e6.ngrok.io/")
+    private var mSocket: Socket = IO.socket("http://a8fa581f7b89.ngrok.io/")
     // node
-    private var mSocket: Socket = IO.socket("http://db42a32178bf.ngrok.io")
+    // var mSocket: Socket = IO.socket("http://db42a32178bf.ngrok.io")
 
     val tagList = MutableLiveData<ArrayList<String>>()
     val chatList = MutableLiveData<ArrayList<ChatModel>>()
@@ -65,6 +65,8 @@ class TalkActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewmodel = viewModel
         binding.executePendingBindings()
+
+        Log.e("RoomData", RoomData.toStringData())
 
         imageLoad(binding.imgRoomProfile)
 

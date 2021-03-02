@@ -106,30 +106,27 @@ class ModifyProfileActivity : AppCompatActivity() {
         val PW: String = UserData.userPassword
         Log.e("login", "email=$email, password=$PW")
 
-        binding.apply {
-            // 로그인 통신 코드
-            val user = UserDTO(email, PW)
-            val call = RetrofitHelper.getUserApi().login(user)
-            call.enqueue(object : Callback<ResponseLogin> {
-                override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
-                    if (response.isSuccessful) {
-                        when (response.code()) {
-                            200 -> {
-                                val intent = Intent(this@ModifyProfileActivity, MainActivity::class.java)
-                                startActivity(intent)
-                                finish()
-                            }
+        // 로그인 통신 코드
+        val user = UserDTO(email, PW)
+        val call = RetrofitHelper.getUserApi().login(user)
+        call.enqueue(object : Callback<ResponseLogin> {
+            override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
+                if (response.isSuccessful) {
+                    when (response.code()) {
+                        200 -> {
+                            val intent = Intent(this@ModifyProfileActivity, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
                         }
-                    } else Log.e("$TAG Err", "통신안됨: ${response.message()}")
-                }
+                    }
+                } else Log.e("$TAG Err", "통신안됨: ${response.message()}")
+            }
 
-                override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
-                    Log.e("$TAG Err", "통신안됨: ${t.message}")
-                }
+            override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
+                Log.e("$TAG Err", "통신안됨: ${t.message}")
+            }
 
-            })
-
-        }
+        })
     }
 
     fun onBtn() {

@@ -9,7 +9,7 @@ class RoomData {
         var title = ""
 
         fun toStringData(): String {
-            return "UserData{roomId='${roomId}'}"
+            return "UserData{roomId='${roomId}', roomField='$roomField', maxPeo='$maxPeo', title='$title'}"
         }
     }
 }

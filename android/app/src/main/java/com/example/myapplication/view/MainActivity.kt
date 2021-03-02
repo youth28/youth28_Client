@@ -38,7 +38,9 @@ class MainActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
-        UserData.userNum = preferences.getString("userNum", "0").toString()
+        UserData.userNum = preferences.getString("userNum", "6").toString()
+
+        Log.e("UserData", UserData.toStringData())
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())

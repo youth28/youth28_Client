@@ -129,9 +129,10 @@ class SignUpViewModel: ViewModel() {
                 call.enqueue(object : Callback<ResponseLogin> {
                     override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                         if (response.isSuccessful) {
+                            Log.e("UserDataga", response.body().toString())
                             UserData.userId = email.value!!
                             UserData.userPassword = password.value!!
-                            UserData.userNum = response.body()!!.user_id
+                            UserData.userNum = response.body()!!.user_id.toString()
                             UserData.userName = response.body()!!.name
                             UserData.userProfile = "img"
 
@@ -169,7 +170,7 @@ class SignUpViewModel: ViewModel() {
             val call = RetrofitHelper.getUserApi().check_emial(user)
             call.enqueue(object : Callback<UserDTO> {
                 override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
-                    Log.e(TAG, "성공 $user")
+                    Log.e(TAG, "성공 ${response.code()}")
                     val result = response.code()
                     when (result) {
                         200 -> {

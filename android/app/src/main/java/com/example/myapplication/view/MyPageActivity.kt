@@ -63,9 +63,6 @@ class MyPageActivity : AppCompatActivity() {
                 startActivity(intent)
             })
             onWriteScheduleEvent.observe(this@MyPageActivity, {
-                // String 타입 날짜를 long 타입으로 바꾸기
-                val sdf = SimpleDateFormat("yyyy-MM-dd")
-
                 val dialog = ScheduleDialog()
                 dialog.sYear = sYear.toInt()
                 dialog.sMonth = sMonth.toInt()

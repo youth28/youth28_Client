@@ -6,9 +6,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitHelper {
 
-    const val API_URL = "http://ff069ad73b26.ngrok.iu/"
+    const val API_URL = "http://a8fa581f7b89.ngrok.io/"
     private var instanc: Retrofit? = null
-    private val gson = GsonBuilder().setLenient().create()
+    private val gson = GsonBuilder()
+            .setLenient()
+            .create()
 
     fun getUserApi(): UserAPI {
         return getInstance().create(UserAPI::class.java)

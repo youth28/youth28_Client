@@ -80,7 +80,7 @@ class PostVoteContentDialog: DialogFragment() {
             if(contentCnt < 2) {
                 showToast("선택지를 2개이상 적어주세요")
             } else {
-                for (i:Int in 0..contentCnt-1) {
+                for (i:Int in 0 until contentCnt) {
                     if(!isNotNull(contentList[i].value))
                         contentCntS ++
                 }
