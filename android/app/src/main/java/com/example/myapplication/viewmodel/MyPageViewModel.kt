@@ -74,6 +74,7 @@ class MyPageViewModel: ViewModel() {
                     email.value = response.body()!!.email
                     val field = response.body()!!.field
                     UserData.userField = field
+                    UserData.userName = response.body()!!.name
                     val arrField = field.split(",")
                     val data = arrayListOf<String>()
                     for (itme in arrField) {

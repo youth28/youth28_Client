@@ -1,5 +1,6 @@
 package com.example.myapplication.dialog
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,7 +19,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class JoinDialog: DialogFragment() {
+class JoinDialog(context: Context): DialogFragment() {
 
     val TAG = "JoinDialog"
 

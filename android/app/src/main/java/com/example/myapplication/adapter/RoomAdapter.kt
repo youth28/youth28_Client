@@ -48,7 +48,7 @@ class RoomAdapter(val context: Context): RecyclerView.Adapter<RoomAdapter.Holder
         mAdapter.list = list[position].field
 
         holder.itemView.setOnClickListener {
-            val dialog = JoinDialog()
+            val dialog = JoinDialog(context)
             dialog.room_id = list[position].room_id
             dialog.title = "[${list[position].title}]"
             val manager = (context as AppCompatActivity).supportFragmentManager

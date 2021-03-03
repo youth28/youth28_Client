@@ -120,6 +120,7 @@ class MyPageActivity : AppCompatActivity() {
                     rcv()
                 } else {
                     showToast("적용된 이벤트가 없습니다.")
+                    rcv()
                 }
             }
 
