@@ -35,6 +35,7 @@ class VoteListAdapter (val context: Context): RecyclerView.Adapter<VoteListAdapt
                     val dialog = NowVoteContentDialog()
                     dialog.show(manager, "dialog")
                 }
+                dialog.questionId = list[position].question_id
                 dialog.listener2 = {
                     showToast("[${it}]이(가) 마감되었습니다.")
                 }
@@ -43,6 +44,7 @@ class VoteListAdapter (val context: Context): RecyclerView.Adapter<VoteListAdapt
                 showToast("마감된 투표 입니다.")
                 val manager = (context as AppCompatActivity).supportFragmentManager
                 val dialog = NowVoteContentDialog()
+                dialog.questionId = list[position].question_id
                 dialog.show(manager, "dialog")
             }
         }

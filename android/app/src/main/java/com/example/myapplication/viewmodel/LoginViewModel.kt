@@ -64,7 +64,6 @@ class LoginViewModel: ViewModel() {
                                 UserData.userPassword = password.value!!
                                 UserData.userNum = response.body()!!.user_id
                                 UserData.userName = response.body()!!.name
-                                UserData.userProfile = response.body()!!.profile
 
                                 Log.e("$TAG Response", response.body().toString())
 

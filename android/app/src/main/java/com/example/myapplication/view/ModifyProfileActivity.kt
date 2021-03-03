@@ -84,7 +84,7 @@ class ModifyProfileActivity : AppCompatActivity() {
             mode = intent.getStringExtra("mode").toString()
             Log.e("intentMode", mode)
             when(mode) {
-                "1","2","4"  -> {
+                "1","2","4","2.5" -> {
                     btnName.value = "다음에 바꾸겠습니다."
                     mainMsg.value = "프로필 사진을 변경하려면 아래 사진을 선택해주세요"
                 }
@@ -140,7 +140,7 @@ class ModifyProfileActivity : AppCompatActivity() {
             // 이미지 안바꾸겠다.
             when(mode) {
                 "1" -> onLogin()
-                "2" -> finish()
+                "2.5", "2" -> finish()
                 "3" -> finish()
                 "4" -> finish()
             }
@@ -173,7 +173,8 @@ class ModifyProfileActivity : AppCompatActivity() {
             val userId: Int = UserData.userNum.toInt()
             req = when(mode) {
                 "1" -> RetrofitHelper.getImageApi().postImage(UserId(userId), body, name)
-                "2" -> RetrofitHelper.getImageApi().modifyImage(UserId(userId), body, name)
+                "2" -> RetrofitHelper.getImageApi().postImage(UserId(userId), body, name)
+                "2.5" -> RetrofitHelper.getImageApi().modifyImage(UserId(userId), body, name)
                 "3" -> RetrofitHelper.getImageApi().modifyRoomImage(RoomId(RoomData.roomId), body, name)
                 "4" -> RetrofitHelper.getImageApi().postRoomImage(RoomId(RoomData.roomId), body, name)
                 else -> RetrofitHelper.getImageApi().modifyImage(UserId(userId), body, name)
@@ -189,9 +190,7 @@ class ModifyProfileActivity : AppCompatActivity() {
                         loadDialog.dismiss()
                         when (mode) {
                             "1" -> onLogin()
-                            "2" -> finish()
-                            "3" -> finish()
-                            "4" -> finish()
+                            "2","2.5","3","4" -> finish()
                         }
                     }
                 }
@@ -203,9 +202,7 @@ class ModifyProfileActivity : AppCompatActivity() {
                     loadDialog.dismiss()
                     when (mode) {
                         "1" -> onLogin()
-                        "2" -> finish()
-                        "3" -> finish()
-                        "4" -> finish()
+                        "2","2.5","3","4" -> finish()
                     }
                 }
 

@@ -65,14 +65,13 @@ class MyPageViewModel: ViewModel() {
     }
 
     fun getUserInfo() {
-        name.value = UserData.userName
-        email.value = UserData.userId
-
         val user = UserId(UserData.userNum.toInt())
         val call = RetrofitHelper.getUserApi().user_info(user)
         call.enqueue(object : Callback<UserInfoDTO> {
             override fun onResponse(call: Call<UserInfoDTO>, response: Response<UserInfoDTO>) {
                 if (response.isSuccessful) {
+                    name.value = response.body()!!.name
+                    email.value = response.body()!!.email
                     val field = response.body()!!.field
                     UserData.userField = field
                     val arrField = field.split(",")

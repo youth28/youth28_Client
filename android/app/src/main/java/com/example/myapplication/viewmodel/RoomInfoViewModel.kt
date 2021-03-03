@@ -42,8 +42,6 @@ class RoomInfoViewModel: ViewModel() {
 
     init {
         settingUi()
-
-        UserData.userNum = "0"
     }
 
     fun onUpdateRoom() {
@@ -71,7 +69,8 @@ class RoomInfoViewModel: ViewModel() {
                     if (response.code() == 200) {
                         field = response.body()!!.field
                         title.value = response.body()!!.title
-                        maxPeo.value = "${response.body()!!.maxPeo}명"
+                        maxNum = response.body()!!.maxPeo
+                        maxPeo.value = "${maxNum}명"
                         roomManager = response.body()!!.room_manager
 
                         Log.e(TAG, "room_manager: ${roomManager}")
@@ -92,8 +91,6 @@ class RoomInfoViewModel: ViewModel() {
                             }
                         }
                         // endregion
-
-                        Log.e(TAG, "정보 받아오기 완료")
 
                     }
                 } else Log.e("$TAG ERR", response.message())

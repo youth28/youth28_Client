@@ -36,11 +36,6 @@ class SignUpActivity: AppCompatActivity() {
 
         with(viewModel) {
             onSignUpEvent.observe(this@SignUpActivity, {
-                val intent = Intent(this@SignUpActivity, ModifyProfileActivity::class.java)
-                intent.putExtra("mode", "1")
-                startActivity(intent)
-                Log.e(TAG, "signUP")
-
                 finish()
             })
 

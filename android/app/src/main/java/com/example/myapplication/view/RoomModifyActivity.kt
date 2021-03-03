@@ -12,6 +12,7 @@ import com.example.myapplication.R
 import com.example.myapplication.RoomData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ActivityRoomModifyBinding
+import com.example.myapplication.dto.id.RoomId
 import com.example.myapplication.dto.id.UserId
 import com.example.myapplication.viewmodel.RoomModifyViewModel
 import de.hdodenhof.circleimageview.CircleImageView
@@ -39,7 +40,10 @@ class RoomModifyActivity : AppCompatActivity() {
             RoomData.roomId = intent.getIntExtra("roomId", 0)
             RoomData.maxPeo = intent.getIntExtra("roomMax", 10)
             RoomData.title = intent.getStringExtra("roomTitle").toString()
+            Log.e("RoomData", RoomData.toStringData())
         }
+
+        imageLoad(imgProfile)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_room_modify)
         viewmodel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
@@ -48,12 +52,14 @@ class RoomModifyActivity : AppCompatActivity() {
         binding.viewmodel = viewmodel
         binding.executePendingBindings()
 
-        imageLoad(imgProfile)
-
         with(viewmodel) {
             onSaveEvent.observe(this@RoomModifyActivity, {
                 val intent = Intent(this@RoomModifyActivity, ModifyProfileActivity::class.java)
-                intent.putExtra("mode", "3")
+                if (RoomData.profile) {
+                    intent.putExtra("mode", "3")
+                } else {
+                    intent.putExtra("mode", "4")
+                }
                 startActivity(intent)
                 finish()
             })
@@ -65,7 +71,7 @@ class RoomModifyActivity : AppCompatActivity() {
     }
 
     fun imageLoad(img: CircleImageView) {
-        val call = RetrofitHelper.getImageApi().imageLoad(UserId(RoomData.roomId))
+        val call = RetrofitHelper.getImageApi().roomImageLoad(RoomId(RoomData.roomId))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {

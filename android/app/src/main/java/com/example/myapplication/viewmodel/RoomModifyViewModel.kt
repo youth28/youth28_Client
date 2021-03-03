@@ -53,7 +53,6 @@ class RoomModifyViewModel: ViewModel() {
         title.value = RoomData.title
         maxNum = RoomData.maxPeo
         maxPeo.value = "${RoomData.maxPeo}"
-        profile.value = RoomData.profile
     }
 
     fun onSaveRoom() {
@@ -80,11 +79,10 @@ class RoomModifyViewModel: ViewModel() {
 
             RoomData.title = title.value.toString()
             RoomData.maxPeo = maxPeo.value!!.toInt()
-            RoomData.profile = profile.value.toString()
             RoomData.roomField = strField
             onSaveEvent.call()
 
-            val room = RoomModifyDTO(RoomData.roomId, RoomData.title, RoomData.maxPeo, RoomData.roomField, RoomData.profile)
+            val room = RoomModifyDTO(RoomData.roomId, RoomData.title, RoomData.maxPeo, RoomData.roomField, )
             Log.e(TAG, room.toString())
             val call = RetrofitHelper.getRoomApi().modify_room(room)
             call.enqueue(object : Callback<RoomModifyDTO> {
@@ -94,7 +92,6 @@ class RoomModifyViewModel: ViewModel() {
                             errMsg.value = "성공적으로 방을 수정하였습니다."
                             RoomData.title = title.value.toString()
                             RoomData.maxPeo = maxPeo.value!!.toInt()
-                            RoomData.profile = profile.value.toString()
                             RoomData.roomField = strField
                             onSaveEvent.call()
                         }

@@ -42,7 +42,11 @@ class ModifyActivity: AppCompatActivity() {
         with(viewModel) {
             onModifyImageEvent.observe(this@ModifyActivity, {
                 val intent = Intent(this@ModifyActivity, ModifyProfileActivity::class.java)
-                intent.putExtra("mode", "2")
+                if(UserData.userProfile) {
+                    intent.putExtra("mode","2.5")
+                } else {
+                    intent.putExtra("mode", "2")
+                }
                 startActivity(intent)
             })
             onSaveEvent.observe(this@ModifyActivity, {
@@ -76,6 +80,11 @@ class ModifyActivity: AppCompatActivity() {
             }
 
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        imageLoad(binding.imgProfile)
     }
 
     fun showToast(str: String) {

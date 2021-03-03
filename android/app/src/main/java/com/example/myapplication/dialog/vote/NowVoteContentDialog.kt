@@ -81,7 +81,9 @@ class NowVoteContentDialog : DialogFragment(){
                     cntList[3].value = "${result.content4_cnt}표"
                     cntList[4].value = "${result.content5_cnt}표"
 
-                } else Log.e("look_vote", " 통신오류: ${response.message()}")
+                    binding.invalidateAll()
+
+                } else Log.e("now_vote", " 통신오류: ${response.message()}")
             }
 
             override fun onFailure(call: Call<VoteStatusDTO>, t: Throwable) {

@@ -82,9 +82,9 @@ class MainViewModel: ViewModel() {
                 if (response.isSuccessful) {
                     val result = response.body()
                     val data = ArrayList<MyRoom>()
-                    for (i: Int in 1..result!!.room.size) {
-                        data.add(MyRoom(result.room[i - 1].title, result.room[i - 1].room_id))
-                        Log.e(TAG, myRoomList.value!![i-1].toString())
+                    for (i: Int in result!!.room.indices) {
+                        data.add(MyRoom(result.room[i].title, result.room[i].room_id))
+                        Log.e(TAG, data[i].toString())
                     }
                     myRoomList.postValue(data)
 

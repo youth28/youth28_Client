@@ -6,7 +6,7 @@ class UserData {
         var userPassword = ""
         var userNum = ""
         var userName = ""
-        var userProfile = ""
+        var userProfile = false
         var userField = ""
 
         fun toStringData(): String {

@@ -55,19 +55,20 @@ class LoginActivity: AppCompatActivity() {
                 val dialog = SweetAlertDialog(this@LoginActivity , SweetAlertDialog.SUCCESS_TYPE)
                 dialog.progressHelper.barColor = Color.parseColor("#36b8ff")
                 dialog.titleText = "로그인이 완료되었습니다."
+                dialog.setConfirmClickListener {
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    Log.e(TAG, "${UserData.toStringData()}")
+                    finish()
+                }
                 dialog.show()
 
-                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                startActivity(intent)
-                Log.e(TAG, "${UserData.toStringData()}")
                 val editor = preferences.edit()
                 editor.putString("userId", UserData.userId)
                 editor.putString("userPW", UserData.userPassword)
                 editor.putString("userNum", UserData.userNum)
-                editor.putString("userProfile", UserData.userProfile)
                 editor.putString("userName", UserData.userName)
                 editor.apply()
-                finish()
             })
             onAutoLoginEvent.observe(this@LoginActivity, {
                 UserData.userName = preferences.getString("userName", "하이").toString()

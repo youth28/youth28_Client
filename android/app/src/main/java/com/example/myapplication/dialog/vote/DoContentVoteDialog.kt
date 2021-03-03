@@ -50,10 +50,10 @@ class DoContentVoteDialog : DialogFragment(){
     var questionId = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        onLookVote()
+
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_do_vote_content, container, false)
         binding.dialog = this
-
-        onLookVote()
 
         return binding.root
     }
@@ -118,10 +118,13 @@ class DoContentVoteDialog : DialogFragment(){
             override fun onResponse(call: Call<VoteDetailDTO>, response: Response<VoteDetailDTO>) {
                 if (response.isSuccessful) {
                     val result = response.body()!!
+                    Log.e("result", result.toString())
                     title.value = result.question_text
                     date.value = "투표 시작일: ${result.time}"
                     writer.value = "게시자: ${result.name}"
                     deadLine.value = "투표 마감일: ${result.dead_line}"
+
+                    Log.e("dpd", "${title.value}, ${date.value}")
 
                     if(result.name == UserData.userName) {
                         viewEndVote.value = true
@@ -146,6 +149,8 @@ class DoContentVoteDialog : DialogFragment(){
                             contentList[i].value = "없는 항목입니다."
                         }
                     }
+
+                    binding.invalidateAll()
 
                 } else Log.e("look_vote", " 통신오류: ${response.message()}")
             }

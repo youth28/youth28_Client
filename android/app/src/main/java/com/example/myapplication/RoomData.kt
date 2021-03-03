@@ -5,11 +5,11 @@ class RoomData {
         var roomId = 0
         var roomField = ""
         var maxPeo = 0
-        var profile = ""
+        var profile = false
         var title = ""
 
         fun toStringData(): String {
-            return "UserData{roomId='${roomId}', roomField='$roomField', maxPeo='$maxPeo', title='$title'}"
+            return "RoomData{roomId='${roomId}', roomField='$roomField', maxPeo='$maxPeo', title='$title'}"
         }
     }
 }

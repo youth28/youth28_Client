@@ -124,7 +124,6 @@ class SignUpViewModel: ViewModel() {
                 // 회원가입 하기
                 dialog.value = true
                 val user = getData()
-                Log.e(TAG, user.toString())
                 val call = RetrofitHelper.getUserApi().register(user)
                 call.enqueue(object : Callback<ResponseLogin> {
                     override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
@@ -132,9 +131,6 @@ class SignUpViewModel: ViewModel() {
                             Log.e("UserDataga", response.body().toString())
                             UserData.userId = email.value!!
                             UserData.userPassword = password.value!!
-                            UserData.userNum = response.body()!!.user_id.toString()
-                            UserData.userName = response.body()!!.name
-                            UserData.userProfile = "img"
 
                             onSignUpEvent.call()
                             dialog.value = false

@@ -24,7 +24,6 @@ import kotlin.collections.ArrayList
 class TalkViewModel: ViewModel() {
     val TAG = "TalkViewModel"
 
-    val profile = MutableLiveData<String>()
     var title = MutableLiveData<String>()
     var msg = MutableLiveData<String>()
     val tagList = MutableLiveData<ArrayList<String>>()
@@ -41,7 +40,6 @@ class TalkViewModel: ViewModel() {
     val jsonObject = JSONObject()
 
     init {
-        profile.value = "img"
         room_id = RoomData.roomId
         loadMessage()
 
@@ -54,12 +52,7 @@ class TalkViewModel: ViewModel() {
                         Log.e(TAG, response.body().toString())
                         field = response.body()!!.field
                         title.value = response.body()!!.title
-                        profile.value = response.body()!!.profile
                         maxPro = response.body()!!.maxPeo
-
-                        // region checkBox 설정하기
-                        field = field.substring(0, field.length -1 )
-                        Log.e(TAG+ "field", field)
 
                         val arrField = field.split(",")
                         val data = arrayListOf<String>()

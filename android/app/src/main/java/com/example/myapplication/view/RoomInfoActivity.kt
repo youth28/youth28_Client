@@ -14,6 +14,7 @@ import com.example.myapplication.R
 import com.example.myapplication.RoomData
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ActivityRoomInfoBinding
+import com.example.myapplication.dto.id.RoomId
 import com.example.myapplication.dto.id.UserId
 import com.example.myapplication.viewmodel.RoomInfoViewModel
 import de.hdodenhof.circleimageview.CircleImageView
@@ -64,7 +65,7 @@ class RoomInfoActivity : AppCompatActivity() {
     }
 
     fun imageLoad(img: CircleImageView) {
-        val call = RetrofitHelper.getImageApi().imageLoad(UserId(RoomData.roomId))
+        val call = RetrofitHelper.getImageApi().roomImageLoad(RoomId(RoomData.roomId))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
@@ -72,6 +73,7 @@ class RoomInfoActivity : AppCompatActivity() {
                     val file = response.body()?.byteStream()
                     val bitmap = BitmapFactory.decodeStream(file)
                     img.setImageBitmap(bitmap)
+                    RoomData.profile = true
                 } else {
                     Log.d("AAA", "통신오류=${response.message()}")
                     img.setImageResource(R.drawable.add)
@@ -79,7 +81,7 @@ class RoomInfoActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("AAA", "FAIL REQUEST ==> " + t.localizedMessage)
+                Log.d("AAA", "FAIL REQUEST ==> " + t.message)
                 img.setImageResource(R.drawable.add)
             }
 
@@ -89,6 +91,7 @@ class RoomInfoActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         viewmodel.settingUi()
+        imageLoad(imgProfile)
     }
 
     fun showToast(str: String) {

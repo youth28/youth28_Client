@@ -46,4 +46,9 @@ interface ImageAPI {
     fun imageLoad(
             @Body userId: UserId
     ): Call<ResponseBody>
+
+    @POST("/room_image_load")
+    fun roomImageLoad(
+            @Body roomId: RoomId
+    ): Call<ResponseBody>
 }

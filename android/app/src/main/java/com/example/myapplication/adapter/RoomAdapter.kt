@@ -13,6 +13,7 @@ import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.dto.room.RoomModel
 import com.example.myapplication.databinding.RowRoomBinding
 import com.example.myapplication.dialog.JoinDialog
+import com.example.myapplication.dto.id.RoomId
 import com.example.myapplication.dto.id.UserId
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -67,7 +68,7 @@ class RoomAdapter(val context: Context): RecyclerView.Adapter<RoomAdapter.Holder
     }
 
     fun imageLoad(img: CircleImageView) {
-        val call = RetrofitHelper.getImageApi().imageLoad(UserId(list[curNum].room_id))
+        val call = RetrofitHelper.getImageApi().roomImageLoad(RoomId(list[curNum].room_id))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {

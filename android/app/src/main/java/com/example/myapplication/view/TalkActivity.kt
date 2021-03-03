@@ -18,6 +18,7 @@ import com.example.myapplication.adapter.ChatAdapter
 import com.example.myapplication.adapter.TagAdapter
 import com.example.myapplication.api.RetrofitHelper
 import com.example.myapplication.databinding.ActivityTalkBinding
+import com.example.myapplication.dto.id.RoomId
 import com.example.myapplication.dto.id.UserId
 import com.example.myapplication.viewmodel.TalkViewModel
 import kotlinx.android.synthetic.main.activity_talk.*
@@ -42,7 +43,7 @@ class TalkActivity : AppCompatActivity() {
     private var hasConnection: Boolean = false
 
     // flask
-    private var mSocket: Socket = IO.socket("http://a8fa581f7b89.ngrok.io/")
+    private var mSocket: Socket = IO.socket("http://43374295dfa9.ngrok.io/")
     // node
     // var mSocket: Socket = IO.socket("http://db42a32178bf.ngrok.io")
 
@@ -220,7 +221,7 @@ class TalkActivity : AppCompatActivity() {
     }
 
     fun imageLoad(img: ImageView) {
-        val call = RetrofitHelper.getImageApi().imageLoad(UserId(RoomData.roomId))
+        val call = RetrofitHelper.getImageApi().roomImageLoad(RoomId(RoomData.roomId))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {

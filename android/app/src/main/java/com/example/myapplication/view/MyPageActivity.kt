@@ -148,6 +148,7 @@ class MyPageActivity : AppCompatActivity() {
                     val file = response.body()?.byteStream()
                     val bitmap = BitmapFactory.decodeStream(file)
                     img.setImageBitmap(bitmap)
+                    UserData.userProfile = true
                 } else {
                     Log.d("AAA", "통신오류=${response.message()}")
                     img.setImageResource(R.drawable.add)
@@ -160,6 +161,12 @@ class MyPageActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getUserInfo()
+        imageLoad(binding.imgProfile)
     }
 
     fun showToast(str: String) {
