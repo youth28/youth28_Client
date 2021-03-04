@@ -145,11 +145,14 @@ class MyPageActivity : AppCompatActivity() {
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    Log.d("AAA", "REQUEST SUCCESS ==> ")
                     val file = response.body()?.byteStream()
-                    val bitmap = BitmapFactory.decodeStream(file)
-                    img.setImageBitmap(bitmap)
-                    UserData.userProfile = true
+                    if(file != null) {
+                        val bitmap = BitmapFactory.decodeStream(file)
+                        img.setImageBitmap(bitmap)
+                        UserData.userProfile = true
+                    } else
+                        img.setImageResource(R.drawable.add)
+
                 } else {
                     Log.d("AAA", "통신오류=${response.message()}")
                     img.setImageResource(R.drawable.add)

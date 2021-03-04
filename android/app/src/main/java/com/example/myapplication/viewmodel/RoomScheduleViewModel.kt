@@ -67,7 +67,7 @@ class RoomScheduleViewModel: ViewModel() {
                                 val arrDate = rDate.split("-")
                                 val date = "${arrDate[3]}:${arrDate[4]}"
                                 val ev = Event(Color.MAGENTA, sdf.parse(result[i - 1].date).time,
-                                        ScheduleWDTO(content, date, UserData.userNum.toInt()))
+                                        ScheduleWDTO(content, date, result[i-1].user_id))
                                 data.add(ev)
                                 Log.e("viewMode", ev.toString())
                             }

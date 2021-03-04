@@ -37,7 +37,7 @@ class NowVoteContentDialog : DialogFragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_now_vote_content, container, false)
         binding.dialog = this
-
+        Log.e("questionId", questionId.toString()+"입니다.")
         onNowVote()
 
         return binding.root

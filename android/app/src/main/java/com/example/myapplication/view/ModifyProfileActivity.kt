@@ -68,6 +68,8 @@ class ModifyProfileActivity : AppCompatActivity() {
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
 
+        binding.imgProfile.setImageResource(R.drawable.logo)
+
         btnName.observe(this, {
             binding.button.text = "${it}"
             imgBool = !(it == "프로필 사진은 바꾸지 않겠습니다." || it == "다음에 바꾸겠습니다.")

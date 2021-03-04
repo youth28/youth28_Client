@@ -74,8 +74,11 @@ class RoomAdapter(val context: Context): RecyclerView.Adapter<RoomAdapter.Holder
                 if (response.isSuccessful) {
                     Log.d("AAA", "REQUEST SUCCESS ==> ")
                     val file = response.body()?.byteStream()
-                    val bitmap = BitmapFactory.decodeStream(file)
-                    img.setImageBitmap(bitmap)
+                    if (file != null) {
+                        val bitmap = BitmapFactory.decodeStream(file)
+                        img.setImageBitmap(bitmap)
+                    } else img.setImageResource(R.drawable.add)
+
                 } else {
                     Log.d("AAA", "통신오류=${response.message()}")
                     Picasso.get().load(R.drawable.add).into(img)

@@ -58,6 +58,7 @@ class JoinDialog(context: Context): DialogFragment() {
                         200 -> showToast("${title}에 참가하였습니다.")
                         204 -> showToast("이미 참여된 방입니다.")
                     }
+                    dismiss()
                 } else {
                     Log.e("실패", response.message())
                 }
@@ -68,7 +69,6 @@ class JoinDialog(context: Context): DialogFragment() {
             }
 
         })
-        dismiss()
     }
 
     fun onNo() {
