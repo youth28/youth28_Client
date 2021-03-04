@@ -1,35 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.myapplication">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".VoteDialog"></activity>
-        <activity android:name=".CalenderActivity" />
-        <activity android:name=".RoomMakeActivity" />
-        <activity android:name=".ModifyActivity" />
-        <activity android:name=".MyPageActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".TalkActivity" />
-        <activity android:name=".MenuActivity" />
-        <activity android:name=".LoginActivity" >
-
-        </activity>
-        <activity android:name=".SplashActivity" >
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:icon">
+        <activity android:name=".view.ModifyProfileActivity" />
+        <activity android:name=".view.SplashActivity" />
+        <activity android:name=".view.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".view.SignUpActivity" />
+        <activity android:name=".view.MainActivity" />
+        <activity android:name=".view.MenuActivity" />
+        <activity android:name=".view.RoomFindActivity" />
+        <activity android:name=".view.RoomMakeActivity" />
+        <activity android:name=".view.MyPageActivity" />
+        <activity android:name=".view.ModifyActivity" />
+        <activity android:name=".view.TalkActivity" />
+        <activity android:name=".view.RoomMenuActivity" />
+        <activity android:name=".view.RoomInfoActivity" />
+        <activity android:name=".view.RoomModifyActivity" />
+        <activity android:name=".view.RoomScheduleActivity" />
+        <activity android:name=".view.VoteListActivity" />
     </application>
 
 </manifest>

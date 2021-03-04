@@ -1,249 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="300dp"
-        android:layout_height="71dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/logo2" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="37dp"
-        android:layout_marginLeft="37dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginBottom="1dp"
-        android:text="Name"
-        android:textColor="#000000"
-        android:textSize="21dp"
-        app:layout_constraintBottom_toTopOf="@+id/editName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-    <EditText
-        android:id="@+id/editName"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.myapplication.viewmodel.ModifyViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:layout_marginLeft="37dp"
-        android:layout_marginRight="37dp"
-        android:background="@drawable/edit_text_shape"
-        android:padding="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="136dp" />
+        android:layout_height="match_parent"
+        tools:context=".view.MainActivity">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="37dp"
-        android:layout_marginLeft="37dp"
-        android:layout_marginBottom="1dp"
-        android:text="E-mail"
-        android:textColor="#000000"
-        android:textSize="21dp"
-        app:layout_constraintBottom_toTopOf="@+id/editEmail"
-        app:layout_constraintStart_toStartOf="parent" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
-    <EditText
-        android:id="@+id/editEmail"
-        android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:layout_marginLeft="37dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginRight="37dp"
-        android:background="@drawable/edit_text_shape"
-        android:padding="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editName" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="37dp"
-        android:layout_marginLeft="37dp"
-        android:layout_marginBottom="1dp"
-        android:text="Passwd"
-        android:textColor="#000000"
-        android:textSize="21dp"
-        app:layout_constraintBottom_toTopOf="@+id/editEmail2"
-        app:layout_constraintStart_toStartOf="parent" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgProfile"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="40dp"
+                    android:onClick="@{() -> viewmodel.onModifyImage()}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/logo" />
 
-    <EditText
-        android:id="@+id/editEmail2"
-        android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:layout_marginLeft="37dp"
-        android:layout_marginTop="57dp"
-        android:layout_marginRight="37dp"
-        android:background="@drawable/edit_text_shape"
-        android:padding="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEmail" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/appleneom"
+                    android:text="프로필 사진을 변경하려면 위 사진을 누르세요"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@+id/imgProfile"
+                    app:layout_constraintStart_toStartOf="@+id/imgProfile"
+                    app:layout_constraintTop_toBottomOf="@+id/imgProfile" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="37dp"
-        android:layout_marginLeft="37dp"
-        android:layout_marginBottom="1dp"
-        android:text="Re-Passwd"
-        android:textColor="#000000"
-        android:textSize="21dp"
-        app:layout_constraintBottom_toTopOf="@+id/editEmail3"
-        app:layout_constraintStart_toStartOf="parent" />
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginTop="38dp"
+                    android:fontFamily="@font/appleneom"
+                    android:text="Name"
+                    android:textColor="@color/black"
+                    android:textSize="21dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imgProfile" />
 
-    <EditText
-        android:id="@+id/editEmail3"
-        android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:layout_marginLeft="37dp"
-        android:layout_marginTop="57dp"
-        android:layout_marginRight="37dp"
-        android:background="@drawable/edit_text_shape"
-        android:padding="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.657"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEmail2" />
+                <EditText
+                    android:id="@+id/editName"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:layout_marginLeft="37dp"
+                    android:layout_marginRight="37dp"
+                    android:background="@drawable/edit_text_shape"
+                    android:padding="15dp"
+                    android:fontFamily="@font/appleneom"
+                    android:hint="이름을 입력해주세요"
+                    android:text="@={viewmodel.name}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="37dp"
-        android:layout_marginLeft="37dp"
-        android:layout_marginTop="22dp"
-        android:text="Field"
-        android:textColor="#000000"
-        android:textSize="21dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEmail3" />
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="37dp"
+                    android:layout_marginLeft="37dp"
+                    android:layout_marginBottom="1dp"
+                    android:text="E-mail"
+                    android:textColor="@color/black"
+                    android:textSize="21dp"
+                    android:fontFamily="@font/appleneom"
+                    app:layout_constraintBottom_toTopOf="@+id/editEmail"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-    <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="37dp"
-        android:layout_marginLeft="37dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="37dp"
-        android:layout_marginRight="37dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6">
+                <EditText
+                    android:id="@+id/editEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:layout_marginLeft="37dp"
+                    android:layout_marginTop="56dp"
+                    android:layout_marginRight="37dp"
+                    android:background="@drawable/edit_text_shape"
+                    android:padding="15dp"
+                    android:fontFamily="@font/appleneom"
+                    android:hint="현재 이메일을 입력해주세요"
+                    android:text="@={viewmodel.email}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editName" />
 
-        <TableRow>
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="37dp"
+                    android:layout_marginLeft="37dp"
+                    android:layout_marginBottom="1dp"
+                    android:text="Passwd"
+                    android:textColor="@color/black"
+                    android:textSize="21dp"
+                    android:fontFamily="@font/appleneom"
+                    app:layout_constraintBottom_toTopOf="@+id/editPW"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="70dp"
-                android:layout_marginBottom="7dp"
-                android:text="스터디"
-                android:textColor="#000000"
-                android:textSize="19dp" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="업무"
-                android:textColor="#000000"
-                android:textSize="19dp" />
-        </TableRow>
-
-        <TableRow>
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:text="게임"
-                android:textColor="#000000"
-                android:textSize="19dp" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="음악"
-                android:textColor="#000000"
-                android:textSize="19dp" />
-        </TableRow>
-
-        <TableRow>
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:text="미술"
-                android:textColor="#000000"
-                android:textSize="19dp" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="운동(헬스)"
-                android:textColor="#000000"
-                android:textSize="19dp" />
-        </TableRow>
-
-        <TableRow>
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:text="기타"
-                android:textColor="#000000"
-                android:textSize="19dp" />
-        </TableRow>
-    </TableLayout>
+                <EditText
+                    android:id="@+id/editPW"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:layout_marginLeft="37dp"
+                    android:layout_marginTop="57dp"
+                    android:layout_marginRight="37dp"
+                    android:background="@drawable/edit_text_shape"
+                    android:padding="15dp"
+                    android:fontFamily="@font/appleneom"
+                    android:hint="현재 비밀번호를 입력해주세요"
+                    android:text="@={viewmodel.password}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.506"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editEmail" />
 
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="69dp"
-        android:layout_marginLeft="33dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginRight="33dp"
-        android:background="@drawable/btn_shape"
-        android:text="save"
-        android:textColor="#000000"
-        android:textSize="35dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="37dp"
+                    android:layout_marginLeft="37dp"
+                    android:layout_marginTop="22dp"
+                    android:text="Field"
+                    android:textColor="@color/black"
+                    android:textSize="21dp"
+                    android:fontFamily="@font/appleneom"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editPW" />
+
+                <TableLayout
+                    android:id="@+id/tableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="37dp"
+                    android:layout_marginLeft="37dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="37dp"
+                    android:layout_marginRight="37dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+                    <TableRow>
+
+                        <CheckBox
+                            android:id="@+id/cbStudy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="70dp"
+                            android:layout_marginBottom="7dp"
+                            android:text="스터디"
+                            android:textColor="#000000"
+                            android:textSize="19dp"
+                            android:checked="@={viewmodel.cbStudy}"
+                            android:fontFamily="@font/appleneom"/>
+
+                        <CheckBox
+                            android:id="@+id/cbWork"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="업무"
+                            android:textColor="#000000"
+                            android:textSize="19dp"
+                            android:checked="@={viewmodel.cbWork}"
+                            android:fontFamily="@font/appleneom"/>
+                    </TableRow>
+
+                    <TableRow>
+
+                        <CheckBox
+                            android:id="@+id/cbGame"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="7dp"
+                            android:text="게임"
+                            android:textColor="#000000"
+                            android:textSize="19dp"
+                            android:checked="@={viewmodel.cbGame}"
+                            android:fontFamily="@font/appleneom"/>
+
+                        <CheckBox
+                            android:id="@+id/cbMusic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="음악"
+                            android:textColor="#000000"
+                            android:textSize="19dp"
+                            android:checked="@={viewmodel.cbMusic}"
+                            android:fontFamily="@font/appleneom"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <CheckBox
+                            android:id="@+id/cbArt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="7dp"
+                            android:text="미술"
+                            android:textColor="#000000"
+                            android:textSize="19dp"
+                            android:checked="@={viewmodel.cbArt}"
+                            android:fontFamily="@font/appleneom"/>
+
+                        <CheckBox
+                            android:id="@+id/cbExercise"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="운동(헬스)"
+                            android:textColor="#000000"
+                            android:textSize="19dp"
+                            android:checked="@={viewmodel.cbExercise}"
+                            android:fontFamily="@font/appleneom"/>
+                    </TableRow>
+
+                    <TableRow>
+
+                        <CheckBox
+                            android:id="@+id/cbEtc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="7dp"
+                            android:text="기타"
+                            android:textColor="#000000"
+                            android:textSize="19dp"
+                            android:checked="@={viewmodel.cbEtc}"
+                            android:fontFamily="@font/appleneom"/>
+                    </TableRow>
+                </TableLayout>
 
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="60dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="37dp"
-        android:layout_marginRight="37dp"
-        android:background="@drawable/edit_text_shape"
-        android:text="중복확인"
-        android:textColor="#000000"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEmail" />
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="match_parent"
+                    android:layout_height="69dp"
+                    android:layout_marginLeft="33dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_marginRight="33dp"
+                    android:layout_marginBottom="40dp"
+                    android:background="@drawable/btn_shape"
+                    android:onClick="@{() -> viewmodel.onSave()}"
+                    android:text="save"
+                    android:textColor="#000000"
+                    android:textSize="35dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

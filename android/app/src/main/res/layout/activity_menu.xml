@@ -20,6 +20,7 @@
             android:text="메뉴"
             android:textSize="25sp"
             android:textColor="#000000"
+            android:fontFamily="@font/appleneob"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginLeft="8dp" />
@@ -42,9 +43,11 @@
                 android:layout_marginLeft="35dp"
                 android:text="내 톡방"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:fontFamily="@font/appleneom"    />
 
-            <ListView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvMyRoomList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
@@ -64,7 +67,8 @@
                 android:layout_marginLeft="35dp"
                 android:text="마이페이지"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:fontFamily="@font/appleneom"    />
         </LinearLayout>
 
         <Button
@@ -76,6 +80,7 @@
             android:backgroundTint="#CDCCCC"
             android:text="로그아웃"
             android:textSize="20dp"
+            android:fontFamily="@font/appleneom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginRight="8dp" />
