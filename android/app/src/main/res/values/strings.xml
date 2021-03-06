@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">28ChungChun</string>
+    <string name="app_name">이팔청춘</string>
 
     <string name="vote_false">투표\n진행중</string>
     <string name="vote_true">투표\n완료</string>

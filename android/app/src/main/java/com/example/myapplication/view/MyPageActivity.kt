@@ -151,17 +151,17 @@ class MyPageActivity : AppCompatActivity() {
                         img.setImageBitmap(bitmap)
                         UserData.userProfile = true
                     } else
-                        img.setImageResource(R.drawable.add)
+                        img.setImageResource(R.drawable.user_round)
 
                 } else {
                     Log.d("AAA", "통신오류=${response.message()}")
-                    img.setImageResource(R.drawable.add)
+                    img.setImageResource(R.drawable.user_round)
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("AAA", "FAIL REQUEST ==> " + t.localizedMessage)
-                img.setImageResource(R.drawable.add)
+                img.setImageResource(R.drawable.user_round)
             }
 
         })

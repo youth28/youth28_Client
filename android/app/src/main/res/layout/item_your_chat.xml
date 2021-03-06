@@ -17,8 +17,7 @@
             android:id="@+id/imgChatYou"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            app:error="@{@drawable/logo}"
-            app:imageUrl="@{item.imageUrl}"
+            android:src="@drawable/round"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

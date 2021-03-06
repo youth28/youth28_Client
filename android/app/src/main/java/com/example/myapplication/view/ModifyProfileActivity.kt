@@ -32,6 +32,7 @@ import com.example.myapplication.dto.id.RoomId
 import com.example.myapplication.dto.room.ResponseLogin
 import com.example.myapplication.dto.user.UserDTO
 import com.example.myapplication.dto.id.UserId
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_modify_profile.*
 import okhttp3.*
 import retrofit2.Call
@@ -68,7 +69,7 @@ class ModifyProfileActivity : AppCompatActivity() {
 
         preferences = getSharedPreferences("user", Activity.MODE_PRIVATE)
 
-        binding.imgProfile.setImageResource(R.drawable.logo)
+        binding.imgProfile.setImageResource(R.drawable.round)
 
         btnName.observe(this, {
             binding.button.text = "${it}"

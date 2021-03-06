@@ -74,16 +74,16 @@ class RoomInfoActivity : AppCompatActivity() {
                         val bitmap = BitmapFactory.decodeStream(file)
                         img.setImageBitmap(bitmap)
                         RoomData.profile = true
-                    } else img.setImageResource(R.drawable.add)
+                    } else img.setImageResource(R.drawable.round)
                 } else {
                     Log.d("AAA", "통신오류=${response.message()}")
-                    img.setImageResource(R.drawable.add)
+                    img.setImageResource(R.drawable.round)
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("AAA", "FAIL REQUEST ==> " + t.message)
-                img.setImageResource(R.drawable.add)
+                img.setImageResource(R.drawable.round)
             }
 
         })

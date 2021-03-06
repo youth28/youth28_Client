@@ -85,13 +85,14 @@ class ChatAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewH
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    Log.d("AAA", "REQUEST SUCCESS ==> ")
                     val file = response.body()?.byteStream()
-                    val bitmap = BitmapFactory.decodeStream(file)
-                    img.setImageBitmap(bitmap)
+                    if(file != null) {
+                        val bitmap = BitmapFactory.decodeStream(file)
+                        img.setImageBitmap(bitmap)
+                    } else img.setImageResource(R.drawable.user_round)
                 } else {
                     Log.d("AAA", "통신오류=${response.message()}")
-                    Picasso.get().load(R.drawable.add).into(img)
+                    Picasso.get().load(R.drawable.user_round).into(img)
                 }
             }
 

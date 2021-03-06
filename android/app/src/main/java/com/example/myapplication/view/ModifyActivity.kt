@@ -68,7 +68,7 @@ class ModifyActivity: AppCompatActivity() {
                     if (file != null) {
                         val bitmap = BitmapFactory.decodeStream(file)
                         img.setImageBitmap(bitmap)
-                    } else img.setImageResource(R.drawable.add)
+                    } else img.setImageResource(R.drawable.user_round)
                 } else {
                     Log.d("AAA", "통신오류=${response.message()}")
                     img.setImageResource(R.drawable.add)

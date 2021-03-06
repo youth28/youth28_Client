@@ -77,11 +77,11 @@ class RoomAdapter(val context: Context): RecyclerView.Adapter<RoomAdapter.Holder
                     if (file != null) {
                         val bitmap = BitmapFactory.decodeStream(file)
                         img.setImageBitmap(bitmap)
-                    } else img.setImageResource(R.drawable.add)
+                    } else img.setImageResource(R.drawable.round)
 
                 } else {
                     Log.d("AAA", "통신오류=${response.message()}")
-                    Picasso.get().load(R.drawable.add).into(img)
+                    Picasso.get().load(R.drawable.round).into(img)
                 }
             }
 
